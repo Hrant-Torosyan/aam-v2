@@ -1,0 +1,124 @@
+.registerPage {
+
+  .mainClassname {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    justify-content: stretch;
+    margin-bottom: 40px;
+
+    h1 {
+      margin-bottom: 0 !important;
+    }
+
+    .prevBtn {
+      display: flex;
+    }
+  }
+
+  .errors {
+    top: 75px !important;
+  }
+
+  .inputStyle {
+    position: relative;
+
+    img {
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+  }
+  .checkBox {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    cursor: pointer;
+    ::selection {
+      background-color: transparent;
+      color: black;
+    }
+    .checkBoxMain {
+      width: 20px;
+      height: 20px;
+      box-sizing: border-box;
+      border: 0.78px solid rgba(46, 147, 239, 0.3);
+      border-radius: 3.92px;
+      background: rgb(255, 255, 255);
+
+      >img {
+        width: 10px;
+        height: 8px;
+      }
+
+      &.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(225deg, rgb(12, 94, 255), rgb(0, 180, 210) 100%);
+      }
+
+      &.error {
+        border: 1px solid red;
+      }
+    }
+
+    p {
+      color: rgb(14, 26, 50);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 153%;
+      text-align: left;
+      margin-left: 15px;
+      width: 60%;
+    }
+  }
+  .checkBox.error {
+    .checkBoxMain {
+      border-color: rgb(229, 92, 92);
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .registerPage {
+    .errors {
+      top: 45px !important;
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .registerPage {
+    .errors {
+      top: 45px !important;
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .registerPage {
+    .errors {
+      top: 45px !important;
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .registerPage {
+    .errors {
+      top: 45px !important;
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+  .registerPage {
+    .errors {
+      top: 45px !important;
+    }
+  }
+}

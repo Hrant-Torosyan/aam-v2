@@ -1,0 +1,490 @@
+.mainLogin {
+  height: 100vh;
+  background: url("../../../public/images/LoginFon.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  .mainLoginHeader {
+    background: white;
+    display: flex;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 85px;
+    z-index: 999;
+  }
+  .mainLoginContent {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    .mainLoginImage {
+      position: relative;
+      width: 65%;
+      .circleSm,
+      .circleXl {
+        position: absolute;
+        backdrop-filter: blur(11.2px);
+        width: 114px;
+        z-index: 10;
+        height: 114px;
+        left: 25%;
+        border-radius: 50%;
+        top: -50px;
+        border: 1px solid #ffffff9f;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .circleXl {
+        width: 170px;
+        height: 170px;
+        transform: translateX(-50%);
+        left: 50%;
+        top: auto;
+        bottom: -85px;
+        opacity: 0.8;
+      }
+      img {
+        width: 100%;
+      }
+    }
+
+    .mainLoginForm {
+      width: 35%;
+      display: flex;
+      justify-content: flex-end;
+      >div {
+        width: 80%;
+      }
+      form {
+        width: 100%;
+        border-radius: 25px;
+        box-shadow: 0px 6px 20px 0px rgb(200, 232, 255);
+        background: rgb(255, 255, 255);
+        padding: 40px 25px 25px;
+        text-align: center;
+        position: relative;
+        .errors {
+          color: rgb(229, 92, 92);
+          display: inline-block;
+          position: absolute;
+          height: 19px;
+          left: 0;
+          width: 100%;
+          top: 145px;
+        }
+        .prevBtn {
+          top: 40px;
+          left: 25px;
+          cursor: pointer;
+          border-radius: 50%;
+          position: absolute;
+          transition: 0.5s;
+          svg {
+            display: block;
+          }
+          &:hover {
+            background: rgb(214, 232, 252);
+          }
+        }
+        h1 {
+          color: rgb(14, 26, 50);
+          font-size: 20px;
+          font-weight: 600;
+          line-height: 28px;
+        }
+        .inputStyle {
+          background: rgba(46, 147, 239, 0.3);
+          border-radius: 14px;
+          padding: 2px;
+          overflow: hidden;
+          margin-bottom: 20px;
+          &:focus-within {
+            background: linear-gradient(225deg, rgb(12, 94, 255), rgb(0, 180, 210) 100%);
+          }
+          input {
+            padding: 17px 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            width: 100%;
+            font-size: 16px;
+
+            background: rgb(255, 255, 255);
+            position: relative;
+            display: inline-block;
+            &::placeholder {
+              color: rgba(14, 26, 50, 0.5);
+              font-size: 16px;
+              font-weight: 400;
+            }
+          }
+        }
+        .inputStyle.error {
+          background: rgb(229, 92, 92);
+        }
+        .buttonStyle {
+          overflow: hidden;
+          border-radius: 20px;
+          padding: 2px;
+          background: linear-gradient(158.2deg, rgb(44, 115, 243) -103.971%, rgb(48, 205, 231) 151.363%);
+          margin-top: 20px;
+          button,
+          div {
+            cursor: pointer;
+            width: 100%;
+            transition: 0.5s;
+            padding: 15px;
+            border-radius: 18px;
+            background: transparent;
+            span {
+              background: none;
+              -webkit-background-clip: border-box;
+              background-clip: border-box;
+              -webkit-text-fill-color: initial;
+              color: white;
+              font-size: 20px;
+              transition: 0.5s;
+              font-weight: 600;
+              line-height: 120%;
+              text-align: center;
+            }
+          }
+          &:hover {
+            button,
+            div {
+              background: white;
+              span {
+                background: linear-gradient(236.49deg, rgb(34, 100, 220), rgb(0, 180, 210));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                color: transparent;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .mainLoginFooter {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    padding: 0 130px;
+    p {
+      color: rgb(255, 255, 255);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 17px;
+      padding: 20px 0;
+      text-align: center;
+      border-top: 1px solid rgb(255, 255, 255);
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .mainLogin {
+    background: url("../../../public/images/loginBgSm.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: bottom;
+    .mainLoginHeader {
+      padding-left: 20px;
+    }
+    .mainLoginContent {
+      .mainLoginForm {
+        width: 100%;
+        justify-content: center;
+        form {
+          padding: 20px 15px 15px;
+          width: 90%;
+          .prevBtn {
+            top: 20px;
+            left: 15px;
+          }
+          h1 {
+            font-size: 18px;
+            margin-bottom: 20px;
+          }
+          h2 {
+            margin-bottom: 30px !important;
+          }
+          .inputStyle {
+            background: rgba(46, 147, 239, 0.3);
+            border-radius: 14px;
+            padding: 2px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            input {
+              padding: 12px 20px;
+              border-radius: 12px;
+            }
+          }
+          .buttonStyle,
+          .buttonStyleToo {
+            button,
+            div {
+              padding: 12px !important;
+              span {
+                font-size: 16px !important;
+              }
+            }
+          }
+        }
+      }
+      .mainLoginImage {
+        display: none;
+      }
+    }
+    .mainLoginFooter {
+      display: flex;
+      padding-left: 0;
+      padding-right: 0;
+      justify-content: center;
+      p {
+        width: 90%;
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .mainLogin {
+    background: url("../../../public/images/loginBgSm.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: bottom;
+    .mainLoginHeader {
+      padding-left: 30px;
+    }
+    .mainLoginContent {
+      .mainLoginForm {
+        width: 100%;
+        justify-content: center;
+        form {
+          padding: 20px 15px 15px;
+          width: 85%;
+          .prevBtn {
+            top: 20px;
+            left: 15px;
+          }
+          h1 {
+            font-size: 18px;
+            margin-bottom: 20px;
+          }
+          h2 {
+            margin-bottom: 30px !important;
+          }
+          .inputStyle {
+            background: rgba(46, 147, 239, 0.3);
+            border-radius: 14px;
+            padding: 2px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            input {
+              padding: 12px 20px;
+              border-radius: 12px;
+            }
+          }
+          .buttonStyle,
+          .buttonStyleToo {
+            button,
+            div {
+              padding: 12px !important;
+              span {
+                font-size: 16px !important;
+              }
+            }
+          }
+        }
+      }
+      .mainLoginImage {
+        display: none;
+      }
+    }
+    .mainLoginFooter {
+      display: flex;
+      padding-left: 0;
+      padding-right: 0;
+      justify-content: center;
+      p {
+        width: 90%;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .mainLogin {
+    background: url("../../../public/images/loginBgXl.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    .mainLoginContent {
+      .mainLoginForm {
+        width: 100%;
+        justify-content: center;
+        form {
+          padding: 20px 15px 15px;
+          width: 65%;
+          .prevBtn {
+            top: 20px;
+            left: 15px;
+          }
+          h1 {
+            font-size: 18px;
+            margin-bottom: 20px;
+          }
+          h2 {
+            margin-bottom: 30px !important;
+          }
+          .inputStyle {
+            background: rgba(46, 147, 239, 0.3);
+            border-radius: 14px;
+            padding: 2px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            input {
+              padding: 12px 20px;
+              border-radius: 12px;
+            }
+          }
+          .buttonStyle,
+          .buttonStyleToo {
+            button,
+            div {
+              padding: 12px !important;
+              span {
+                font-size: 16px !important;
+              }
+            }
+          }
+        }
+      }
+      .mainLoginImage {
+        display: none;
+      }
+    }
+    .mainLoginFooter {
+      display: flex;
+      padding-left: 0;
+      padding-right: 0;
+      justify-content: center;
+      p {
+        width: 90%;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .mainLogin {
+    background: url("../../../public/images/loginBgXl.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    .mainLoginContent {
+      .mainLoginForm {
+        width: 100%;
+        justify-content: center;
+        form {
+          padding: 20px 15px 15px;
+          width: 60%;
+          .prevBtn {
+            top: 20px;
+            left: 15px;
+          }
+          h1 {
+            font-size: 18px;
+            margin-bottom: 20px;
+          }
+          h2 {
+            margin-bottom: 30px !important;
+          }
+          .inputStyle {
+            background: rgba(46, 147, 239, 0.3);
+            border-radius: 14px;
+            padding: 2px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            input {
+              padding: 12px 20px;
+              border-radius: 12px;
+            }
+          }
+          .buttonStyle,
+          .buttonStyleToo {
+            button,
+            div {
+              padding: 12px !important;
+              span {
+                font-size: 16px !important;
+              }
+            }
+          }
+        }
+      }
+      .mainLoginImage {
+        display: none;
+      }
+    }
+    .mainLoginFooter {
+      display: flex;
+      padding-left: 0;
+      padding-right: 0;
+      justify-content: center;
+      p {
+        width: 90%;
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+  .mainLogin {
+    .mainLoginContent {
+      .mainLoginForm {
+        width: 45%;
+        form {
+          padding: 20px 15px 15px;
+          .prevBtn {
+            top: 20px;
+            left: 15px;
+          }
+          h1 {
+            font-size: 18px;
+            margin-bottom: 20px;
+          }
+          h2 {
+            margin-bottom: 30px !important;
+          }
+          .inputStyle {
+            background: rgba(46, 147, 239, 0.3);
+            border-radius: 14px;
+            padding: 2px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            input {
+              padding: 12px 20px;
+              border-radius: 12px;
+            }
+          }
+          .buttonStyle,
+          .buttonStyleToo {
+            button,
+            div {
+              padding: 12px !important;
+              span {
+                font-size: 16px !important;
+              }
+            }
+          }
+        }
+      }
+      .mainLoginImage {
+        width: 55%;
+      }
+    }
+  }
+}
