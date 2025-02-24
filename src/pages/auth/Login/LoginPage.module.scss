@@ -1,0 +1,89 @@
+#loginPage {
+  width: 80%;
+  .inputWrapper {
+    position: relative;
+
+    .inputStyle,
+    .passwordInput {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        border-color: #5c9bff;
+      }
+    }
+  }
+
+  .forgotPassword {
+    margin: 20px 0 28px;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 19.89px;
+    color: var(--text-blue);
+    text-decoration: underline;
+
+  }
+  h2 {
+    color: rgb(77, 156, 243);
+    font-size: 19.25px;
+    font-weight: 500;
+    line-height: 28px;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  > p {
+    color: rgb(52, 142, 241);
+    font-size: 13px;
+    font-weight: 400;
+    text-decoration-line: underline;
+    text-align-last: left;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  #loginPage {
+    .errors {
+      top: 100px !important;
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  #loginPage {
+    .errors {
+      top: 100px !important;
+      width: 60%;
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  #loginPage {
+    .errors {
+      width: 65%;
+      top: 100px !important;
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  #loginPage {
+    .errors {
+      top: 100px !important;
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+  #loginPage {
+    .errors {
+      top: 100px !important;
+    }
+  }
+}
