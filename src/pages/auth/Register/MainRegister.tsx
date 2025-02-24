@@ -44,7 +44,7 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage, setStep }) => {
         setGlobalError("");
 
         if (!fullName.trim()) {
-            setGlobalError("Заполните поле для имени");
+            setGlobalError("Заполните поле");
             return;
         }
         if (!email.trim()) {
@@ -60,7 +60,7 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage, setStep }) => {
             return;
         }
         if (password.length < 8) {
-            setGlobalError("Пароль должен быть не менее 8 символов");
+            setGlobalError("Пароль должен быть не менее 7 символов");
             return;
         }
         if (!confirmPassword.trim()) {
@@ -87,7 +87,7 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage, setStep }) => {
             ).unwrap();
             navigate("/");
         } catch (error) {
-            setGlobalError("Ошибка регистрации. Попробуйте еще раз.");
+            setGlobalError("Такой e-mail уже существует");
             console.error("Registration failed:", error);
         }
     };
