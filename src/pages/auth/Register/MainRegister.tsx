@@ -59,7 +59,7 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage, setStep }) => {
             setGlobalError("Заполните поле для пароля");
             return;
         }
-        if (password.length < 8) {
+        if (password.length < 7) {
             setGlobalError("Пароль должен быть не менее 7 символов");
             return;
         }
