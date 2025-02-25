@@ -1,105 +1,110 @@
 .buttonStyle {
-  overflow: hidden;
-  border-radius: 12px;
-  padding: 2px;
-  background: linear-gradient(268.56deg, #0C5EFF 0%, #00B4D2 100%);
-  margin-top: 20px;
-  button,
-  div {
-    cursor: pointer;
-    width: 100%;
-    transition: 0.5s;
-    height: 53px;
-    border-radius: 12px;
-    background: transparent;
-    border: none;
-    span {
-      background: none;
-      -webkit-background-clip: border-box;
-      background-clip: border-box;
-      -webkit-text-fill-color: initial;
-      color: white;
-      font-size: 20px;
-      transition: 0.5s;
-      font-weight: 600;
-      line-height: 120%;
-      text-align: center;
-    }
-  }
-  &:hover {
-    button,
-    div {
-      background: white;
-      span {
-        background: linear-gradient(268.56deg, #0C5EFF 0%, #00B4D2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        color: transparent;
-      }
-    }
-  }
+	overflow: hidden;
+	border-radius: 12px;
+	padding: 2px;
+	background: linear-gradient(268.56deg, #0c5eff 0%, #00b4d2 100%);
+	margin-top: 20px;
+	button,
+	div {
+		cursor: pointer;
+		width: 100%;
+		transition: 0.5s;
+		height: 53px;
+		border-radius: 12px;
+		background: transparent;
+		border: none;
+		span {
+			background: none;
+			-webkit-background-clip: border-box;
+			background-clip: border-box;
+			-webkit-text-fill-color: initial;
+			color: white;
+			font-size: 20px;
+			transition: 0.5s;
+			font-weight: 600;
+			line-height: 120%;
+			text-align: center;
+		}
+	}
+
+	&:hover {
+		button,
+		div {
+			background: white;
+			span {
+				background: linear-gradient(268.56deg, #0c5eff 0%, #00b4d2 100%);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+				color: transparent;
+			}
+		}
+	}
 }
 
 .buttonStyleToo {
-  width: 100%;
-  overflow: hidden;
-  margin: 11px auto 0;
-  border-radius: 12px;
-  padding: 2px;
-  background: linear-gradient(268.56deg, #0C5EFF 0%, #00B4D2 100%);
-  button,
-  div {
-    cursor: pointer;
-    width: 100%;
-    transition: 0.5s;
-    height: 53px;
-    border-radius: 12px;
-    background: white;
-    border: none;
-    span {
-      background: linear-gradient(268.56deg, #0C5EFF 0%, #00B4D2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent;
-      font-size: 18px;
-      transition: 0.5s;
-      font-weight: 600;
-      line-height: 120%;
-      text-align: center;
-    }
-  }
-  &:hover {
-    button,
-    div {
-      background: transparent;
-      span {
-        background: none;
-        -webkit-background-clip: border-box;
-        background-clip: border-box;
-        -webkit-text-fill-color: initial;
-        color: white;
-      }
-    }
-  }
+	width: 100%;
+	overflow: hidden;
+	margin: 11px auto 0;
+	border-radius: 12px;
+	padding: 2px;
+	background: linear-gradient(268.56deg, #0c5eff 0%, #00b4d2 100%);
+	button,
+	div {
+		cursor: pointer;
+		width: 100%;
+		transition: 0.5s;
+		height: 53px;
+		border-radius: 12px;
+		background: white;
+		border: none;
+		span {
+			background: linear-gradient(268.56deg, #0c5eff 0%, #00b4d2 100%);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+			color: transparent;
+			font-size: 18px;
+			transition: 0.5s;
+			font-weight: 600;
+			line-height: 120%;
+			text-align: center;
+		}
+	}
+	&:hover {
+		button,
+		div {
+			background: transparent;
+			span {
+				background: none;
+				-webkit-background-clip: border-box;
+				background-clip: border-box;
+				-webkit-text-fill-color: initial;
+				color: white;
+			}
+		}
+	}
+}
+.dis {
+	background: #ddd;
+	pointer-events: none;
 }
 
 @media (max-width: 991.98px) {
-  .buttonStyle {
-    border-radius: 20px;
-    button,
-    div {
-      height: 43px;
-      border-radius: 20px;
-    }
-  }
-  .buttonStyleToo {
-    border-radius: 20px;
-    button,
-    div {
-      height: 43px;
-      border-radius: 20px;
-    }
-  }
+	.buttonStyle {
+		border-radius: 20px;
+		button,
+		div {
+			height: 43px;
+			border-radius: 20px;
+		}
+	}
+	.buttonStyleToo {
+		border-radius: 20px;
+		button,
+		div {
+			height: 43px;
+			border-radius: 20px;
+		}
+	}
 }
