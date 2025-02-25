@@ -211,3 +211,12 @@ export const addLinkedUser = createAsyncThunk(
         }
     }
 );
+
+export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
+    try {
+        localStorage.removeItem("userAuth");
+        window.location.href = "/login";
+    } catch (err) {
+        return rejectWithValue(err instanceof Error ? err.message : "Logout failed");
+    }
+});
