@@ -1,10 +1,13 @@
 import { Outlet } from "react-router";
 import { Suspense } from "react";
 
+import Header from 'src/access/Header/Header';
+
 
 const Layout = () => {
     return (
         <>
+            <Header />
             <main>
                 <Suspense
                     fallback={

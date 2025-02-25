@@ -1,0 +1,117 @@
+.profileBlock {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  @media (max-width: 767.98px) {
+    flex-direction: row-reverse;
+    margin: 0;
+  }
+  > img {
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .selectHeader {
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: space-between;
+    margin-left: 15px;
+    ::selection {
+      color: rgb(126, 126, 126);
+      background: transparent;
+    }
+    @media (max-width: 767.98px) {
+      > p {
+        display: none;
+      }
+      img {
+        display: none;
+      }
+    }
+    > p {
+      color: rgb(126, 126, 126);
+      font-weight: 400;
+      font-size: 14px;
+      text-align: center;
+      margin-right: 5px;
+    }
+    .selectItem {
+      position: absolute;
+      right: 0;
+      width: 210px;
+      background: white;
+      top: 70px;
+      padding: 14px 20px;
+      opacity: 0;
+      z-index: -999;
+      transition: 0.5s;
+      box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+
+      a {
+        display: flex;
+        width: 100%;
+        text-decoration: none;
+        align-items: center;
+        padding: 10px 0;
+        span {
+          color: rgb(14, 26, 50);
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 20px;
+          margin-left: 15px;
+        }
+      }
+      button {
+        display: flex;
+        width: 100%;
+        text-decoration: none;
+        align-items: center;
+        padding: 10px 0;
+        span {
+          color: rgb(14, 26, 50);
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 20px;
+          margin-left: 15px;
+          color: rgb(229, 92, 92);
+        }
+      }
+    }
+    img {
+      transition: 0.5s;
+      width: 14px;
+      transform: rotate(0);
+    }
+  }
+}
+
+.unActiveHeader {
+  animation: delayOverflow 0.6s ease forwards;
+}
+
+@keyframes delayOverflow {
+  from {
+    overflow: visible;
+  }
+  to {
+    overflow: hidden;
+  }
+}
+.activeHeader {
+  overflow: visible;
+
+  .selectHeader {
+    .selectItem {
+      top: 50px;
+      opacity: 1;
+      z-index: 990;
+    }
+    img {
+      transform: rotate(180deg);
+    }
+  }
+}
