@@ -30,27 +30,27 @@ const Select: React.FC<SelectProps> = ({ value, onChange }) => {
             </p>
             <img src='./images/angle.png' alt='toggle' />
             {isActiveSelect && (
-                <div className={styles.selectItem}> {/* Apply the styles for selectItem */}
+                <div className={styles.selectItem}>
                     <p
-                        className={value === 'WEEKLY' ? `${styles.activeOption}` : ''}
+                        className={value === 'WEEKLY' ? styles.activeOption : ''}
                         onClick={() => handleSelectChange('WEEKLY')}
                     >
                         Неделя
                     </p>
                     <p
-                        className={value === 'MONTHLY' ? `${styles.activeOption}` : ''}
+                        className={value === 'MONTHLY' ? styles.activeOption : ''}
                         onClick={() => handleSelectChange('MONTHLY')}
                     >
                         Месяц
                     </p>
                     <p
-                        className={value === 'SEMI_ANNUAL' ? `${styles.activeOption}` : ''}
+                        className={value === 'SEMI_ANNUAL' ? styles.activeOption : ''}
                         onClick={() => handleSelectChange('SEMI_ANNUAL')}
                     >
                         Полугод
                     </p>
                     <p
-                        className={value === 'ANNUAL' ? `${styles.activeOption}` : ''}
+                        className={value === 'ANNUAL' ? styles.activeOption : ''}
                         onClick={() => handleSelectChange('ANNUAL')}
                     >
                         Год

@@ -9,7 +9,7 @@ export const store = configureStore({
     reducer: {
         auth: authReducer,
         user: userReducer,
-        analytics: analyticsReducer, // Add this here
+        analytics: analyticsReducer,
         [analyticsApi.reducerPath]: analyticsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>

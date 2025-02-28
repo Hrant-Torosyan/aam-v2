@@ -5,11 +5,11 @@ import { RootState } from 'src/store/store';
 import {
     useGetWalletsQuery,
     useGetOperationsListQuery,
-    useGetBalanceChartQuery
+    useGetBalanceChartQuery,
 } from 'src/store/analytics/analyticsAPI';
 import Loader from 'src/ui/Loader/Loader';
 import Select from 'src/components/Select/Select';
-import LineChart from 'src/components/LineChart/LineChart';
+import LineChartComponent from 'src/components/LineChart/LineChart';
 
 import styles from './Analytics.module.scss';
 
@@ -18,8 +18,6 @@ const Analytics: React.FC = () => {
     const selectValue = useSelector((state: RootState) => state.analytics.selectValue);
     const [refresh, setRefresh] = useState(0);
 
-    const colorsArr = useMemo(() => ['#348EF1', '#E54D64', '#FFB100'], []);
-
     useEffect(() => {
         if (!selectValue) {
             dispatch(setSelectValue('WEEKLY'));
@@ -27,10 +25,11 @@ const Analytics: React.FC = () => {
     }, [dispatch, selectValue]);
 
     const { data: walletsData, isLoading: isLoadingWallets, refetch: refetchWallets } = useGetWalletsQuery();
-    const { data: operationsListData, isLoading: isLoadingOperationsList, refetch: refetchOperationsList } = useGetOperationsListQuery({
-        accountType: 'all',
-        pageNumber: 1,
-    });
+    const { data: operationsListData, isLoading: isLoadingOperationsList, refetch: refetchOperationsList } =
+        useGetOperationsListQuery({
+            accountType: 'all',
+            pageNumber: 1,
+        });
     const { data: balanceChartData, isLoading: isLoadingBalanceChart, refetch: refetchBalanceChart } = useGetBalanceChartQuery({
         period: selectValue,
         refresh,
@@ -75,7 +74,10 @@ const Analytics: React.FC = () => {
                 <div className={styles.analyticsTitleItem}>
                     <p>Доходность:</p>
                     <div className={styles.percent}>+{balanceChartData?.profitability ?? 0}%</div>
-                    <Select value={selectValue} onChange={(value) => dispatch(setSelectValue(value))} />
+                    <Select
+                        value={selectValue}
+                        onChange={(value) => dispatch(setSelectValue(value))}
+                    />
                 </div>
             </div>
 
@@ -83,8 +85,7 @@ const Analytics: React.FC = () => {
                 <div className={styles.balance}>
                     <div className={styles.balanceList}>
                         <div className={styles.balanceIcon}>
-                            <svg width="20" height="20" viewBox="0 0 16 16" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
+                            <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M8 11.3333H8.83333C9.38889 11.3333 10.5 11 10.5 9.66667C10.5 8.33333 9.38889 8 8.83333 8H7.16667C6.61111 8 5.5 7.66667 5.5 6.33333C5.5 5 6.61111 4.66667 7.16667 4.66667H8M8 11.3333H5.5M8 11.3333V13M10.5 4.66667H8M8 4.66667V3M15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5C12.1421 0.5 15.5 3.85786 15.5 8Z"
                                     stroke="#348EF1"
@@ -116,9 +117,9 @@ const Analytics: React.FC = () => {
                     <p>Баланс на платформе:</p>
                     <p>${totalBalance.toLocaleString()}</p>
                 </div>
-                <LineChart
-                    accountType="all"
-                    colorsArr={colorsArr}
+                <LineChartComponent
+                    balanceChartData={balanceChartData}
+                    selectValue={selectValue}
                 />
             </div>
         </div>

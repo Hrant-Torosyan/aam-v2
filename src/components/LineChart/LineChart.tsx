@@ -1,83 +1,97 @@
-// LineChart.tsx (or .jsx)
-import { useGetBalanceChartQuery } from 'src/store/analytics/analyticsAPI';
+import React, { useEffect, useState } from "react";
 import {
-    Area,
-    AreaChart,
+    LineChart,
+    Line,
     CartesianGrid,
-    ResponsiveContainer,
-    Tooltip,
     XAxis,
     YAxis,
-} from 'recharts';
-import { ValueType } from 'recharts/types/component/DefaultTooltipContent';
+    Tooltip,
+    ResponsiveContainer
+} from "recharts";
+import Select from "src/components/Select/Select";
+import { useDispatch } from "react-redux";
+import { setSelectValue } from "src/store/analytics/analyticsSlice";
 import styles from './LineChart.module.scss';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/store/store';
 
 interface LineChartProps {
-    accountType?: string;
-    colorsArr: string[];
+    balanceChartData: any;
+    color?: string;
+    bg?: string;
+    selectValue: string;
+    infoPopUp?: string;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ accountType, colorsArr }) => {
-    const period = useSelector((state: RootState) => state.analytics.selectValue);
-    const { data: balanceChartData } = useGetBalanceChartQuery({ period, accountType });
+const LineChartComponent: React.FC<LineChartProps> = ({
+      balanceChartData,
+      color = "rgb(48, 170, 235)",
+      bg = "rgba(48, 170, 235, 0.2)",
+      selectValue,
+      infoPopUp
+  }) => {
+    const dispatch = useDispatch();
+    const [chartData, setChartData] = useState<any[]>([]);
 
-    const mainData = balanceChartData?.mainData || [];
-    const maxValue =
-        mainData.reduce((max, val) => (val.average > max ? val.average : max), 0) * 1.2 || 20;
+    useEffect(() => {
+        let labelsArr: string[] = [];
+        let dataArr: number[] = [];
 
-    const lineColor = colorsArr[0] || "rgb(48, 170, 235)"; // Default to blue if colorsArr is empty
+        if (selectValue === "MONTHLY") {
+            labelsArr = balanceChartData?.lab?.map((item: Date) => `${item.getDate()}`);
+            dataArr = balanceChartData?.data || [];
+        } else if (selectValue === "WEEKLY") {
+            labelsArr = balanceChartData?.lab || [];
+            dataArr = balanceChartData?.data || [];
+        } else {
+            labelsArr = balanceChartData?.mainData?.map((item: any) => item.month) || [];
+            dataArr = balanceChartData?.mainData?.map((item: any) => item.average) || [];
+        }
+
+        // Set the chart data
+        setChartData(labelsArr.map((label, index) => ({
+            name: label,
+            value: dataArr[index] || 0
+        })));
+    }, [balanceChartData, selectValue]);
+
+    const handleSelectChange = (value: string) => {
+        dispatch(setSelectValue(value));
+    };
 
     return (
         <div id="lineChart" className={styles.lineChart}>
             <p>График изменения баланса</p>
-            <ResponsiveContainer height={200} width="100%">
-                <AreaChart
-                    data={mainData}
-                    margin={{ top: 20, right: 20, bottom: 0, left: -10 }}
-                >
-                    <defs>
-                        <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor={lineColor} stopOpacity={0.8} />
-                            <stop offset="100%" stopColor={`${lineColor}, 0`} stopOpacity={0} />
-                        </linearGradient>
-                    </defs>
-                    <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.2)" />
-                    <XAxis
-                        dataKey="month"
-                        tick={{ fill: "rgba(255, 255, 255, 0.5)", fontSize: 14, fontWeight: 400 }}
-                        axisLine={false}
-                    />
-                    <YAxis
-                        tick={{ fill: "rgba(255, 255, 255, 0.5)", fontSize: 14, fontWeight: 400 }}
-                        domain={[0, maxValue]}
-                        axisLine={false}
-                        width={65}
-                    />
+
+            {infoPopUp === "popUp" && (
+                <Select value={selectValue} onChange={handleSelectChange} />
+            )}
+
+            <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={chartData}>
+                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
                     <Tooltip
                         contentStyle={{
-                            backgroundColor: "black",
-                            color: "white",
+                            backgroundColor: "#fff",
+                            color: "rgb(52, 142, 241)",
                             padding: "5px",
                             border: "none",
                             borderRadius: 8,
                         }}
-                        formatter={(value: ValueType) => [`$${value}`]}
-                        labelStyle={{ display: "none" }}
+                        formatter={(value: number) => `${value}$`}
                     />
-                    <Area
+                    <Line
                         type="monotone"
-                        dataKey="average"
-                        stroke={lineColor}
-                        strokeWidth={3}
+                        dataKey="value"
+                        stroke={color}
+                        fill={bg}
+                        strokeWidth={2}
                         fillOpacity={1}
-                        fill="url(#colorBalance)"
                     />
-                </AreaChart>
+                </LineChart>
             </ResponsiveContainer>
         </div>
     );
 };
 
-export default LineChart;
+export default LineChartComponent;

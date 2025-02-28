@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// API URL and endpoints
 const BASE_URL = "http://145.223.99.13:8080/api/rest/";
 
 const ENDPOINTS = {
@@ -15,6 +16,7 @@ const ENDPOINTS = {
     ANALYTIC: "portfolios/analytic/list",
 };
 
+// Define types
 interface DailyBalance {
     date: string;
     amount: number;
@@ -70,13 +72,13 @@ const processBalanceChartResponse = (response: BalanceChartResponse, period: str
     }
 
     if (!response.monthlyBalancesChart) {
-        const lab = response.dailyBalancesChart.map(item =>
+        const lab = response.dailyBalancesChart.map((item: DailyBalance) =>
             period === "WEEKLY"
                 ? ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"][new Date(+item.date).getDay()]
                 : new Date(+item.date).toLocaleDateString()
         );
 
-        const data = response.dailyBalancesChart.map(item => item.amount);
+        const data = response.dailyBalancesChart.map((item: DailyBalance) => item.amount);
         return {
             lab,
             data,
@@ -89,8 +91,8 @@ const processBalanceChartResponse = (response: BalanceChartResponse, period: str
 
     const sumsByMonth: Record<string, { sum: number; count: number }> = {};
 
-    response.monthlyBalancesChart.forEach(subArray => {
-        subArray.forEach(item => {
+    response.monthlyBalancesChart.forEach((subArray: MonthlyBalance[]) => {
+        subArray.forEach((item: MonthlyBalance) => {
             const currentDate = new Date(parseInt(item.date));
             const yearMonth = `${currentDate.getFullYear()}/${currentDate.getMonth() + 1}`;
 

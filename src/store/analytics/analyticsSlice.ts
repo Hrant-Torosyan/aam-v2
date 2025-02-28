@@ -18,7 +18,7 @@ interface AnalyticsState {
 const initialState: AnalyticsState = {
     loading: false,
     error: null,
-    selectValue: 'WEEKLY',  // Default value is set here
+    selectValue: 'WEEKLY',
     analyticsData: { profitability: 0 },
 };
 
@@ -27,25 +27,8 @@ const analyticsSlice = createSlice({
     initialState,
     reducers: {
         setSelectValue: (state, action: PayloadAction<string>) => {
-            // Only update if it's different to prevent unnecessary re-renders
             if (state.selectValue !== action.payload) {
                 state.selectValue = action.payload;
-            }
-        },
-
-        setLoading: (state, action: PayloadAction<boolean>) => {
-            state.loading = action.payload;
-        },
-
-        setError: (state, action: PayloadAction<{ message: string; code?: string } | null>) => {
-            state.error = action.payload;
-        },
-
-        setAnalyticsData: (state, action: PayloadAction<ProcessedBalanceChart | null>) => {
-            // Check if data is different before updating
-            const isDifferent = JSON.stringify(action.payload) !== JSON.stringify(state.analyticsData);
-            if (isDifferent) {
-                state.analyticsData = action.payload ?? { profitability: 0 };
             }
         },
     },
@@ -63,6 +46,7 @@ const analyticsSlice = createSlice({
                 (state, action) => {
                     state.loading = false;
                     state.analyticsData = action.payload;
+                    state.error = null;
                 }
             )
             .addMatcher(
@@ -78,6 +62,6 @@ const analyticsSlice = createSlice({
     },
 });
 
-export const { setSelectValue, setLoading, setError, setAnalyticsData } = analyticsSlice.actions;
+export const { setSelectValue } = analyticsSlice.actions;
 
 export default analyticsSlice.reducer;
