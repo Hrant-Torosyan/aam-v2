@@ -13,6 +13,7 @@ import Back from "src/images/svg/smallLeft.svg";
 import Button from "src/ui/Button/Button";
 import styles from "./ResetPassword.module.scss";
 import ErrorMessage from "src/ui/ErrorMessage/ErrorMessage";
+import Loader from "src/ui/Loader/Loader";
 
 interface NewPasswordProps {
     setStep: (step: number) => void;
@@ -79,12 +80,7 @@ const NewPassword: React.FC<NewPasswordProps> = ({ setStep, code }) => {
     return (
         <form onSubmit={handleSubmit} className={styles.resetPassword}>
             {loading ? (
-                <div className={styles.loader}>
-                    <img
-                        src="https://i.pinimg.com/originals/92/63/9c/92639cac9c1a0451744f9077ddec0bed.gif"
-                        alt="loader"
-                    />
-                </div>
+                <Loader />
             ) : (
                 <>
                     <div className={styles.mainClassname}>

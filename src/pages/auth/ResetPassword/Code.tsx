@@ -10,6 +10,7 @@ import ErrorMessage from "src/ui/ErrorMessage/ErrorMessage"
 import Back from "src/images/svg/smallLeft.svg";
 
 import styles from "./ResetPassword.module.scss";
+import Loader from "src/ui/Loader/Loader";
 
 interface CodeProps {
     setStep: (step: number) => void;
@@ -84,12 +85,7 @@ const Code: React.FC<CodeProps> = ({ setStep, setPage }) => {
     return (
         <form className={styles.resetPassword} onSubmit={handleSubmit}>
             {loading ? (
-                <div className={styles.loader}>
-                    <img
-                        src="https://i.pinimg.com/originals/92/63/9c/92639cac9c1a0451744f9077ddec0bed.gif"
-                        alt="Loading..."
-                    />
-                </div>
+                <Loader />
             ) : (
                 <>
                     <div className={styles.mainClassname}>

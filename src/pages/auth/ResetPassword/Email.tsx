@@ -8,6 +8,7 @@ import { setEmail } from "src/store/auth/authSlice";
 import Input from "src/ui/Input/Input";
 import ErrorMessage from "src/ui/ErrorMessage/ErrorMessage";
 import Button from "src/ui/Button/Button";
+import Loader from "src/ui/Loader/Loader";
 
 import Back from "src/images/svg/smallLeft.svg";
 
@@ -64,12 +65,7 @@ const Email: React.FC<{ setPage: (newPage: string) => void, setStep: (newStep: n
     return (
         <form onSubmit={handleRegister} className={styles.resetPassword} id="email">
             {loading ? (
-                <div className={styles.loader}>
-                    <img
-                        src="https://i.pinimg.com/originals/92/63/9c/92639cac9c1a0451744f9077ddec0bed.gif"
-                        alt="loader"
-                    />
-                </div>
+                <Loader />
             ) : (
                 <>
                     <div className={styles.mainClassname}>
