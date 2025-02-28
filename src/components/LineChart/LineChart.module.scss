@@ -1,0 +1,42 @@
+.lineChart {
+  z-index: 9;
+  width: calc(65% - 35px) !important;
+  background: white;
+  margin-left: 35px;
+  padding: 15px;
+  border: 1px solid rgba(46, 147, 239, 0.3);
+  border-radius: 25px;
+  position: relative;
+
+  > p {
+    color: rgb(17, 38, 60);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.91px;
+    letter-spacing: 0px;
+    text-align: left;
+    padding: 8px;
+  }
+
+  .select {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    margin: 0;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .lineChart {
+    > p {
+      font-size: 13px;
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .lineChart {
+    margin-left: 20px;
+    width: calc(65% - 20px) !important;
+  }
+}

@@ -1,0 +1,65 @@
+.select {
+  border: 1px solid rgb(233, 239, 251);
+  border-radius: 30px;
+  background: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  width: 120px;
+  position: relative;
+  cursor: pointer;
+  justify-content: space-between;
+  padding: 10px 25px;
+  margin-left: 15px;
+  > p {
+    color: rgb(126, 126, 126);
+    font-weight: 400;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    margin-right: 5px;
+  }
+  .selectItem {
+    position: absolute;
+    right: 0;
+    width: 150px;
+    background: white;
+    top: 70px;
+    opacity: 0;
+    z-index: -999;
+    transition: 0.5s;
+    box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    border-radius: 10px;
+    p {
+      padding: 8px;
+      color: rgb(126, 126, 126);
+      cursor: pointer;
+      border-bottom: 1px solid rgb(233, 239, 251);
+      &:hover {
+        color: black;
+      }
+      &:last-child {
+        border: none;
+      }
+    }
+    .activeOption {
+      color: rgb(52, 142, 241);
+    }
+  }
+  img {
+    transition: 0.5s;
+    width: 14px;
+    transform: rotate(0);
+  }
+}
+
+.activeSel {
+  .selectItem {
+    top: 50px;
+    opacity: 1;
+    z-index: 990;
+  }
+  img {
+    transform: rotate(180deg);
+  }
+}

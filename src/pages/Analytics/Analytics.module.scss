@@ -1,0 +1,279 @@
+.analytics {
+  .analyticsTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    h1 {
+      color: rgb(52, 142, 241);
+      font-family: "Unbounded", sans-serif;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: -0.1%;
+    }
+    .analyticsTitleItem {
+      display: flex;
+      align-items: center;
+      > p {
+        color: rgb(52, 142, 241);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.1%;
+        margin-right: 25px;
+      }
+      .percent {
+        border-radius: 30px;
+        padding: 10px 25px;
+        font-family: "Unbounded", sans-serif;
+        color: rgb(5, 205, 153);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 16px;
+        letter-spacing: 0%;
+        background: rgba(5, 205, 153, 0.1);
+      }
+    }
+  }
+
+  .analyticsContent {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    .analyticsContentMain {
+      width: calc(65% - 35px);
+      margin-top: 35px;
+      margin-left: 35px;
+    }
+    .balance {
+      width: 35%;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      border-radius: 25px;
+      background: rgba(46, 147, 239, 0.1);
+      justify-content: space-between;
+      padding-bottom: 40px;
+      .balanceList {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 25px;
+
+        .balanceIcon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          path {
+            stroke: rgb(52, 142, 241);
+          }
+        }
+        p {
+          color: black;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 20px;
+          letter-spacing: -0.1%;
+
+          .refresh {
+            cursor: pointer;
+            margin-left: 8px;
+            path {
+              transition: 0.5s;
+              stroke: black;
+            }
+            &:hover {
+              path {
+                stroke: rgb(52, 142, 241);
+              }
+            }
+          }
+        }
+      }
+
+      > p {
+        &:nth-child(2) {
+          color: rgb(52, 142, 241);
+
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 20px;
+          letter-spacing: -0.1%;
+          margin-bottom: 25px;
+        }
+        &:nth-child(3) {
+          color: rgb(52, 142, 241);
+          font-family: "Unbounded", sans-serif;
+          font-size: 36px;
+          font-weight: 500;
+          line-height: 20px;
+          letter-spacing: -0.1%;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 575.98px) {
+  .analytics {
+    .analyticsTitle {
+      margin-bottom: 25px;
+      h1 {
+        font-size: 18px;
+      }
+      .analyticsTitleItem {
+        > p {
+          display: none;
+        }
+        .percent {
+          padding: 8px 15px;
+          font-size: 13px;
+        }
+        .select {
+          width: 100px;
+          padding: 8px 10px;
+        }
+      }
+    }
+    .analyticsContent {
+      .analyticsContentMain {
+        width: 100%;
+        margin-top: 20px;
+        margin-left: 0;
+        order: 4;
+      }
+      .balance {
+        width: 100%;
+        order: 1;
+        .balanceList {
+          p {
+            font-size: 14px;
+          }
+        }
+
+        > p {
+          &:nth-child(2) {
+            font-size: 14px;
+            margin-bottom: 25px;
+          }
+          &:nth-child(3) {
+            font-size: 34px;
+          }
+        }
+      }
+
+      #lineChart {
+        order: 3;
+        margin-left: 0 !important;
+        margin-top: 20px;
+        width: 100% !important;
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .analytics {
+    .analyticsTitle {
+      margin-bottom: 25px;
+      h1 {
+        font-size: 22px;
+      }
+      .analyticsTitleItem {
+        > p {
+          display: none;
+        }
+      }
+    }
+    .analyticsContent {
+      .analyticsContentMain {
+        width: 100%;
+        margin-top: 20px;
+        margin-left: 0;
+        order: 4;
+      }
+      .balance {
+        width: calc(49% - 20px);
+        order: 1;
+        .balanceList {
+          p {
+            font-size: 14px;
+          }
+        }
+
+        > p {
+          &:nth-child(2) {
+            font-size: 14px;
+            margin-bottom: 25px;
+          }
+          &:nth-child(3) {
+            font-size: 34px;
+          }
+        }
+      }
+
+      #lineChart {
+        order: 3;
+        margin-left: 0 !important;
+        margin-top: 20px;
+        width: 100% !important;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .analytics {
+    .analyticsContent {
+      .analyticsContentMain {
+        width: 100%;
+        margin-top: 20px;
+        margin-left: 0;
+        order: 4;
+      }
+      .balance {
+        width: calc(49% - 20px);
+        order: 1;
+        .balanceList {
+          p {
+            font-size: 14px;
+          }
+        }
+
+        > p {
+          &:nth-child(2) {
+            font-size: 14px;
+            margin-bottom: 25px;
+          }
+          &:nth-child(3) {
+            font-size: 34px;
+          }
+        }
+      }
+
+      #lineChart {
+        order: 3;
+        margin-left: 0 !important;
+        margin-top: 20px;
+        width: 100% !important;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .analytics {
+    .analyticsContent {
+      .analyticsContentMain {
+        width: calc(65% - 20px);
+        margin-top: 20px;
+        margin-left: 20px;
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+}
