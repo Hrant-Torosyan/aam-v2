@@ -13,6 +13,16 @@ import LineChartComponent from 'src/components/LineChart/LineChart';
 
 import styles from './Analytics.module.scss';
 
+type BalanceChartData = {
+    profitability: number;
+    mainData: { month: string; average: number }[];
+    lab: string[];
+    data: number[];
+    masterAccount: number;
+    investmentAccount: number;
+    agentAccount: number;
+};
+
 const Analytics: React.FC = () => {
     const dispatch = useDispatch();
     const selectValue = useSelector((state: RootState) => state.analytics.selectValue);
@@ -67,13 +77,23 @@ const Analytics: React.FC = () => {
 
     if (isLoadingWallets || isLoadingOperationsList || isLoadingBalanceChart) return <Loader />;
 
+    const safeBalanceChartData: BalanceChartData = {
+        profitability: balanceChartData?.profitability ?? 0,
+        mainData: balanceChartData?.mainData ?? [],
+        lab: balanceChartData?.lab ?? [],
+        data: balanceChartData?.data ?? [],
+        masterAccount: walletsData?.masterAccount ?? 0,
+        investmentAccount: walletsData?.investmentAccount ?? 0,
+        agentAccount: walletsData?.agentAccount ?? 0,
+    };
+
     return (
         <div className={styles.analytics}>
             <div className={styles.analyticsTitle}>
                 <h1>Аналитика</h1>
                 <div className={styles.analyticsTitleItem}>
                     <p>Доходность:</p>
-                    <div className={styles.percent}>+{balanceChartData?.profitability ?? 0}%</div>
+                    <div className={styles.percent}>+{safeBalanceChartData.profitability}%</div>
                     <Select
                         value={selectValue}
                         onChange={(value) => dispatch(setSelectValue(value))}
@@ -118,7 +138,7 @@ const Analytics: React.FC = () => {
                     <p>${totalBalance.toLocaleString()}</p>
                 </div>
                 <LineChartComponent
-                    balanceChartData={balanceChartData}
+                    balanceChartData={safeBalanceChartData}
                     selectValue={selectValue}
                 />
             </div>
