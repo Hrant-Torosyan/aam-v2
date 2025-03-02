@@ -8,14 +8,49 @@
   border-radius: 25px;
   position: relative;
 
-  > p {
-    color: rgb(17, 38, 60);
+  .chartTitle {
+    color: #11263c;
     font-size: 16px;
     font-weight: 400;
     line-height: 19.91px;
     letter-spacing: 0px;
     text-align: left;
     padding: 8px;
+  }
+
+  .chartSubtitle {
+    font-size: 14px;
+    font-weight: 400;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  .chartTitle, .chartSubtitle {
+    color: black !important;
+  }
+
+  svg {
+    overflow: visible !important;
+  }
+
+  .mainLine {
+    filter: drop-shadow(0px -3px 3px rgba(97, 218, 251, 0.7)) !important;
+  }
+
+  :global {
+    .recharts-cartesian-grid-horizontal line,
+    .recharts-cartesian-grid-vertical line {
+      stroke-dasharray: 5 5;
+      stroke: #B0B0B0;
+    }
+
+    .recharts-tooltip-wrapper {
+      .recharts-default-tooltip {
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 8px !important;
+      }
+    }
   }
 
   .select {
@@ -28,15 +63,15 @@
 
 @media (max-width: 575.98px) {
   .lineChart {
-    > p {
-      font-size: 13px;
-    }
-  }
-}
+    max-width: 100%;
+    padding: 15px;
 
-@media (min-width: 992px) and (max-width: 1199.98px) {
-  .lineChart {
-    margin-left: 20px;
-    width: calc(65% - 20px) !important;
+    .chartTitle {
+      font-size: 16px;
+    }
+
+    .chartSubtitle {
+      font-size: 12px;
+    }
   }
 }

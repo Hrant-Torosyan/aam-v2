@@ -1,94 +1,118 @@
-import React, { useEffect, useState } from "react";
-import {
-    LineChart,
-    Line,
-    CartesianGrid,
-    XAxis,
-    YAxis,
-    Tooltip,
-    ResponsiveContainer
-} from "recharts";
-import Select from "src/components/Select/Select";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setSelectValue } from "src/store/analytics/analyticsSlice";
-import styles from './LineChart.module.scss';
+import Select from "src/components/Select/Select";
+import {
+    Area,
+    AreaChart,
+    CartesianGrid,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from "recharts";
+import styles from "./LineChart.module.scss";
+
+interface MainDataItem {
+    month: string;
+    average: number;
+}
+
+interface BalanceChartData {
+    lab?: string[];
+    data: number[];
+    mainData: MainDataItem[];
+    profitability: number;
+    masterAccount: number;
+    investmentAccount: number;
+    agentAccount: number;
+}
 
 interface LineChartProps {
-    balanceChartData: any;
+    balanceChartData: BalanceChartData | undefined;
     color?: string;
-    bg?: string;
     selectValue: string;
-    infoPopUp?: string;
+    infoPopUp?: boolean;
 }
 
 const LineChartComponent: React.FC<LineChartProps> = ({
-      balanceChartData,
-      color = "rgb(48, 170, 235)",
-      bg = "rgba(48, 170, 235, 0.2)",
-      selectValue,
-      infoPopUp
+    balanceChartData,
+    color = "#348EF1",
+    selectValue,
+    infoPopUp = false,
   }) => {
     const dispatch = useDispatch();
-    const [chartData, setChartData] = useState<any[]>([]);
+    const [chartData, setChartData] = useState<{ name: string; value: number }[]>([]);
 
-    useEffect(() => {
-        let labelsArr: string[] = [];
-        let dataArr: number[] = [];
+    const computedChartData = useMemo(() => {
+        if (!balanceChartData) return [];
 
-        if (selectValue === "MONTHLY") {
-            labelsArr = balanceChartData?.lab?.map((item: Date) => `${item.getDate()}`);
-            dataArr = balanceChartData?.data || [];
-        } else if (selectValue === "WEEKLY") {
-            labelsArr = balanceChartData?.lab || [];
-            dataArr = balanceChartData?.data || [];
-        } else {
-            labelsArr = balanceChartData?.mainData?.map((item: any) => item.month) || [];
-            dataArr = balanceChartData?.mainData?.map((item: any) => item.average) || [];
-        }
+        const isTimeFrameData = selectValue === "MONTHLY" || selectValue === "WEEKLY";
+        const labels = isTimeFrameData ? balanceChartData.lab ?? [] : balanceChartData.mainData.map(item => item.month);
+        const values = isTimeFrameData ? balanceChartData.data : balanceChartData.mainData.map(item => item.average);
 
-        // Set the chart data
-        setChartData(labelsArr.map((label, index) => ({
+        return labels.map((label, index) => ({
             name: label,
-            value: dataArr[index] || 0
-        })));
+            value: values[index] ?? 0,
+        }));
     }, [balanceChartData, selectValue]);
 
-    const handleSelectChange = (value: string) => {
-        dispatch(setSelectValue(value));
-    };
+    useEffect(() => {
+        setChartData(computedChartData);
+    }, [computedChartData]);
+
+    const maxValue = Math.ceil(chartData.reduce((max, item) => Math.max(max, item.value), 0) * 1.2) || 300;
+
+    const handleSelectChange = (value: string) => dispatch(setSelectValue(value));
 
     return (
-        <div id="lineChart" className={styles.lineChart}>
-            <p>График изменения баланса</p>
+        <div className={styles.lineChart}>
+            <p className={styles.chartTitle}>График изменения баланса</p>
 
-            {infoPopUp === "popUp" && (
-                <Select value={selectValue} onChange={handleSelectChange} />
-            )}
+            {infoPopUp && <Select value={selectValue} onChange={handleSelectChange} />}
 
-            <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={chartData}>
-                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
+            <ResponsiveContainer width="100%" height={220}>
+                <AreaChart data={chartData} margin={{ top: 20, right: 5, bottom: 5, left: -20 }}>
+                    <defs>
+                        <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor={color} stopOpacity={0.8} />
+                            <stop offset="50%" stopColor={color} stopOpacity={0.2} />
+                            <stop offset="100%" stopColor="rgba(21, 22, 23, 0)" stopOpacity={0} />
+                        </linearGradient>
+                        <filter id="topShadow" height="200%" width="100%" x="0" y="-50%">
+                            <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
+                            <feOffset dx="0" dy="-4" result="offsetBlur" />
+                            <feComponentTransfer>
+                                <feFuncA type="linear" slope="0.7" />
+                            </feComponentTransfer>
+                            <feMerge>
+                                <feMergeNode />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <CartesianGrid vertical={false} horizontal strokeDasharray="5 5" stroke="rgba(0, 0, 0, 0.2)" strokeWidth={1} />
+                    <XAxis dataKey="name" tick={{ fill: "#11263c", fontSize: 14 }} padding={{ left: 10 }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fill: "black", fontSize: 14 }} tickLine={false} axisLine={false} domain={['dataMin', 'dataMax']} />
                     <Tooltip
-                        contentStyle={{
-                            backgroundColor: "#fff",
-                            color: "rgb(52, 142, 241)",
-                            padding: "5px",
-                            border: "none",
-                            borderRadius: 8,
-                        }}
-                        formatter={(value: number) => `${value}$`}
+                        contentStyle={{ backgroundColor: "transparent", color: "white", padding: "8px", border: "none", borderRadius: 8 }}
+                        formatter={(value) => [`$${value}`]}
+                        labelStyle={{ display: "none" }}
                     />
-                    <Line
+                    <Area
                         type="monotone"
                         dataKey="value"
                         stroke={color}
-                        fill={bg}
-                        strokeWidth={2}
+                        strokeWidth={3}
                         fillOpacity={1}
+                        fill="url(#colorGradient)"
+                        strokeLinecap="round"
+                        filter="url(#topShadow)"
+                        className={styles.mainLine}
+                        dot={false}
                     />
-                </LineChart>
+                </AreaChart>
             </ResponsiveContainer>
         </div>
     );
