@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// API URL and endpoints
 const BASE_URL = "http://145.223.99.13:8080/api/rest/";
 
 const ENDPOINTS = {
@@ -16,7 +15,6 @@ const ENDPOINTS = {
     ANALYTIC: "portfolios/analytic/list",
 };
 
-// Define types
 interface DailyBalance {
     date: string;
     amount: number;

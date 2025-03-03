@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
+
 import { useDispatch } from "react-redux";
 import { setSelectValue } from "src/store/analytics/analyticsSlice";
+
 import Select from "src/components/Select/Select";
 import {
     Area,
@@ -11,6 +13,7 @@ import {
     XAxis,
     YAxis,
 } from "recharts";
+
 import styles from "./LineChart.module.scss";
 
 interface MainDataItem {
