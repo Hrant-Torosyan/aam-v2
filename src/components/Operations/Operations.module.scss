@@ -1,0 +1,221 @@
+.operationBlock {
+  .operationBlockContent {
+    height: 390px;
+    overflow: auto;
+  }
+  background: white;
+  border-radius: 25px;
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid rgb(200, 227, 251);
+  text-align: center;
+  .empty {
+    padding: 30px;
+  }
+  > button {
+    color: rgb(150, 197, 249);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.1%;
+    display: inline-block;
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px 14px;
+    border-radius: 50px;
+    transition: 0.5s;
+    &:hover {
+      background: rgba(150, 197, 249, 0.15);
+    }
+  }
+  .operationBlockItem {
+    padding: 16px 36px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgb(200, 227, 251);
+    cursor: pointer;
+    transition: 0.5s;
+    &:hover {
+      background: rgba(192, 223, 250, 0.301);
+    }
+    .operationBlockMain {
+      width: 35%;
+      color: rgb(14, 26, 50);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 22px;
+      letter-spacing: 0px;
+      text-align: left;
+    }
+    .operationBlockInfo {
+      width: 65%;
+      display: flex;
+      align-items: center;
+      p {
+        width: 100%;
+        text-align: center;
+        color: rgb(14, 26, 50);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+        letter-spacing: 0px;
+        &:nth-child(2) {
+          font-weight: 600;
+        }
+      }
+      div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        span {
+          display: inline-block;
+          border-radius: 10px;
+          padding: 8px 20px;
+          color: rgb(255, 198, 0);
+          font-size: 13px;
+          font-weight: 600;
+          line-height: 14px;
+          letter-spacing: 0px;
+          text-align: center;
+        }
+      }
+      .progress {
+        span {
+          border: 1px solid rgb(255, 198, 0);
+          color: rgb(255, 198, 0);
+        }
+      }
+      .done {
+        span {
+          border: 1px solid rgb(32, 209, 164);
+
+          color: rgb(32, 209, 164);
+        }
+      }
+      .failed {
+        span {
+          border: 1px solid rgb(229, 92, 92);
+
+          color: rgb(229, 92, 92);
+        }
+      }
+    }
+  }
+
+  .title {
+    .operationBlockMain {
+      color: rgb(139, 144, 154);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 15px;
+      letter-spacing: 0px;
+      text-transform: uppercase;
+    }
+    .operationBlockInfo {
+      p {
+        text-align: center;
+        color: rgb(139, 144, 154);
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 15px;
+        letter-spacing: 0px;
+        text-transform: uppercase;
+        padding: 0;
+        background: transparent;
+      }
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .operationBlock {
+    .operationBlockContent {
+      height: 330px;
+    }
+    .operationBlockItem {
+      .operationBlockMain {
+        font-size: 13px;
+        width: 50%;
+      }
+      .operationBlockInfo {
+        width: 50%;
+        p:nth-child(1),
+        p:nth-child(3),
+        div {
+          display: none;
+        }
+        p {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .operationBlock {
+    .operationBlockContent {
+      height: 366px;
+    }
+    .operationBlockItem {
+      .operationBlockMain {
+        font-size: 12px;
+      }
+      .operationBlockInfo {
+        p {
+          font-size: 12px;
+        }
+        div {
+          span {
+            font-size: 11px;
+            padding: 6px 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .operationBlock {
+    .operationBlockContent {
+      height: 366px;
+    }
+    .operationBlockItem {
+      .operationBlockMain {
+        font-size: 13px;
+      }
+      .operationBlockInfo {
+        p {
+          font-size: 13px;
+        }
+        div {
+          span {
+            font-size: 12px;
+            padding: 6px 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .operationBlock {
+    .operationBlockItem {
+      .operationBlockInfo {
+        div {
+          span {
+            font-size: 12px;
+            padding: 6px 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+}
+

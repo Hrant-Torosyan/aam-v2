@@ -1,10 +1,13 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { useGetBalanceChartQuery, useGetWalletsQuery } from 'src/store/analytics/analyticsAPI'; // Adjust path
+import { useGetBalanceChartQuery, useGetWalletsQuery } from 'src/store/analytics/analyticsAPI';
 import Loader from 'src/ui/Loader/Loader';
 import Select from 'src/components/Select/Select';
 import LineChartComponent from 'src/components/LineChart/LineChart';
 import DoughnutChart from 'src/components/DoughnutChart/DoughnutChart';
 import ProdItems from 'src/components/ProdItems/ProdItem';
+import PopUpPortfolio from 'src/components/PopUpPortfolio/PopUpPortfolio';
+import Check from 'src/components/Check/Check';
+import Operations from 'src/components/Operations/Operations';
 
 import balance from 'src/images/svg/balance.svg';
 import refresh from 'src/images/svg/refresh.svg';
@@ -16,6 +19,8 @@ const Analytics: React.FC = () => {
     const [selectValue, setSelectValue] = useState<string>('WEEKLY');
     const [refreshState, setRefresh] = useState(0);
     const [portfolioPopUp, setPortfolioPopUp] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [showOperationsList, setShowOperationsList] = useState<number | null>(null);
 
     const { data: walletsData, isLoading: isLoadingWallets } = useGetWalletsQuery();
     const { data: balanceChartData, isLoading: isLoadingBalanceChart } = useGetBalanceChartQuery({
@@ -77,12 +82,12 @@ const Analytics: React.FC = () => {
                 <div className={styles.balance}>
                     <div className={styles.balanceList}>
                         <div className={styles.balanceIcon}>
-                            <img src={balance} alt="balance" />
+                            <img src={balance} alt="balance"/>
                         </div>
                         <p>
                             {dateNowFormatted}
                             <span onClick={handleRefresh} className={styles.refresh}>
-                                <img src={refresh} alt="refresh" />
+                                <img src={refresh} alt="refresh"/>
                             </span>
                         </p>
                     </div>
@@ -97,22 +102,30 @@ const Analytics: React.FC = () => {
 
                 <div className={styles.doughnutChart}>
                     <div className={styles.doughnutChartTitle}>Структура портфеля:</div>
-                    <DoughnutChart refresh={refreshState} colorsArr={colorsArr} count={null} />
+                    <DoughnutChart refresh={refreshState} colorsArr={colorsArr} count={null}/>
                     <ProdItems
                         colorsArr={colorsArr}
                         count={3}
                         setPortfolioPopUp={setPortfolioPopUp}
                     />
                 </div>
-            </div>
 
-            {/*{portfolioPopUp && (*/}
-            {/*    <PopUpPortfolio*/}
-            {/*        colorsArr={colorsArr}*/}
-            {/*        portfolioPopUp={portfolioPopUp}*/}
-            {/*        setPortfolioPopUp={setPortfolioPopUp}*/}
-            {/*    />*/}
-            {/*)}*/}
+                {portfolioPopUp && (
+                    <PopUpPortfolio
+                        colorsArr={colorsArr}
+                        setPortfolioPopUp={setPortfolioPopUp}
+                    />
+                )}
+
+                <div className={styles.analyticsContentMain}>
+                    <Check isOpen={isOpen} setIsOpen={setIsOpen}/>
+                    <Operations
+                        count={6}
+                        showOperationsList={showOperationsList}
+                        setShowOperationsList={setShowOperationsList}
+                    />
+                </div>
+            </div>
         </div>
     );
 };

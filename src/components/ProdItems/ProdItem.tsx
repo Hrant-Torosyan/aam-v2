@@ -33,7 +33,6 @@ const ProdItems: React.FC<ProdItemsProps> = ({ setPortfolioPopUp, count, colorsA
     //     ],
     // };
 
-    // Use Redux to fetch data when you're ready
     const { data } = useGetAnalyticListQuery({
         queryData: { pageSize: count?.toString() || "10" },
     });

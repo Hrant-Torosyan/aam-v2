@@ -1,35 +1,52 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { analyticsApi } from './analyticsAPI';
 
+export interface AccountDetails {
+    info: string;
+    type: string;
+    balance: number;
+    percent: number;
+    color: string;
+    bg: string;
+}
+
 interface ProcessedBalanceChart {
     lab?: string[];
     data?: number[];
     mainData?: { month: string; average: number }[];
     profitability: number;
+    masterAccount: number;
+    investmentAccount: number;
+    agentAccount: number;
 }
 
 interface AnalyticsState {
     loading: boolean;
     error: { message: string; code?: string } | null;
-    selectValue: string;
+    selectValue: AccountDetails;
     analyticsData: ProcessedBalanceChart | null;
 }
 
 const initialState: AnalyticsState = {
     loading: false,
     error: null,
-    selectValue: 'WEEKLY',
-    analyticsData: { profitability: 0 },
+    selectValue: {
+        info: '',
+        type: '',
+        balance: 0,
+        percent: 0,
+        color: '',
+        bg: '',
+    },
+    analyticsData: { profitability: 0, masterAccount: 0, investmentAccount: 0, agentAccount: 0 },
 };
 
 const analyticsSlice = createSlice({
     name: 'analytics',
     initialState,
     reducers: {
-        setSelectValue: (state, action: PayloadAction<string>) => {
-            if (state.selectValue !== action.payload) {
-                state.selectValue = action.payload;
-            }
+        setSelectValue: (state, action: PayloadAction<AccountDetails>) => {
+            state.selectValue = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -63,5 +80,4 @@ const analyticsSlice = createSlice({
 });
 
 export const { setSelectValue } = analyticsSlice.actions;
-
 export default analyticsSlice.reducer;
