@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { setSelectValue } from "src/store/analytics/analyticsSlice";
+import { setSelectValue, AccountDetails } from "src/store/analytics/analyticsSlice";
 
 import Select from "src/components/Select/Select";
 import {
@@ -66,8 +66,18 @@ const LineChartComponent: React.FC<LineChartProps> = ({
 
     const maxValue = Math.ceil(chartData.reduce((max, item) => Math.max(max, item.value), 0) * 1.2) || 300;
 
-    const handleSelectChange = (value: string) => dispatch(setSelectValue(value));
+    const handleSelectChange = (value: string) => {
+        const accountDetails: AccountDetails = {
+            info: value,
+            type: '',
+            balance: 0,
+            percent: 0,
+            color: '',
+            bg: '',
+        };
 
+        dispatch(setSelectValue(accountDetails));
+    };
     return (
         <div className={styles.lineChart}>
             <p className={styles.chartTitle}>График изменения баланса</p>

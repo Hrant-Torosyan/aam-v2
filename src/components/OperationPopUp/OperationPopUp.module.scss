@@ -1,0 +1,527 @@
+.operationPopUp {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.1);
+  .popUpProdBlock {
+    width: 90%;
+    max-width: 500px;
+    background: white;
+    border-radius: 25px;
+
+    .operationPopUpTitle {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      margin-bottom: 10px;
+      height: 200px;
+      background: linear-gradient(
+                      244.77deg,
+                      rgba(77, 156, 243, 0.5) 11.71%,
+                      rgba(224, 224, 224, 0) 95.43%
+      );
+      border-radius: 25px;
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 27px;
+      img {
+        width: 60px;
+      }
+      .amount {
+        color: #00b4d2;
+        font-size: 32px;
+        width: 100%;
+        text-align-last: left;
+        font-weight: bold;
+      }
+      div {
+        span {
+          display: inline-block;
+          color: rgb(255, 198, 0);
+          font-size: 16px;
+          font-weight: 600;
+        }
+      }
+      .operationPopUpTitleItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .progress {
+        span {
+          color: rgb(255, 198, 0);
+        }
+      }
+      .done {
+        span {
+          color: rgb(32, 209, 164);
+        }
+      }
+      .failed {
+        span {
+          color: rgb(194, 55, 37);
+        }
+      }
+      p {
+        color: #0e1a3280;
+        font-size: 12px;
+        text-align-last: left;
+      }
+    }
+    .dateInfo {
+      color: #0e1a324d;
+      font-size: 14px;
+      margin-top: 20px;
+      span {
+        color: #0e1a32b1;
+      }
+    }
+    .operationInfo {
+      color: #0e1a3280;
+      text-align-last: left;
+      font-size: 16px;
+    }
+    .operationPopUpInfo {
+      margin-top: 25px;
+      p {
+        color: rgb(0, 0, 0);
+        font-size: 18px;
+        margin-bottom: 13px;
+        font-weight: 400;
+        line-height: 20px;
+        text-align: left;
+      }
+      .operationPopUpInfoItem {
+        border: 2px solid rgba(46, 147, 239, 0.3);
+        text-align: left;
+        border-radius: 15px;
+        background: rgb(255, 255, 255);
+        padding: 22px 26px;
+        .mainSelectItemTypeItem {
+          display: flex;
+          align-items: center;
+          > p {
+            color: rgb(0, 0, 0);
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 16px;
+            margin: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .typeInfo {
+            display: flex;
+            align-items: center;
+            margin-right: 35px;
+            h3 {
+              color: rgb(54, 53, 55);
+              font-size: 14px;
+              font-weight: 500;
+              line-height: 20px;
+              letter-spacing: 0.1px;
+              text-align: left;
+            }
+            p {
+              color: rgb(126, 126, 127);
+              font-size: 11px;
+              font-weight: 500;
+              line-height: 16px;
+              letter-spacing: 0.5px;
+              margin: 0;
+            }
+            img {
+              width: 32px;
+              height: 32px;
+              margin-right: 8px;
+            }
+          }
+        }
+      }
+      .operationPopUpInfoItem.type {
+        padding: 14px 26px;
+      }
+    }
+
+    .popUpProdHeader {
+      border-radius: 25px;
+      padding: 30px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 25px 25px 0px 0px;
+      background: #2e93ef1a;
+      p {
+        color: #4d9cf3;
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.1%;
+        text-align: left;
+      }
+
+      button {
+        border-radius: 50%;
+        transition: 0.5s;
+        &:hover {
+          background: rgb(204, 240, 246);
+        }
+      }
+    }
+
+    .popUpProdContent {
+      padding: 40px;
+      .mainInput {
+        margin-top: 50px;
+      }
+      .mainSelect {
+        margin-bottom: 25px;
+      }
+      .buttonStyleToo {
+        margin-top: 40px;
+        overflow: hidden;
+        border-radius: 50px;
+        padding: 2px;
+        background: linear-gradient(
+                        158.2deg,
+                        rgb(44, 115, 243) -103.971%,
+                        rgb(48, 205, 231) 151.363%
+        );
+        button,
+        div {
+          cursor: pointer;
+          width: 100%;
+          transition: 0.5s;
+          padding: 12px;
+          border-radius: 50px;
+          background: white;
+          span {
+            background: linear-gradient(236.49deg, rgb(34, 100, 220), rgb(0, 180, 210));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            font-size: 18px;
+            transition: 0.5s;
+            font-weight: 600;
+            line-height: 120%;
+            text-align: center;
+          }
+        }
+        &:hover {
+          button,
+          div {
+            background: transparent;
+            span {
+              background: none;
+              -webkit-background-clip: border-box;
+              background-clip: border-box;
+              -webkit-text-fill-color: initial;
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .operationPopUp {
+    .popUpProdBlock {
+      width: 95%;
+      .popUpProdHeader {
+        padding: 15px 30px;
+        p {
+          font-size: 17px;
+        }
+      }
+      .popUpProdContent {
+        padding: 25px;
+
+        .operationPopUpInfo {
+          margin-top: 15px;
+          p {
+            font-size: 14px;
+            margin-bottom: 13px;
+          }
+          .operationPopUpInfoItem {
+            font-size: 14px;
+            padding: 13px 20px;
+            .mainSelectItemTypeItem {
+              display: flex;
+              align-items: center;
+              > p {
+                color: rgb(0, 0, 0);
+                font-size: 13px;
+                font-weight: 400;
+                line-height: 13px;
+              }
+              .typeInfo {
+                margin-right: 20px;
+                h3 {
+                  font-size: 12px;
+                  line-height: 12px;
+                }
+                p {
+                  font-size: 10px;
+                  line-height: 13px;
+                }
+                img {
+                  width: 26px;
+                  height: 26px;
+                }
+              }
+            }
+          }
+          .operationPopUpInfoItem.type {
+            padding: 9px 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .operationPopUp {
+    .popUpProdBlock {
+      width: 90%;
+      .popUpProdHeader {
+        padding: 20px 30px;
+        p {
+          font-size: 18px;
+        }
+      }
+      .popUpProdContent {
+        padding: 25px;
+
+        .operationPopUpInfo {
+          margin-top: 20px;
+          p {
+            font-size: 15px;
+            margin-bottom: 13px;
+          }
+          .operationPopUpInfoItem {
+            font-size: 15px;
+            padding: 15px 20px;
+            .mainSelectItemTypeItem {
+              display: flex;
+              align-items: center;
+              > p {
+                color: rgb(0, 0, 0);
+                font-size: 13px;
+                font-weight: 400;
+                line-height: 15px;
+              }
+              .typeInfo {
+                margin-right: 30px;
+                h3 {
+                  font-size: 13px;
+                  line-height: 13px;
+                }
+                p {
+                  font-size: 10px;
+                }
+                img {
+                  width: 28px;
+                  height: 28px;
+                }
+              }
+            }
+          }
+          .operationPopUpInfoItem.type {
+            padding: 10px 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .operationPopUp {
+    .popUpProdBlock {
+      width: 80%;
+      .popUpProdHeader {
+        padding: 25px 35px;
+        p {
+          font-size: 22px;
+        }
+      }
+      .popUpProdContent {
+        padding: 30px;
+
+        .operationPopUpInfo {
+          margin-top: 20px;
+          p {
+            font-size: 15px;
+            margin-bottom: 13px;
+          }
+          .operationPopUpInfoItem {
+            font-size: 15px;
+            padding: 15px 20px;
+            .mainSelectItemTypeItem {
+              display: flex;
+              align-items: center;
+              > p {
+                color: rgb(0, 0, 0);
+                font-size: 13px;
+                font-weight: 400;
+                line-height: 15px;
+              }
+              .typeInfo {
+                margin-right: 30px;
+                h3 {
+                  font-size: 13px;
+                  line-height: 13px;
+                }
+                p {
+                  font-size: 10px;
+                }
+                img {
+                  width: 28px;
+                  height: 28px;
+                }
+              }
+            }
+          }
+          .operationPopUpInfoItem.type {
+            padding: 10px 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .operationPopUp {
+    .popUpProdBlock {
+      width: 80%;
+      .popUpProdHeader {
+        padding: 25px 35px;
+        p {
+          font-size: 22px;
+        }
+      }
+      .popUpProdContent {
+        padding: 30px;
+
+        .operationPopUpInfo {
+          margin-top: 20px;
+          p {
+            font-size: 15px;
+            margin-bottom: 13px;
+          }
+          .operationPopUpInfoItem {
+            font-size: 15px;
+            padding: 15px 20px;
+            .mainSelectItemTypeItem {
+              display: flex;
+              align-items: center;
+              > p {
+                color: rgb(0, 0, 0);
+                font-size: 15px;
+                font-weight: 400;
+                line-height: 15px;
+              }
+              .typeInfo {
+                margin-right: 30px;
+                h3 {
+                  font-size: 14px;
+                  line-height: 14px;
+                }
+                p {
+                  font-size: 10px;
+                }
+                img {
+                  width: 28px;
+                  height: 28px;
+                }
+              }
+            }
+          }
+          .operationPopUpInfoItem.type {
+            padding: 10px 20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+  .operationPopUp {
+    .popUpProdBlock {
+      width: 70%;
+      .popUpProdHeader {
+        padding: 25px 35px;
+        p {
+          font-size: 22px;
+        }
+      }
+      .popUpProdContent {
+        padding: 30px;
+        .operationPopUpTitle {
+          margin-bottom: 40px;
+          div {
+            span {
+              font-size: 14px;
+            }
+          }
+
+          p,
+          h3 {
+            font-size: 14px;
+          }
+        }
+        .operationPopUpInfo {
+          margin-top: 20px;
+          p {
+            font-size: 15px;
+            margin-bottom: 13px;
+          }
+          .operationPopUpInfoItem {
+            font-size: 15px;
+            padding: 15px 20px;
+            .mainSelectItemTypeItem {
+              display: flex;
+              align-items: center;
+              > p {
+                color: rgb(0, 0, 0);
+                font-size: 15px;
+                font-weight: 400;
+                line-height: 15px;
+              }
+              .typeInfo {
+                margin-right: 30px;
+                h3 {
+                  font-size: 14px;
+                  line-height: 14px;
+                }
+                p {
+                  font-size: 10px;
+                }
+                img {
+                  width: 28px;
+                  height: 28px;
+                }
+              }
+            }
+          }
+          .operationPopUpInfoItem.type {
+            padding: 10px 20px;
+          }
+        }
+      }
+    }
+  }
+}

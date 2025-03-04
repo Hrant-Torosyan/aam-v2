@@ -1,0 +1,158 @@
+.checkBlock {
+  display: flex;
+  margin-bottom: 35px;
+
+
+  .swiper {
+    display: none !important;
+    height: 160px;
+  }
+
+  .swiper-android .swiper-slide, .swiper-ios .swiper-slide, .swiper-wrapper {
+    display: none !important;
+  }
+
+  .checkBlockItem {
+    border-radius: 25px;
+    padding: 25px;
+    width: 100%;
+    background: rgba(0, 180, 210, 0.1);
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      color: rgb(0, 180, 210);
+      margin-top: 25px;
+      font-weight: 600;
+      width: 100%;
+      border-radius: 30px;
+      background: rgba(0, 180, 210, 0.1);
+      transition: 0.5s;
+      &:hover {
+        background: rgba(0, 180, 210, 0.2);
+      }
+    }
+    p {
+      &:nth-child(1) {
+        color: rgb(0, 180, 210);
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.1%;
+        margin-bottom: 20px;
+      }
+      &:nth-child(2) {
+        color: rgb(0, 180, 210);
+        font-size: 28px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: -0.1%;
+      }
+    }
+    &:nth-child(2) {
+      margin: 0 35px;
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .checkBlock {
+    margin-bottom: 15px;
+    .swiper {
+      display: block !important;
+    }
+
+    > .checkBlockItem {
+      display: none;
+    }
+    .checkBlockItem {
+      padding: 15px;
+      &:nth-child(2) {
+        margin: 0 20px;
+      }
+
+      p:nth-child(1) {
+        font-size: 10px;
+        margin-bottom: 10px;
+      }
+      p:nth-child(2) {
+        font-size: 22px;
+      }
+      button {
+        margin-top: 15px;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .checkBlock {
+    margin-bottom: 20px;
+    .checkBlockItem {
+      padding: 20px;
+      &:nth-child(2) {
+        margin: 0 20px;
+      }
+
+      p:nth-child(1) {
+        font-size: 10px;
+        margin-bottom: 10px;
+      }
+      p:nth-child(2) {
+        font-size: 22px;
+      }
+      button {
+        margin-top: 15px;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .checkBlock {
+    margin-bottom: 20px;
+    .checkBlockItem {
+      padding: 20px;
+      &:nth-child(2) {
+        margin: 0 20px;
+      }
+
+      p:nth-child(1) {
+        font-size: 12px;
+      }
+      p:nth-child(2) {
+        font-size: 25px;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .checkBlock {
+    margin-bottom: 20px;
+    .checkBlockItem {
+      padding: 20px;
+      &:nth-child(2) {
+        margin: 0 20px;
+      }
+
+      p:nth-child(1) {
+        font-size: 13px;
+      }
+      p:nth-child(2) {
+        font-size: 25px;
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+  .checkBlock {
+    .checkBlockItem {
+      p:nth-child(1) {
+        font-size: 11px;
+      }
+    }
+  }
+}
