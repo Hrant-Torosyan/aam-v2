@@ -1,0 +1,508 @@
+.popup {
+  .operationBlockContent {
+    height: 195px !important;
+    overflow: auto;
+  }
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.1);
+  .popupBlock {
+    overflow: hidden;
+    width: 70%;
+    background: white;
+    border-radius: 25px;
+    .popupHeader {
+      border-radius: 25px;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 25px 25px 0px 0px;
+      background: rgb(229, 247, 251);
+      p {
+        color: rgb(0, 180, 210);
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.1%;
+        text-align: left;
+      }
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        transition: 0.5s;
+        &:hover {
+          background: rgb(204, 240, 246);
+        }
+      }
+    }
+
+    .popupContent {
+      padding: 20px;
+      > .operationBlock {
+        display: none;
+      }
+      .popupContentList {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .popupContentListInfo {
+          width: 35%;
+          p {
+            color: rgb(14, 26, 50);
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 20px;
+            letter-spacing: -0.1%;
+            text-align: left;
+            margin-top: 30px;
+            &:nth-child(1) {
+              margin-top: 0;
+            }
+            span {
+              color: rgb(0, 180, 210);
+              font-size: 34px;
+              font-weight: 600;
+              margin-top: 20px;
+              line-height: 20px;
+              display: block;
+              letter-spacing: -0.1%;
+              text-align: left;
+            }
+          }
+        }
+
+        .popupContentButton {
+          background: linear-gradient(225deg, rgb(12, 94, 255), rgb(0, 180, 210));
+          border-radius: 50px;
+          padding: 2px;
+          button {
+            padding: 13px 60px;
+            background: white;
+            border-radius: 50px;
+            transition: 0.5s;
+            p {
+              transition: all 0.5s;
+              color: rgb(12, 94, 255);
+              background: linear-gradient(225deg, rgb(12, 94, 255), rgb(0, 180, 210));
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              font-size: 18px;
+              font-weight: 600;
+              line-height: 20px;
+              letter-spacing: -0.1%;
+              text-align: left;
+            }
+          }
+
+          &:hover {
+            button {
+              background: transparent;
+              p {
+                background: none;
+                -webkit-background-clip: border-box;
+                background-clip: border-box;
+                -webkit-text-fill-color: initial;
+                color: white;
+              }
+            }
+          }
+        }
+      }
+      #lineChart {
+        width: 100% !important;
+        margin: 0;
+        margin: 20px 0;
+        background: rgb(255, 255, 255);
+      }
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .popup {
+    .operationBlockContent {
+      height: 165px !important;
+      overflow: auto;
+    }
+    overflow-y: scroll;
+    padding: 15px;
+    align-items: start;
+    .operationBlock {
+      .operationBlockItem {
+        .operationBlockMain {
+          font-size: 13px;
+          width: 50%;
+        }
+        .operationBlockInfo {
+          width: 50%;
+          p:nth-child(1),
+          p:nth-child(3),
+          div {
+            display: none;
+          }
+          p {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+    .popupBlock {
+      width: 100%;
+      .popupHeader {
+        padding: 20px 30px;
+        p {
+          font-size: 22px;
+        }
+      }
+
+      .popupContent {
+        padding: 20px;
+        > .operationBlock {
+          display: block;
+          margin-bottom: 15px;
+        }
+        .popupContentList {
+          flex-direction: column;
+          .operationBlock {
+            display: none;
+          }
+          .popupContentListInfo {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            p {
+              width: 100%;
+              margin-top: 20px;
+              font-size: 13px;
+              span {
+                margin-top: 10px;
+                font-size: 25px;
+              }
+            }
+          }
+
+          .popupContentButton {
+            width: 100%;
+            margin: 5px 0;
+            button {
+              width: 100%;
+              padding: 10px 23px;
+              display: inline-block;
+              p {
+                text-align: center;
+                font-size: 18px;
+              }
+            }
+          }
+        }
+        #lineChart {
+          margin: 15px 0;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .popup {
+    .operationBlockContent {
+      height: 183px !important;
+      overflow: auto;
+    }
+    overflow-y: scroll;
+    padding: 20px;
+    align-items: start;
+    .operationBlock {
+      .operationBlockItem {
+        .operationBlockMain {
+          font-size: 12px;
+        }
+        .operationBlockInfo {
+          p {
+            font-size: 12px;
+          }
+          div {
+            span {
+              font-size: 11px;
+              padding: 6px 10px;
+            }
+          }
+        }
+      }
+    }
+    .popupBlock {
+      width: 100%;
+      .popupHeader {
+        padding: 20px 30px;
+        p {
+          font-size: 22px;
+        }
+      }
+
+      .popupContent {
+        padding: 20px;
+        > .operationBlock {
+          display: block;
+          margin-bottom: 15px;
+        }
+        .popupContentList {
+          .operationBlock {
+            display: none;
+          }
+          .popupContentListInfo {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            p {
+              &:nth-child(2n) {
+                margin: 0;
+              }
+              width: 50%;
+              font-size: 13px;
+              span {
+                font-size: 30px;
+              }
+            }
+          }
+
+          .popupContentButton {
+            button {
+              padding: 8px 23px;
+              p {
+                font-size: 17px;
+              }
+            }
+          }
+        }
+        #lineChart {
+          margin: 15px 0;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .popup {
+    .operationBlockContent {
+      height: 183px !important;
+      overflow: auto;
+    }
+    overflow-y: scroll;
+    padding: 30px;
+    align-items: start;
+    .operationBlock {
+      .operationBlockItem {
+        .operationBlockMain {
+          font-size: 13px;
+        }
+        .operationBlockInfo {
+          p {
+            font-size: 13px;
+          }
+          div {
+            span {
+              font-size: 12px;
+              padding: 6px 10px;
+            }
+          }
+        }
+      }
+    }
+    .popupBlock {
+      width: 100%;
+      .popupHeader {
+        padding: 20px 30px;
+        p {
+          font-size: 22px;
+        }
+      }
+
+      .popupContent {
+        padding: 20px;
+        > .operationBlock {
+          display: block;
+          margin-bottom: 15px;
+        }
+        .popupContentList {
+          .operationBlock {
+            display: none;
+          }
+          .popupContentListInfo {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            p {
+              &:nth-child(2n) {
+                margin: 0;
+              }
+              width: 50%;
+              font-size: 13px;
+              span {
+                font-size: 30px;
+              }
+            }
+          }
+
+          .popupContentButton {
+            button {
+              padding: 12px 45px;
+              p {
+                font-size: 17px;
+              }
+            }
+          }
+        }
+        #lineChart {
+          margin: 15px 0;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .popup {
+    overflow-y: scroll;
+    align-items: start;
+    padding: 40px 0;
+
+    .operationBlockContent {
+      height: 183px !important;
+      overflow: auto;
+    }
+    .operationBlock {
+      .operationBlockItem {
+        .operationBlockMain {
+          font-size: 13px;
+        }
+        .operationBlockInfo {
+          p {
+            font-size: 13px;
+          }
+          div {
+            span {
+              font-size: 12px;
+              padding: 6px 10px;
+            }
+          }
+        }
+      }
+    }
+    .popupBlock {
+      width: 85%;
+      .popupHeader {
+        padding: 20px 30px;
+        p {
+          font-size: 22px;
+        }
+      }
+
+      .popupContent {
+        padding: 20px;
+        .popupContentList {
+          .popupContentListInfo {
+            width: 35%;
+            p {
+              font-size: 13px;
+              span {
+                font-size: 30px;
+              }
+            }
+          }
+
+          .popupContentButton {
+            button {
+              padding: 12px 45px;
+              p {
+                font-size: 17px;
+              }
+            }
+          }
+        }
+        #lineChart {
+          margin: 15px 0;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+  .popup {
+    overflow-y: scroll;
+    align-items: start;
+    padding: 40px 0;
+
+    .operationBlockContent {
+      height: 165px !important;
+
+      overflow: auto;
+      .operationBlockItem {
+        padding: 13px 30px;
+        p {
+          font-size: 15px;
+        }
+      }
+    }
+    .operationBlock {
+      .operationBlockItem {
+        .operationBlockInfo {
+          div {
+            span {
+              font-size: 12px;
+              padding: 6px 10px;
+            }
+          }
+        }
+      }
+    }
+    .popupBlock {
+      width: 80%;
+      .popupHeader {
+        padding: 20px 30px;
+        p {
+          font-size: 22px;
+        }
+      }
+
+      .popupContent {
+        padding: 20px;
+        .popupContentList {
+          .popupContentListInfo {
+            width: 35%;
+            p {
+              font-size: 13px;
+              span {
+                font-size: 30px;
+              }
+            }
+          }
+
+          .popupContentButton {
+            button {
+              padding: 12px 45px;
+              p {
+                font-size: 17px;
+              }
+            }
+          }
+        }
+        #lineChart {
+          margin: 15px 0;
+        }
+      }
+    }
+  }
+}

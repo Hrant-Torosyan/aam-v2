@@ -1,60 +1,99 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, } from "react-redux";
+import { setPopUpState } from "src/store/analytics/analyticsSlice";
+import { useGetWalletsQuery } from "src/store/analytics/analyticsAPI";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { RootState } from "src/store/store";
-import { setSelectValue } from "src/store/analytics/analyticsSlice";
 import "swiper/css";
 import styles from "./Check.module.scss";
-import { useGetWalletsQuery } from "src/store/analytics/analyticsAPI";
 
 interface CheckProps {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface Account {
+    type: string;
+    label: string;
+    balance: number;
+}
+
+interface Operation {
+    id: string;
+    description: string;
+    amount: number;
+    date: string;
+}
+
+interface BalanceChartData {
+    mainData: never[];
+    data: never[];
+    lab: never[];
+    date: string;
+    balance: number;
+    profitability: number;
+    masterAccount: number;
+    investmentAccount: number;
+    agentAccount: number;
+}
+
 const Check: React.FC<CheckProps> = ({ isOpen, setIsOpen }) => {
     const dispatch = useDispatch();
+    const [selectedAccountType, setSelectedAccountType] = useState<string | null>(null);
+
     const { data: walletsData, isLoading: isLoadingWallets, error: walletsError } = useGetWalletsQuery();
-    const { loading, analyticsData } = useSelector((state: RootState) => state.analytics);
 
-    if (isLoadingWallets) return <p>Loading wallets data...</p>;
-    if (walletsError) return <p>Error: {(walletsError as any).message || "Unknown error"}</p>;
-    if (!walletsData || !analyticsData || loading) return null;
-
-    const accounts = [
-        { type: "MASTER", label: "Основной счет:", balance: walletsData.masterAccount || 0 },
-        { type: "INVESTMENT", label: "Инвестиционный счет:", balance: walletsData.investmentAccount || 0 },
-        { type: "AGENT", label: "Агентский счет:", balance: walletsData.agentAccount || 0 },
+    const accounts: Account[] = [
+        { type: "MASTER", label: "Основной счет", balance: walletsData?.masterAccount || 0 },
+        { type: "INVESTMENT", label: "Инвестиционный счет", balance: walletsData?.investmentAccount || 0 },
+        { type: "AGENT", label: "Агентский счет", balance: walletsData?.agentAccount || 0 },
     ];
 
     const totalBalance = accounts.reduce((acc, account) => acc + account.balance, 0);
 
-    const calculatePercentage = (balance: number) =>
-        totalBalance > 0 ? Math.round((balance / totalBalance) * 100) : 0;
+    const handleSelect = (account: Account) => {
+        setSelectedAccountType(account.type);
 
-    const handleSelect = (accountType: string, label: string, balance: number) => {
+        const operationsData: Operation[] = [];
+        const balanceChartData: BalanceChartData[] = [
+            {
+                mainData: [],
+                profitability: 0,
+                data: [],
+                lab: [],
+                balance: account.balance,
+                date: new Date().toISOString(),
+                masterAccount: walletsData?.masterAccount || 0,
+                investmentAccount: walletsData?.investmentAccount || 0,
+                agentAccount: walletsData?.agentAccount || 0,
+            },
+        ];
+
+        const balance = account.balance;
+        const percent = totalBalance > 0 ? Math.round((balance / totalBalance) * 100) : 0;
+
         dispatch(
-            setSelectValue({
-                info: accountType,
-                type: label,
-                balance,
-                percent: calculatePercentage(balance),
-                color: "rgb(0, 180, 210)",
-                bg: "rgba(0, 180, 210, 0.2)",
+            setPopUpState({
+                isOpen: true,
+                info: account.type,
+                type: account.label,
+                balance: balance,
+                percent: percent,
+                operations: operationsData,
+                balanceChartData: balanceChartData,
             })
         );
+        setIsOpen(true);
     };
 
     return (
         <div className={styles.checkBlock}>
-
-            <Swiper slidesPerView="3" spaceBetween={10} className={styles.swiperContainer}>
-                {accounts.map(({ type, label, balance }) => (
-                    <SwiperSlide key={type} className={styles.swiperSlide}>
+            <Swiper slidesPerView={3} spaceBetween={10} className={styles.swiperContainer}>
+                {accounts.map((account) => (
+                    <SwiperSlide key={account.type} className={styles.swiperSlide}>
                         <div className={styles.checkBlockItem}>
-                            <p>{label}</p>
-                            <p>${balance.toLocaleString()}</p>
-                            <button onClick={() => handleSelect(type, label, balance)}>Подробнее</button>
+                            <p>{account.label}</p>
+                            <p>${account.balance.toLocaleString()}</p>
+                            <button onClick={() => handleSelect(account)}>Подробнее</button>
                         </div>
                     </SwiperSlide>
                 ))}

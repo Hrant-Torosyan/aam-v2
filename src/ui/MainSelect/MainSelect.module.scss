@@ -1,0 +1,331 @@
+.mainSelect {
+  border: 2px solid rgb(192, 223, 250);
+  border-radius: 10px;
+  background: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  cursor: pointer;
+  justify-content: space-between;
+  padding: 15px 25px;
+
+  > p {
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+  span {
+    margin-left: 20px;
+    color: #00000080;
+  }
+  > .typeInfo {
+    display: flex;
+    align-items: center;
+    margin-right: 35px;
+    h3 {
+      color: rgb(54, 53, 55);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: 0.1px;
+      text-align: left;
+    }
+    p {
+      color: rgb(126, 126, 127);
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 16px;
+      letter-spacing: 0.5px;
+    }
+    img {
+      width: 32px;
+      height: 32px;
+      margin-right: 8px;
+    }
+  }
+  .mainSelectItem {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 240px;
+
+    border: 2px solid rgb(192, 223, 250);
+    position: absolute;
+    right: 0;
+    width: 100%;
+    background: white;
+    top: 70px;
+    opacity: 0;
+    z-index: -999;
+    transition: 0.5s;
+    box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    > div {
+      padding: 20px;
+      cursor: pointer;
+      color: rgb(0, 0, 0);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 16px;
+      letter-spacing: 0%;
+      text-align: left;
+      border-bottom: 2px solid rgb(192, 223, 250);
+      transition: 0.5s;
+      &:hover {
+        background: rgb(248, 251, 255);
+      }
+      &:last-child {
+        border: none;
+      }
+    }
+
+    .active {
+      background: rgb(248, 251, 255);
+    }
+  }
+  .mainSelectItemType {
+    .mainSelectItemTypeItem {
+      display: flex;
+      align-items: center;
+      padding: 20px 15px;
+      border-bottom: 2px solid rgb(192, 223, 250);
+      transition: 0.5s;
+      &:hover {
+        background: rgb(248, 251, 255);
+      }
+      &:last-child {
+        border: none;
+      }
+      > p {
+        color: rgb(0, 0, 0);
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 16px;
+      }
+      .typeInfo {
+        display: flex;
+        align-items: center;
+        margin-right: 35px;
+        h3 {
+          color: rgb(54, 53, 55);
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 20px;
+          letter-spacing: 0.1px;
+          text-align: left;
+        }
+        p {
+          color: rgb(126, 126, 127);
+          font-size: 11px;
+          font-weight: 500;
+          line-height: 16px;
+          letter-spacing: 0.5px;
+        }
+        img {
+          width: 32px;
+          height: 32px;
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+  > img {
+    transition: 0.5s;
+    width: 16px;
+    transform: rotate(0);
+  }
+}
+.typeSelect {
+  padding: 7px 25px;
+}
+.selectTitle {
+  padding-left: 5px;
+  color: rgb(0, 0, 0);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.1%;
+  text-align: left;
+  margin-bottom: 15px;
+}
+.activeSl {
+  .mainSelectItem {
+    top: 60px;
+    opacity: 1;
+    z-index: 990;
+  }
+  > img {
+    transform: rotate(180deg);
+  }
+}
+@media (max-width: 575.98px) {
+  .mainSelect {
+    border-radius: 15px;
+    > p {
+      font-size: 13px;
+    }
+    span {
+      margin-left: 5px;
+    }
+    > .typeInfo {
+      h3 {
+        font-size: 12px;
+      }
+      p {
+        font-size: 9px;
+      }
+      img {
+        width: 23px;
+        height: 23px;
+      }
+    }
+    .mainSelectItem {
+      border-radius: 15px;
+      > div {
+        padding: 16px;
+        font-size: 13px;
+      }
+    }
+    .mainSelectItemType {
+      .mainSelectItemTypeItem {
+        padding: 15px;
+        > p {
+          font-size: 14px;
+        }
+        .typeInfo {
+          h3 {
+            font-size: 13px;
+          }
+          p {
+            font-size: 10px;
+          }
+          img {
+            width: 25px;
+            height: 25px;
+          }
+        }
+      }
+    }
+  }
+
+  .selectTitle {
+    padding-left: 2px;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .mainSelect {
+    border-radius: 15px;
+    > p {
+      font-size: 13px;
+    }
+    > .typeInfo {
+      h3 {
+        font-size: 12px;
+      }
+      p {
+        font-size: 9px;
+      }
+      img {
+        width: 23px;
+        height: 23px;
+      }
+    }
+    .mainSelectItem {
+      border-radius: 15px;
+      > div {
+        padding: 16px;
+        font-size: 13px;
+      }
+    }
+    .mainSelectItemType {
+      .mainSelectItemTypeItem {
+        padding: 15px;
+        > p {
+          font-size: 14px;
+        }
+        .typeInfo {
+          h3 {
+            font-size: 13px;
+          }
+          p {
+            font-size: 10px;
+          }
+          img {
+            width: 25px;
+            height: 25px;
+          }
+        }
+      }
+    }
+  }
+
+  .selectTitle {
+    padding-left: 2px;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .mainSelect {
+    > p {
+      font-size: 15px;
+    }
+    > .typeInfo {
+      h3 {
+        font-size: 14px;
+      }
+      p {
+        font-size: 10px;
+      }
+      img {
+        width: 25px;
+        height: 25px;
+      }
+    }
+    .mainSelectItem {
+      border-radius: 10px;
+      > div {
+        padding: 16px;
+        font-size: 14px;
+      }
+    }
+    .mainSelectItemType {
+      .mainSelectItemTypeItem {
+        padding: 15px;
+        > p {
+          font-size: 15px;
+        }
+        .typeInfo {
+          h3 {
+            font-size: 14px;
+          }
+          p {
+            font-size: 10px;
+          }
+          img {
+            width: 25px;
+            height: 25px;
+          }
+        }
+      }
+    }
+  }
+  .typeSelect {
+    padding: 10px 25px;
+  }
+  .selectTitle {
+    padding-left: 2px;
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+}

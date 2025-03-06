@@ -25,13 +25,13 @@ interface MonthlyBalance {
     amount: number;
 }
 
-interface WalletsData {
+export interface WalletsData {
     masterAccount: number;
     investmentAccount: number;
     agentAccount: number;
 }
 
-interface BalanceChartResponse {
+export interface BalanceChartResponse {
     dailyBalancesChart: DailyBalance[];
     monthlyBalancesChart: MonthlyBalance[][] | null;
     profitability: number;
@@ -40,7 +40,7 @@ interface BalanceChartResponse {
     agentAccount?: number;
 }
 
-interface ProcessedBalanceChart {
+export interface ProcessedBalanceChart {
     lab?: string[];
     data?: number[];
     mainData?: { month: string; average: number }[];
@@ -56,6 +56,7 @@ interface BalanceChartRequest {
     refresh?: number;
 }
 
+// Utility function to process the balance chart response
 const processBalanceChartResponse = (response: BalanceChartResponse, period: string): ProcessedBalanceChart => {
     if (!response) {
         return {
@@ -134,11 +135,17 @@ export const analyticsApi = createApi({
     }),
     endpoints: (builder) => ({
         getBalanceChart: builder.query<ProcessedBalanceChart, BalanceChartRequest>({
-            query: ({ period, accountType, refresh }) => ({
-                url: ENDPOINTS.BALANCE_CHART,
-                method: 'POST',
-                body: { period, accountType, refresh },
-            }),
+            query: ({ period, accountType, refresh }) => {
+                if (!period) {
+                    throw new Error('Period is required');
+                }
+
+                return {
+                    url: ENDPOINTS.BALANCE_CHART,
+                    method: 'POST',
+                    body: { period, accountType, refresh },
+                };
+            },
             transformResponse: (response: BalanceChartResponse, meta, args) => {
                 return processBalanceChartResponse(response, args.period);
             },
@@ -226,6 +233,30 @@ export const analyticsApi = createApi({
                 };
             },
         }),
+
+        togglePopUp: builder.mutation<void, void>({
+            query: () => ({
+                url: `${ENDPOINTS.OPERATIONS_ITEM}/toggle`,
+                method: 'POST',
+            }),
+        }),
+
+        setPopUpInfo: builder.mutation<void, { info: string }>({
+            query: ({ info }) => ({
+                url: `${ENDPOINTS.OPERATIONS_ITEM}/set-info`,
+                method: 'POST',
+                body: { info },
+            }),
+        }),
+
+        setPopUpData: builder.mutation<void, { operationItem: any; chartData: any }>({
+            query: ({ operationItem, chartData }) => ({
+                url: ENDPOINTS.OPERATIONS_ITEM, // Ensure correct URL for pop-up data
+                method: 'POST',
+                body: { operationItem, chartData },
+            }),
+        }),
+
     }),
 });
 
@@ -240,4 +271,9 @@ export const {
     useSetSendUserMutation,
     useSetSendWalletMutation,
     useGetAnalyticListQuery,
+    useTogglePopUpMutation,
+    useSetPopUpInfoMutation,
+    useSetPopUpDataMutation,
 } = analyticsApi;
+
+export default analyticsApi;

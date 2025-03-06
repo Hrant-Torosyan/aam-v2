@@ -31,16 +31,16 @@ interface OperationsProps {
 }
 
 const Operations: React.FC<OperationsProps> = ({
-                                                   accountType,
-                                                   pageNumber = 1,
-                                                   count,
-                                                   setShowOperationsList,
-                                                   showOperationsList,
-                                               }) => {
+   accountType,
+   pageNumber = 1,
+   count,
+   setShowOperationsList,
+   showOperationsList,
+}) => {
     const [isActive, setIsActive] = useState(false);
     const [operationId, setOperationId] = useState<string>("");
 
-    const { data: operationsData, isLoading, error } = useGetOperationsListQuery({
+    const { data: operationsData} = useGetOperationsListQuery({
         accountType,
         pageNumber,
     });
