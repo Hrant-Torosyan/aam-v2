@@ -1,0 +1,243 @@
+.Transfer {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.1);
+  .popUpProdBlock {
+    width: 35%;
+    background: white;
+    border-radius: 25px;
+
+    .popUpProdHeader {
+      border-radius: 25px;
+      padding: 30px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 25px 25px 0px 0px;
+      background: rgb(229, 247, 251);
+      background: #2e93ef1a;
+
+      p {
+        color: #4d9cf3;
+
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.1%;
+        text-align: left;
+      }
+
+      button {
+        border-radius: 50%;
+        transition: 0.5s;
+        &:hover {
+          background: rgb(204, 240, 246);
+        }
+      }
+    }
+
+    .popUpProdContent {
+      padding: 40px;
+      .mainInput {
+        margin-top: 50px;
+      }
+      .mainSelect {
+        margin-bottom: 25px;
+      }
+      .buttonStyleToo {
+        width: 80%;
+        overflow: hidden;
+        margin: 0 auto;
+        border-radius: 50px;
+        margin-top: 40px;
+        padding: 2px;
+        background: linear-gradient(
+                        158.2deg,
+                        rgb(44, 115, 243) -103.971%,
+                        rgb(48, 205, 231) 151.363%
+        );
+        button,
+        div {
+          cursor: pointer;
+          width: 100%;
+          transition: 0.5s;
+          padding: 12px;
+          border-radius: 50px;
+          background: white;
+          span {
+            background: linear-gradient(236.49deg, rgb(34, 100, 220), rgb(0, 180, 210));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            font-size: 18px;
+            transition: 0.5s;
+            font-weight: 600;
+            line-height: 120%;
+            text-align: center;
+          }
+        }
+        &:hover {
+          button,
+          div {
+            background: transparent;
+            span {
+              background: none;
+              -webkit-background-clip: border-box;
+              background-clip: border-box;
+              -webkit-text-fill-color: initial;
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .Transfer {
+    .popUpProdBlock {
+      width: 85%;
+      .popUpProdHeader {
+        padding: 15px 30px;
+        p {
+          font-size: 17px;
+        }
+      }
+      .popUpProdContent {
+        .mainInput {
+          margin-top: 25px;
+        }
+        .mainSelect {
+          margin-bottom: 15px;
+        }
+        padding: 25px;
+
+        h4 {
+          font-size: 13px;
+          margin: 20px 0;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .Transfer {
+    .popUpProdBlock {
+      width: 80%;
+      .popUpProdHeader {
+        padding: 20px 30px;
+        p {
+          font-size: 18px;
+        }
+      }
+      .popUpProdContent {
+        .mainInput {
+          margin-top: 30px;
+        }
+        .mainSelect {
+          margin-bottom: 15px;
+        }
+        padding: 25px;
+
+        h4 {
+          font-size: 13px;
+          margin: 20px 0;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .Transfer {
+    .popUpProdBlock {
+      width: 45%;
+      .popUpProdHeader {
+        padding: 25px 35px;
+        p {
+          font-size: 22px;
+        }
+      }
+      .popUpProdContent {
+        padding: 30px;
+        .mainInput {
+          margin-top: 30px;
+        }
+        .mainSelect {
+          margin-bottom: 15px;
+        }
+
+        h4 {
+          font-size: 15px;
+          margin: 30px 0;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .Transfer {
+    .popUpProdBlock {
+      width: 40%;
+      .popUpProdHeader {
+        padding: 25px 35px;
+        p {
+          font-size: 22px;
+        }
+      }
+      .popUpProdContent {
+        padding: 30px;
+        .mainInput {
+          margin-top: 30px;
+        }
+        .mainSelect {
+          margin-bottom: 15px;
+        }
+
+        h4 {
+          font-size: 15px;
+          margin: 30px 0;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+  .Transfer {
+    .popUpProdBlock {
+      width: 70%;
+      .popUpProdHeader {
+        padding: 25px 35px;
+        p {
+          font-size: 22px;
+        }
+      }
+      .popUpProdContent {
+        padding: 30px;
+        .mainInput {
+          margin-top: 30px;
+        }
+        .mainSelect {
+          margin-bottom: 15px;
+        }
+
+        h4 {
+          font-size: 15px;
+          margin: 30px 0;
+        }
+      }
+    }
+  }
+}

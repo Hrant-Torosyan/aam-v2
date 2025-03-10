@@ -32,17 +32,19 @@ interface BalanceChartData {
 }
 
 interface LineChartProps {
-    balanceChartData: BalanceChartData | undefined;
+    balanceChartData?: BalanceChartData;
     color?: string;
     selectValue: string;
     infoPopUp?: boolean;
+    className?: string;
 }
 
 const LineChartComponent: React.FC<LineChartProps> = ({
-    balanceChartData,
-    color = "#348EF1",
-    selectValue,
-    infoPopUp = false,
+      balanceChartData,
+      color = "#348EF1",
+      selectValue,
+      infoPopUp = false,
+      className = ""
   }) => {
     const dispatch = useDispatch();
     const [chartData, setChartData] = useState<{ name: string; value: number }[]>([]);
@@ -51,11 +53,19 @@ const LineChartComponent: React.FC<LineChartProps> = ({
         if (!balanceChartData) return [];
 
         const isTimeFrameData = selectValue === "MONTHLY" || selectValue === "WEEKLY";
-        const labels = isTimeFrameData ? balanceChartData.lab ?? [] : balanceChartData.mainData.map(item => item.month);
-        const values = isTimeFrameData ? balanceChartData.data : balanceChartData.mainData.map(item => item.average);
 
-        return labels.map((label, index) => ({
-            name: label,
+        const labels = isTimeFrameData
+            ? balanceChartData.lab ?? []
+            : balanceChartData.mainData.map(item => item.month);
+
+        const values = isTimeFrameData
+            ? balanceChartData.data ?? []
+            : balanceChartData.mainData.map(item => item.average);
+
+        const maxLength = Math.max(labels.length, values.length);
+
+        return Array.from({ length: maxLength }, (_, index) => ({
+            name: labels[index] ?? "Unknown",
             value: values[index] ?? 0,
         }));
     }, [balanceChartData, selectValue]);
@@ -78,8 +88,9 @@ const LineChartComponent: React.FC<LineChartProps> = ({
 
         dispatch(setSelectValue(accountDetails));
     };
+
     return (
-        <div className={styles.lineChart}>
+        <div className={`${styles.lineChart} ${className}`}> {/* Apply className here */}
             <p className={styles.chartTitle}>График изменения баланса</p>
 
             {infoPopUp && <Select value={selectValue} onChange={handleSelectChange} />}

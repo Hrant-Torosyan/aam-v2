@@ -1,53 +1,75 @@
-import React, { useState } from "react";
-import { useGetOperationsListQuery } from "src/store/analytics/analyticsAPI";
-import OperationPopUp from "src/components/OperationPopUp/OperationPopUp";
+import React, { useState, useEffect } from "react";
 import styles from "./Operations.module.scss";
+import { useDispatch } from "react-redux";
+import { setOperationsList } from "src/store/analytics/analyticsSlice";
+import { useGetOperationsListQuery } from "src/store/analytics/analyticsAPI";
+import OperationPopUp from 'src/components/OperationPopUp/OperationPopUp';
 
-function formatDate(milliseconds: number): string {
-    const date = new Date(milliseconds);
+function formatDate(milliseconds: number | string): string {
+    const date = new Date(Number(milliseconds));
+
     const months = [
-        "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря",
+        "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
+        "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря",
     ];
+
     const day = date.getDate();
     const month = months[date.getMonth()];
     const year = date.getFullYear();
+
     return `${day} ${month}, ${year}`;
 }
 
-interface Operation {
-    transactionOperationId: string;
-    type: string;
-    date: number;
-    amount: number;
-    status: string;
+interface OperationsProps {
+    count: number;
+    showOperationsList: number | null;
+    setShowOperationsList: React.Dispatch<React.SetStateAction<number | null>>;
+    accountType?: string;
 }
 
-interface OperationsProps {
-    accountType?: string;
-    pageNumber?: number;
-    count: number;
-    setShowOperationsList: React.Dispatch<React.SetStateAction<number | null>>;
-    showOperationsList: number | null;
+interface OperationItem {
+    transactionOperationId: string;
+    type: string;
+    date: string | number;
+    amount: string | number;
+    status: "DONE" | "IN_PROCESS" | "FAILED";
 }
 
 const Operations: React.FC<OperationsProps> = ({
-                                                   accountType,
-                                                   pageNumber = 1,
-                                                   count,
-                                                   setShowOperationsList,
-                                                   showOperationsList,
-                                               }) => {
-    const [isActive, setIsActive] = useState(false);
+       count,
+       setShowOperationsList,
+       showOperationsList,
+       accountType,
+   }) => {
+    const dispatch = useDispatch();
+    const [isActive, setIsactive] = useState(false);
     const [operationId, setOperationId] = useState<string>("");
 
-    const { data: operationsData, isLoading, error } = useGetOperationsListQuery({
+    const { data: operationsArr, isLoading } = useGetOperationsListQuery({
         accountType,
-        pageNumber,
+        pageNumber: count,
     });
 
-    const operationsArr = operationsData?.content || [];
+    useEffect(() => {
+        if (operationsArr?.transactionOperationsContent?.content) {
+            dispatch(setOperationsList(operationsArr.transactionOperationsContent.content));
+        }
+    }, [operationsArr, dispatch]);
 
-    const getOperationType = (type: string): string => {
+    useEffect(() => {
+        // Reset showOperationsList when component mounts
+        if (showOperationsList !== null) {
+            setShowOperationsList(null);
+        }
+    }, []);
+
+    const displayedOperations = operationsArr?.transactionOperationsContent?.content
+        ? showOperationsList !== null
+            ? operationsArr.transactionOperationsContent.content
+            : operationsArr.transactionOperationsContent.content.slice(0, 3)
+        : [];
+
+    const getOperationTypeText = (type: string): string => {
         switch (type) {
             case "DIVIDEND_PAYMENT":
                 return "Выплата по дивидендам";
@@ -68,37 +90,65 @@ const Operations: React.FC<OperationsProps> = ({
         }
     };
 
-    const operationBlocks = operationsArr.map((item: Operation, key: number) => (
-        <div
-            onClick={() => {
-                setOperationId(item.transactionOperationId);
-                setIsActive(true);
-            }}
-            key={key}
-            className={styles.operationBlockItem}
-        >
-            <div className={styles.operationBlockMain}>{getOperationType(item.type)}</div>
-            <div className={styles.operationBlockInfo}>
-                <p>{formatDate(item.date)}</p>
-                <p>${parseFloat(item.amount.toString().replace(/[^\d.-]/g, "")).toLocaleString()}</p>
-                <div
-                    className={
-                        item.status === "DONE"
-                            ? styles.done
-                            : item.status === "IN_PROCESS"
-                                ? styles.progress
-                                : styles.failed
-                    }
-                >
-                    <span>{item.status === "DONE" ? "Выполнено" : item.status === "IN_PROCESS" ? "В процессе" : "Неуспешно"}</span>
+    const getStatusText = (status: string): string => {
+        switch (status) {
+            case "DONE":
+                return "Выполнено";
+            case "IN_PROCESS":
+                return "В процессе";
+            default:
+                return "Неуспешно";
+        }
+    };
+
+    const getStatusClass = (status: string): string => {
+        switch (status) {
+            case "DONE":
+                return styles.done;
+            case "IN_PROCESS":
+                return styles.progress;
+            default:
+                return styles.failed;
+        }
+    };
+
+    const handleOperationClick = (id: string) => {
+        setOperationId(id);
+        setIsactive(true);
+    };
+
+    const operationBlocks = displayedOperations.map(
+        (item: OperationItem, key: number) => (
+            <div
+                onClick={() => handleOperationClick(item.transactionOperationId)}
+                key={key}
+                className={styles.operationBlockItem}
+            >
+                <div className={styles.operationBlockMain}>
+                    {getOperationTypeText(item.type)}
+                </div>
+                <div className={styles.operationBlockInfo}>
+                    <p>{formatDate(item.date)}</p>
+                    <p>${parseFloat(item.amount.toString().replace(/[^\d.-]/g, "")).toLocaleString()}</p>
+                    <div className={getStatusClass(item.status)}>
+                        <span>{getStatusText(item.status)}</span>
+                    </div>
                 </div>
             </div>
-        </div>
-    ));
+        )
+    );
+
+    const toggleOperationsList = () => {
+        if (showOperationsList === null) {
+            setShowOperationsList(operationsArr?.transactionOperationsContent?.totalElements || 1);
+        } else {
+            setShowOperationsList(null);
+        }
+    };
 
     return (
         <div className={styles.operationBlock}>
-            {isActive && <OperationPopUp setIsActive={setIsActive} operationId={operationId} />}
+            {isActive && <OperationPopUp setIsactive={setIsactive} operationId={operationId} />}
 
             <div className={`${styles.operationBlockItem} ${styles.title}`}>
                 <div className={styles.operationBlockMain}>Операция</div>
@@ -110,15 +160,18 @@ const Operations: React.FC<OperationsProps> = ({
             </div>
 
             <div className={styles.operationBlockContent}>
-                {operationsArr.length ? operationBlocks : <p className={styles.empty}>Пока что пусто</p>}
+                {isLoading ? (
+                    <p className={styles.loading}>Загрузка...</p>
+                ) : operationsArr?.transactionOperationsContent?.content?.length ? (
+                    operationBlocks
+                ) : (
+                    <p className={styles.empty}>Пока что пусто</p>
+                )}
             </div>
 
-            {operationsData?.totalElements > count && (
-                <button
-                    onClick={() => setShowOperationsList(showOperationsList ? null : count)}
-                    className={styles.toggleButton}
-                >
-                    {operationsArr.length === count ? "смотреть полностью" : "скрыть"}
+            {operationsArr?.transactionOperationsContent?.content?.length > 3 && (
+                <button onClick={toggleOperationsList}>
+                    {showOperationsList === null ? "смотреть полностью" : "скрыть"}
                 </button>
             )}
         </div>

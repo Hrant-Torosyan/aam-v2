@@ -1,60 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Select.module.scss';
 
 interface SelectProps {
     value: string;
     onChange: (value: string) => void;
+    className?: string; // Change 'classname' to 'className'
 }
 
-const Select: React.FC<SelectProps> = ({ value, onChange }) => {
-    const [isActiveSelect, setIsActiveSelect] = React.useState(false);
+const options = [
+    { value: 'WEEKLY', label: 'Неделя' },
+    { value: 'MONTHLY', label: 'Месяц' },
+    { value: 'SEMI_ANNUAL', label: 'Полугод' },
+    { value: 'ANNUAL', label: 'Год' }
+];
+
+const Select: React.FC<SelectProps> = ({ value, onChange, className }) => { // Updated parameter to use className
+    const [isActiveSelect, setIsActiveSelect] = useState(false);
+
+    const toggleSelect = () => {
+        setIsActiveSelect(prevState => !prevState);
+    };
 
     const handleSelectChange = (selectedValue: string) => {
         onChange(selectedValue);
         setIsActiveSelect(false);
     };
 
+    const currentLabel = options.find(option => option.value === value)?.label;
+
     return (
         <div
-            onClick={() => setIsActiveSelect(!isActiveSelect)}
-            className={isActiveSelect ? `${styles.select} ${styles.activeSel}` : styles.select}
+            className={`${styles.select} ${className} ${isActiveSelect ? styles.activeSel : ''}`} // Use className here
+            onClick={toggleSelect}
         >
-            <p>
-                {value === 'WEEKLY'
-                    ? 'Неделя'
-                    : value === 'MONTHLY'
-                        ? 'Месяц'
-                        : value === 'SEMI_ANNUAL'
-                            ? 'Полугод'
-                            : 'Год'}
-            </p>
+            <p>{currentLabel}</p>
             <img src='./images/angle.png' alt='toggle' />
             {isActiveSelect && (
                 <div className={styles.selectItem}>
-                    <p
-                        className={value === 'WEEKLY' ? styles.activeOption : ''}
-                        onClick={() => handleSelectChange('WEEKLY')}
-                    >
-                        Неделя
-                    </p>
-                    <p
-                        className={value === 'MONTHLY' ? styles.activeOption : ''}
-                        onClick={() => handleSelectChange('MONTHLY')}
-                    >
-                        Месяц
-                    </p>
-                    <p
-                        className={value === 'SEMI_ANNUAL' ? styles.activeOption : ''}
-                        onClick={() => handleSelectChange('SEMI_ANNUAL')}
-                    >
-                        Полугод
-                    </p>
-                    <p
-                        className={value === 'ANNUAL' ? styles.activeOption : ''}
-                        onClick={() => handleSelectChange('ANNUAL')}
-                    >
-                        Год
-                    </p>
+                    {options.map(({ value: optionValue, label }) => (
+                        <p
+                            key={optionValue}
+                            className={value === optionValue ? styles.activeOption : ''}
+                            onClick={() => handleSelectChange(optionValue)}
+                        >
+                            {label}
+                        </p>
+                    ))}
                 </div>
             )}
         </div>

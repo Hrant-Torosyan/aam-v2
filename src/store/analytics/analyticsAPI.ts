@@ -25,13 +25,13 @@ interface MonthlyBalance {
     amount: number;
 }
 
-interface WalletsData {
+export interface WalletsData {
     masterAccount: number;
     investmentAccount: number;
     agentAccount: number;
 }
 
-interface BalanceChartResponse {
+export interface BalanceChartResponse {
     dailyBalancesChart: DailyBalance[];
     monthlyBalancesChart: MonthlyBalance[][] | null;
     profitability: number;
@@ -40,7 +40,26 @@ interface BalanceChartResponse {
     agentAccount?: number;
 }
 
-interface ProcessedBalanceChart {
+export interface OperationItem {
+    id: string;
+    amount: number;
+    date: string;
+    status: "DONE" | "IN_PROCESS" | "FAILED";
+    type: string;
+    depositAddress?: string;
+    depositCurrencyFrom?: string;
+    withdrawalAddress?: string;
+    withdrawalCurrencyFrom?: string;
+    operationFrom?: string;
+    operationTo?: string;
+    projectTitle?: string;
+    projectTerm?: string;
+    projectPeriod?: string;
+    fromUserId?: string;
+    toUserId?: string | null;
+}
+
+export interface ProcessedBalanceChart {
     lab?: string[];
     data?: number[];
     mainData?: { month: string; average: number }[];
@@ -134,14 +153,18 @@ export const analyticsApi = createApi({
     }),
     endpoints: (builder) => ({
         getBalanceChart: builder.query<ProcessedBalanceChart, BalanceChartRequest>({
-            query: ({ period, accountType, refresh }) => ({
-                url: ENDPOINTS.BALANCE_CHART,
-                method: 'POST',
-                body: { period, accountType, refresh },
-            }),
-            transformResponse: (response: BalanceChartResponse, meta, args) => {
-                return processBalanceChartResponse(response, args.period);
+            query: ({ period, accountType, refresh }) => {
+                if (!period) {
+                    throw new Error('Period is required');
+                }
+
+                return {
+                    url: ENDPOINTS.BALANCE_CHART,
+                    method: 'POST',
+                    body: { period, accountType, refresh },
+                };
             },
+            transformResponse: (response: BalanceChartResponse, meta, args) => processBalanceChartResponse(response, args.period),
         }),
 
         getWallets: builder.query<WalletsData, void>({
@@ -171,9 +194,9 @@ export const analyticsApi = createApi({
             },
         }),
 
-        getOperationsListItem: builder.query<any, { id: string }>({
-            query: ({ id }) => ({
-                url: `${ENDPOINTS.OPERATIONS_ITEM}/${id}`,
+        getOperationsListItem: builder.query<OperationItem, string>({
+            query: (id) => ({
+                url: `transaction/operations/${id}`,
                 method: 'GET',
             }),
         }),
@@ -226,6 +249,30 @@ export const analyticsApi = createApi({
                 };
             },
         }),
+
+        togglePopUp: builder.mutation<void, void>({
+            query: () => ({
+                url: `${ENDPOINTS.OPERATIONS_ITEM}/toggle`,
+                method: 'GET',
+            }),
+        }),
+
+        setPopUpInfo: builder.mutation<void, { info: string }>({
+            query: ({ info }) => ({
+                url: `${ENDPOINTS.OPERATIONS_ITEM}/set-info`,
+                method: 'POST',
+                body: { info },
+            }),
+        }),
+
+        setPopUpData: builder.mutation<void, { operationItem: any; chartData: any }>({
+            query: ({ operationItem, chartData }) => ({
+                url: ENDPOINTS.OPERATIONS_ITEM,
+                method: 'POST',
+                body: { operationItem, chartData },
+            }),
+        }),
+
     }),
 });
 
@@ -240,4 +287,9 @@ export const {
     useSetSendUserMutation,
     useSetSendWalletMutation,
     useGetAnalyticListQuery,
+    useTogglePopUpMutation,
+    useSetPopUpInfoMutation,
+    useSetPopUpDataMutation,
 } = analyticsApi;
+
+export default analyticsApi;
