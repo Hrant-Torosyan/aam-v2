@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { analyticsApi } from './analyticsAPI';
 
-// Interface definitions
 export interface Operation {
     id: string;
     description: string;
     amount: number;
-    date: string;
+    date: string | number;
+    transactionOperationId: string;
+    type: string;
+    status: "DONE" | "IN_PROCESS" | "FAILED";
 }
 
 export interface BalanceChartData {
@@ -21,7 +23,6 @@ export interface BalanceChartData {
     agentAccount: number;
 }
 
-// Updated to TransactionItem interface
 export interface TransactionItem {
     info: string;
     type: string;
@@ -72,7 +73,7 @@ export interface ReplenishData {
 interface AnalyticsState {
     loading: boolean;
     error: { message: string; code?: string } | null;
-    selectValue: TransactionItem;  // Changed to TransactionItem
+    selectValue: TransactionItem;
     analyticsData: ProcessedBalanceChart | null;
     transferSuccess: boolean;
     popUp: PopUpState;
@@ -86,6 +87,8 @@ interface AnalyticsState {
     copied: boolean;
     isActive: boolean;
     next: boolean;
+    operationsArr: Operation[];
+    isProcessingTransaction: boolean;
 }
 
 const initialState: AnalyticsState = {
@@ -120,13 +123,15 @@ const initialState: AnalyticsState = {
     copied: false,
     isActive: false,
     next: true,
+    operationsArr: [],
+    isProcessingTransaction: false, // Initialize transaction processing state
 };
 
 const analyticsSlice = createSlice({
     name: 'analytics',
     initialState,
     reducers: {
-        setSelectValue: (state, action: PayloadAction<TransactionItem>) => {  // Changed to TransactionItem
+        setSelectValue: (state, action: PayloadAction<TransactionItem>) => {
             state.selectValue = action.payload;
         },
         clearError: (state) => {
@@ -151,6 +156,7 @@ const analyticsSlice = createSlice({
                 operations: [],
                 balanceChartData: [],
             };
+            state.operationsArr = [];
         },
         setCheckWallet: (state, action: PayloadAction<boolean>) => {
             state.checkWallet = action.payload;
@@ -190,6 +196,12 @@ const analyticsSlice = createSlice({
         setNext: (state, action: PayloadAction<boolean>) => {
             state.next = action.payload;
         },
+        setOperationsList: (state, action: PayloadAction<Operation[]>) => {
+            state.operationsArr = action.payload;
+        },
+        setIsProcessingTransaction: (state, action: PayloadAction<boolean>) => {
+            state.isProcessingTransaction = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -218,6 +230,32 @@ const analyticsSlice = createSlice({
                     };
                     state.analyticsData = null;
                 }
+            )
+            .addMatcher(
+                analyticsApi.endpoints.getOperationsList.matchPending,
+                (state) => {
+                    state.loading = true;
+                }
+            )
+            .addMatcher(
+                analyticsApi.endpoints.getOperationsList.matchFulfilled,
+                (state, action) => {
+                    if (action.payload && action.payload.data) {
+                        state.operationsArr = action.payload.data;
+                    }
+                    state.loading = false;
+                }
+            )
+            .addMatcher(
+                analyticsApi.endpoints.getOperationsList.matchRejected,
+                (state, action) => {
+                    state.loading = false;
+                    state.error = {
+                        message: action.error?.message || 'Failed to fetch operations data',
+                        code: action.error?.code,
+                    };
+                    state.operationsArr = [];
+                }
             );
     },
 });
@@ -240,6 +278,8 @@ export const {
     setCopied,
     setActive,
     setNext,
+    setOperationsList,
+    setIsProcessingTransaction,
 } = analyticsSlice.actions;
 
 export default analyticsSlice.reducer;

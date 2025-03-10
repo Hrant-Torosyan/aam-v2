@@ -19,16 +19,16 @@ const IsSuccessful: React.FC<IsSuccessfulProps> = ({ info, delay }) => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            dispatch(setPopUpState({ ...popUpState, isOpen: false })); // Close the PopUp after delay
-            togglePopUp(); // Optionally trigger any other side effect (API call)
+            dispatch(setPopUpState({ ...popUpState, isOpen: false }));
+            togglePopUp();
         }, delay);
 
-        return () => clearTimeout(timer); // Clean up the timer on component unmount
+        return () => clearTimeout(timer);
     }, [dispatch, delay, popUpState, togglePopUp]);
 
     const handleClose = () => {
-        dispatch(setPopUpState({ ...popUpState, isOpen: false })); // Manually close the PopUp
-        togglePopUp(); // Trigger API call or additional logic
+        dispatch(setPopUpState({ ...popUpState, isOpen: false }));
+        togglePopUp();
     };
 
     return (

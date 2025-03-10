@@ -17,11 +17,15 @@ interface Account {
     balance: number;
 }
 
+// Updated Operation interface to exactly match the one in analyticsSlice
 interface Operation {
     id: string;
     description: string;
     amount: number;
-    date: string;
+    date: string | number; // Updated to match the analyticsSlice definition
+    transactionOperationId: string;
+    type: string;
+    status: "DONE" | "IN_PROCESS" | "FAILED"; // Updated to use the union type
 }
 
 interface BalanceChartData {
@@ -53,6 +57,7 @@ const Check: React.FC<CheckProps> = ({ isOpen, setIsOpen }) => {
     const handleSelect = (account: Account) => {
         setSelectedAccountType(account.type);
 
+        // Initialize with an empty array that matches the required Operation type
         const operationsData: Operation[] = [];
         const balanceChartData: BalanceChartData[] = [
             {

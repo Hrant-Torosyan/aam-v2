@@ -13,6 +13,7 @@ interface MainInputProps {
     sumValueAmount?: string;
     setSumValueAmount?: (value: string) => void;
     onePrice?: number;
+    hideErrorMessage?: boolean;
 }
 
 const MainInput: React.FC<MainInputProps> = ({
@@ -27,7 +28,11 @@ const MainInput: React.FC<MainInputProps> = ({
      sumValueAmount,
      setSumValueAmount,
      onePrice,
+     hideErrorMessage = false,
  }) => {
+
+    const errorForStyling = Boolean(error);
+
     const validateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setError("");
 
@@ -72,7 +77,7 @@ const MainInput: React.FC<MainInputProps> = ({
                 className={`
                     ${styles.inputStyle} 
                     ${type === "money" ? styles.inputStyleMn : ""} 
-                    ${(sumValue === "" && error) || error ? styles.error : ""}
+                    ${errorForStyling ? styles.error : ""}
                 `}
             >
                 {type === "money" && <span className={styles.typeMoney}>$</span>}
@@ -83,7 +88,7 @@ const MainInput: React.FC<MainInputProps> = ({
                     placeholder={type === 'money' ? 'Введите сумму' : ''}
                 />
             </div>
-            {error && <p className={styles.errorText}>{error}</p>}
+            {error && !hideErrorMessage && <p className={styles.errorText}>{error}</p>}
         </div>
     );
 };

@@ -11,6 +11,7 @@ import Operations from 'src/components/Operations/Operations';
 import PopUp from 'src/components/PopUp/PopUp';
 import Transfer from 'src/components/Transfer/Transfer';
 import Replenish from 'src/components/Replenish/Replenish';
+import Send from 'src/components/Send/Send';
 import IsSuccessful from 'src/components/IsSuccessful/IsSuccessful';
 
 import balance from 'src/images/svg/balance.svg';
@@ -27,6 +28,7 @@ const Analytics: React.FC = () => {
     const [isOpenTransfer, setIsOpenTransfer] = useState<boolean>(false);
     const [isOpenSc, setIsOpenSc] = useState<boolean>(false);
     const [isOpenReplenish, setIsOpenReplenish] = useState<boolean>(false);
+    const [isOpenSend, setIsOpenSend] = useState<boolean>(false); // Added state for Send popup
     const [showOperationsList, setShowOperationsList] = useState<number | null>(null);
     const [successInfo, setSuccessInfo] = useState<boolean>(true);
 
@@ -38,17 +40,30 @@ const Analytics: React.FC = () => {
 
     const isLoading = isLoadingWallets || isLoadingBalanceChart;
 
-    // Add event listener for opening Replenish popup
+    // Add event listeners for custom events from PopUp
     useEffect(() => {
         const handleOpenReplenish = () => {
             setIsOpenReplenish(true);
         };
 
-        window.addEventListener('openReplenishPopup', handleOpenReplenish);
+        const handleOpenTransfer = () => {
+            setIsOpenTransfer(true);
+        };
 
-        // Clean up the event listener when component unmounts
+        const handleOpenSend = () => {
+            setIsOpenSend(true);
+        };
+
+        // Add event listeners
+        window.addEventListener('openReplenishPopup', handleOpenReplenish);
+        window.addEventListener('openTransferPopup', handleOpenTransfer);
+        window.addEventListener('openSendPopup', handleOpenSend);
+
+        // Cleanup function
         return () => {
             window.removeEventListener('openReplenishPopup', handleOpenReplenish);
+            window.removeEventListener('openTransferPopup', handleOpenTransfer);
+            window.removeEventListener('openSendPopup', handleOpenSend);
         };
     }, []);
 
@@ -64,11 +79,11 @@ const Analytics: React.FC = () => {
 
     const dateNowFormatted = useMemo(() => {
         const specificDate = new Date();
-        const day = specificDate.getDate().toString().padStart(2, '0');
-        const month = (specificDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = specificDate.getDate().toString().padStart(2, "0");
+        const month = (specificDate.getMonth() + 1).toString().padStart(2, "0");
         const year = specificDate.getFullYear();
-        const hour = specificDate.getHours().toString().padStart(2, '0');
-        const minute = specificDate.getMinutes().toString().padStart(2, '0');
+        const hour = specificDate.getHours().toString().padStart(2, "0");
+        const minute = specificDate.getMinutes().toString().padStart(2, "0");
 
         return `${day}.${month}.${year}, ${hour}:${minute}`;
     }, [refreshState]);
@@ -96,17 +111,24 @@ const Analytics: React.FC = () => {
                 />
             )}
             {isOpen && <PopUp />}
-            {isOpenTransfer && walletsData && (
-                walletsData.masterAccount + walletsData.investmentAccount + walletsData.agentAccount > 0 && (
+            {isOpenTransfer && walletsData &&
+                (walletsData.masterAccount + walletsData.investmentAccount + walletsData.agentAccount) > 0 && (
                     <Transfer setIsOpenSc={setIsOpenSc} setIsOpenTransfer={setIsOpenTransfer} />
-                )
-            )}
+                )}
 
             {isOpenReplenish && (
                 <Replenish
                     setIsOpenSc={setIsOpenSc}
                     walletsData={walletsData}
                     setIsOpenReplenish={setIsOpenReplenish}
+                    setSuccessInfo={setSuccessInfo}
+                />
+            )}
+
+            {isOpenSend && (
+                <Send
+                    setIsOpenSc={setIsOpenSc}
+                    setIsOpenSend={setIsOpenSend}
                     setSuccessInfo={setSuccessInfo}
                 />
             )}
@@ -148,7 +170,7 @@ const Analytics: React.FC = () => {
 
                     <div className={styles.analyticsContentMain}>
                         <Check isOpen={isOpen} setIsOpen={setIsOpen} />
-                        <Operations count={6} showOperationsList={showOperationsList} setShowOperationsList={setShowOperationsList} />
+                        <Operations count={5} showOperationsList={showOperationsList} setShowOperationsList={setShowOperationsList} />
                     </div>
                 </div>
             </div>

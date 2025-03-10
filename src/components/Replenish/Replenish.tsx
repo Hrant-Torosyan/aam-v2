@@ -174,7 +174,23 @@ const Replenish: React.FC<Props> = ({
             <div className={styles.popUpProdBlock}>
                 <div className={styles.popUpProdHeader}>
                     <p>Пополнить</p>
-                    <button onClick={() => setIsOpenReplenish(false)}>X</button>
+                    <button onClick={() => setIsOpenReplenish(false)}>
+                        <svg
+                            width="30"
+                            height="30"
+                            viewBox="0 0 30 30"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M20.8366 9.17188L9.16992 20.8386M9.16995 9.17188L20.8366 20.8386"
+                                stroke="#00B4D2"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    </button>
                 </div>
 
                 <div className={styles.popUpProdContent}>
@@ -189,7 +205,7 @@ const Replenish: React.FC<Props> = ({
 
                             <MainSelect
                                 selectTitle="Сеть транзакции:"
-                                selectValue={transaction || { name: "" }}
+                                selectValue={transaction || {name: ""}}
                                 setSelectValue={handleTransactionChange}
                                 dataSelect={getTransactionOptions()}
                             />
@@ -203,21 +219,79 @@ const Replenish: React.FC<Props> = ({
                                 sumValue={sumValue}
                                 setSumValue={setSumValue}
                                 type={"money"}
+                                hideErrorMessage={true}
                             />
 
-                            <button onClick={handleReplenish}>Пополнить</button>
+                            <div className={styles.popupContentButton} onClick={handleReplenish}>
+                                <button>
+                                    <p>Пополнить</p>
+                                </button>
+                            </div>
                         </>
                     ) : (
                         <div className={styles.popUpProdContentQr}>
-                            <QRCode value={replenishData?.payAddress || ""} />
-                            <p>Для оплаты переведите эту сумму: {replenishData?.payAmount} {replenishData?.payCurrency}</p>
-                            <p>{replenishData?.payAddress}</p>
+                            <div className={styles.popUpProdContentQrBlock}>
+                                <QRCode value={replenishData?.payAddress} />
+                            </div>
 
-                            <CopyOnClick text={replenishData?.payAddress || ""}>
-                                <button onClick={handleCopy}>{copied ? "✔" : "📋"}</button>
-                            </CopyOnClick>
+                            <div className={styles.popUpProdContentQrInfo}>
+                                <div className={styles.popUpProdContentQrInfoItem}>
+                                    <p>Для оплаты переведите эту сумму:</p>
+                                    <div className={styles.popUpProdContentQrInfoItemBlock}>
+                                        <p>
+                                            {replenishData?.payAmount} {replenishData?.payCurrency}{" "}
+                                            <span>
+                        ≈ {replenishData?.amountReceived}{" "}
+                                                {replenishData?.priceCurrency.toUpperCase()}{" "}
+                    </span>
+                                        </p>
+                                    </div>
+                                </div>
 
-                            <p>Оставшееся время: {formatTime(remainingTime)}</p>
+                                <div className={styles.popUpProdContentQrInfoItem}>
+                                    <p>Для оплаты переведите эту сумму:</p>
+                                    <div className={styles.popUpProdContentQrInfoItemBlock}>
+                                        <p>{replenishData?.payAddress}</p>
+                                        <CopyOnClick text={replenishData?.payAddress}>
+                                            <button onClick={handleCopy}>
+                                                {copied ? (
+                                                    <svg className="coped" xmlns="http://www.w3.org/2000/svg" width={24} height={24}>
+                                                        <path d="M9 16.17 5.53 12.7a.996.996 0 1 0-1.41 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71a.996.996 0 1 0-1.41-1.41L9 16.17z" />
+                                                    </svg>
+                                                ) : (
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none">
+                                                        <defs>
+                                                            <clipPath id="a">
+                                                                <path fill="#fff" fillOpacity={0} d="M0 0h24v24H0z" />
+                                                            </clipPath>
+                                                        </defs>
+                                                        <g clipPath="url(#a)">
+                                                            <path
+                                                                stroke="#96C5F9"
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth={1.5}
+                                                                d="M10.07 7c.31-3.03 1.77-4 5.43-4C19.7 3 21 4.29 21 8.5c0 3.65-.99 5.11-4 5.43M8.5 10c4.2 0 5.5 1.29 5.5 5.5 0 4.2-1.3 5.5-5.5 5.5C4.29 21 3 19.7 3 15.5 3 11.29 4.29 10 8.5 10Z"
+                                                            />
+                                                        </g>
+                                                    </svg>
+                                                )}
+                                            </button>
+                                        </CopyOnClick>
+                                    </div>
+                                </div>
+                                <div className={styles.timeLine}>
+                                    <div className={styles.timeLineItem}>
+                                        <div
+                                            style={{
+                                                width: Math.ceil((remainingTime * 100) / 1200) + "%",
+                                            }}
+                                            className={styles.timeLineItemInfo}
+                                        ></div>
+                                    </div>
+                                    <div className={styles.timeInfo}>{formatTime(remainingTime)}</div>
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>

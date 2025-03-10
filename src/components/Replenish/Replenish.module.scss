@@ -43,6 +43,47 @@
     .popUpProdContent {
       padding: 40px;
 
+      .popupContentButton {
+        background: linear-gradient(225deg, rgb(12, 94, 255), rgb(0, 180, 210));
+        border-radius: 50px;
+        padding: 2px;
+        width: fit-content;
+        margin: 0 auto;
+
+        button {
+          padding: 13px 60px;
+          background: white;
+          border-radius: 50px;
+          transition: 0.5s;
+          p {
+            transition: all 0.5s;
+            color: rgb(12, 94, 255);
+            background: linear-gradient(225deg, rgb(12, 94, 255), rgb(0, 180, 210));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 20px;
+            letter-spacing: -0.1%;
+            text-align: left;
+          }
+        }
+
+        &:hover {
+          button {
+            background: transparent;
+            p {
+              background: none;
+              -webkit-background-clip: border-box;
+              background-clip: border-box;
+              -webkit-text-fill-color: initial;
+              color: white;
+            }
+          }
+        }
+      }
+
       .mainSelect {
         margin-bottom: 25px;
       }

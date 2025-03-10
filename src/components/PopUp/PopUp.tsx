@@ -1,95 +1,71 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
-import {
-    setPopUpState,
-    BalanceChartData as SliceBalanceChartData,
-    ProcessedBalanceChart as SliceProcessedBalanceChart
-} from 'src/store/analytics/analyticsSlice';
-import { useGetOperationsListQuery, useGetBalanceChartQuery } from 'src/store/analytics/analyticsAPI';
-import Operations from '../Operations/Operations';
-import LineChartComponent from 'src/components/LineChart/LineChart';
-import styles from './PopUp.module.scss';
-
-interface ProcessedBalanceChart extends SliceProcessedBalanceChart {
-    data: number[] | [];
-    lab: string[] | [];
-    masterAccount: number;
-    investmentAccount: number;
-    agentAccount: number;
-    mainData?: { month: string; average: number }[] | [];
-    date?: string;
-    balance?: number;
-}
-
-interface BalanceChartData extends Omit<SliceBalanceChartData, 'mainData' | 'data' | 'lab'> {
-    mainData: any[];
-    data: any[];
-    lab: any[];
-}
+import React, { useState, useEffect } from "react";
+import styles from "./PopUp.module.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { setPopUpState } from "src/store/analytics/analyticsSlice";
+import { useGetOperationsListQuery, useGetBalanceChartQuery } from "src/store/analytics/analyticsAPI";
+import Operations from "../Operations/Operations";
+import LineChartComponent from "src/components/LineChart/LineChart";
+import Select from "src/components/Select/Select";
 
 const PopUp: React.FC = () => {
     const dispatch = useDispatch();
     const popUpState = useSelector((state: RootState) => state.analytics.popUp);
 
-    const processedRef = useRef<boolean>(false);
-
     const [selectValue, setSelectValue] = useState<string>('WEEKLY');
     const [showOperationsList, setShowOperationsList] = useState<number | null>(3);
 
-    const { data: operationsData } = useGetOperationsListQuery({
+    const { data: operationsData, isLoading: operationsLoading } = useGetOperationsListQuery({
         accountType: popUpState.info ?? undefined,
-        pageNumber: showOperationsList ?? 3,
+        pageNumber: showOperationsList || undefined,
     });
 
-    const { data: balanceChartDataResponse } = useGetBalanceChartQuery({
+    const { data: balanceChartDataResponse, isLoading: chartLoading } = useGetBalanceChartQuery({
         period: selectValue,
         accountType: popUpState.info ?? undefined,
     });
 
     useEffect(() => {
-        if (!operationsData || !balanceChartDataResponse || processedRef.current) {
-            return;
-        }
+        if (!operationsData || !balanceChartDataResponse) return;
 
-        processedRef.current = true;
+        const processedBalanceChartData = Array.isArray(balanceChartDataResponse)
+            ? balanceChartDataResponse
+            : [balanceChartDataResponse];
 
-        try {
-            const processedBalanceChartData = (Array.isArray(balanceChartDataResponse)
-                ? balanceChartDataResponse
-                : [balanceChartDataResponse]) as unknown as ProcessedBalanceChart[];
+        const balance = processedBalanceChartData[0]?.masterAccount || 0;
+        const totalBalance = popUpState.balance;
+        const percent = totalBalance > 0 ? Math.round((balance / totalBalance) * 100) : 0;
 
-            const balance = processedBalanceChartData[0]?.masterAccount || 0;
-            const totalBalance = popUpState.balance;
-            const percent = totalBalance > 0 ? Math.round((balance / totalBalance) * 100) : 0;
+        const balanceChartData = processedBalanceChartData.map(item => ({
+            mainData: item.mainData ?? [],
+            profitability: item.profitability,
+            data: item.data ?? [],
+            lab: item.lab ?? [],
+            masterAccount: item.masterAccount,
+            investmentAccount: item.investmentAccount,
+            agentAccount: item.agentAccount,
+            date: item.date ?? '',
+            balance: item.balance ?? 0,
+        }));
 
-            const balanceChartData = processedBalanceChartData.map(item => ({
-                mainData: item.mainData ?? [],
-                profitability: item.profitability,
-                data: item.data ?? [],
-                lab: item.lab ?? [],
-                masterAccount: item.masterAccount,
-                investmentAccount: item.investmentAccount,
-                agentAccount: item.agentAccount,
-                date: item.date ?? '',
-                balance: item.balance ?? 0,
-            })) as unknown as SliceBalanceChartData[];
+        const operations = operationsData.transactionOperationsContent.content.map((operation: any) => ({
+            transactionOperationId: operation.transactionOperationId,
+            type: operation.type,
+            date: operation.date,
+            amount: operation.amount,
+            status: operation.status,
+            id: operation.id || '',
+            description: operation.description || '',
+        }));
 
-            dispatch(setPopUpState({
-                ...popUpState,
-                operations: operationsData,
-                balanceChartData,
-                balance,
-                percent,
-            }));
-        } catch (error) {
-            console.error("Error processing data:", error);
-        }
+        dispatch(setPopUpState({
+            ...popUpState,
+            operations,
+            balanceChartData,
+            balance,
+            percent,
+        }));
     }, [balanceChartDataResponse, operationsData, dispatch]);
-
-    useEffect(() => {
-        processedRef.current = false;
-    }, [balanceChartDataResponse, operationsData]);
 
     const handleClose = () => {
         dispatch(setPopUpState({
@@ -104,23 +80,35 @@ const PopUp: React.FC = () => {
     };
 
     const handleOpenReplenish = () => {
-        dispatch(setPopUpState({
-            isOpen: false,
-            info: null,
-            type: '',
-            balance: 0,
-            percent: 0,
-            operations: [],
-            balanceChartData: [],
-        }));
+        handleClose();
 
-        const event = new CustomEvent('openReplenishPopup');
-        window.dispatchEvent(event);
+        setTimeout(() => {
+            const event = new CustomEvent('openReplenishPopup');
+            window.dispatchEvent(event);
+        }, 50);
+    };
+
+    const handleOpenTransfer = () => {
+        handleClose();
+
+        setTimeout(() => {
+            const event = new CustomEvent('openTransferPopup');
+            window.dispatchEvent(event);
+        }, 50);
+    };
+
+    const handleOpenSend = () => {
+        handleClose();
+
+        setTimeout(() => {
+            const event = new CustomEvent('openSendPopup');
+            window.dispatchEvent(event);
+        }, 50);
     };
 
     if (!popUpState.isOpen) return null;
 
-    const safeBalanceChartData: BalanceChartData = {
+    const safeBalanceChartData = {
         mainData: popUpState.balanceChartData?.[0]?.mainData ?? [],
         profitability: popUpState.balanceChartData?.[0]?.profitability ?? 0,
         data: popUpState.balanceChartData?.[0]?.data ?? [],
@@ -132,54 +120,72 @@ const PopUp: React.FC = () => {
         balance: popUpState.balance,
     };
 
+    const operationsCount = operationsData?.transactionOperationsContent?.totalElements || 0;
+
     return (
-        <div className={styles.popup} onClick={handleClose}>
-            <div className={styles.popupBlock} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.popup}>
+            <div className={styles.popupBlock}>
                 <div className={styles.popupHeader}>
-                    <p>{popUpState.type || 'Информация'}</p>
+                    <p>{popUpState.type}</p>
                     <button onClick={handleClose}>
-                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20.8366 9.17188L9.16992 20.8386M9.16995 9.17188L20.8366 20.8386" stroke="#00B4D2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <svg
+                            width="30"
+                            height="30"
+                            viewBox="0 0 30 30"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M20.8366 9.17188L9.16992 20.8386M9.16995 9.17188L20.8366 20.8386"
+                                stroke="#00B4D2"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
                         </svg>
                     </button>
                 </div>
                 <div className={styles.popupContent}>
                     <div className={styles.popupContentList}>
-                        <p>Баланс: <span>${popUpState.balance}</span></p>
-                        <p>Доля от общего баланса: <span>{popUpState.percent}%</span></p>
-                        <p>Операции за месяц: <span>{popUpState.operations.length || 0}</span></p>
-                        <Operations count={3} showOperationsList={showOperationsList ?? 3} setShowOperationsList={setShowOperationsList} />
+                        <div className={styles.popupContentListInfo}>
+                            <p>
+                                Баланс: <span>${popUpState.balance}</span>
+                            </p>
+                            <p>
+                                Доля от общего баланса: <span>{popUpState.percent}%</span>
+                            </p>
+                            <p>
+                                Кол-во операций за месяц: <span>{operationsCount}</span>
+                            </p>
+                        </div>
+                        <Operations
+                            count={6}
+                            showOperationsList={showOperationsList}
+                            setShowOperationsList={setShowOperationsList}
+                        />
                     </div>
-
-                    <LineChartComponent balanceChartData={safeBalanceChartData} selectValue={selectValue} />
-
+                   <div className={styles.chartSelect}>
+                       <Select value={selectValue} onChange={setSelectValue} className={`${styles.selected} ${styles.customClassName}`} />
+                       <LineChartComponent
+                           balanceChartData={safeBalanceChartData}
+                           selectValue={selectValue}
+                           className={styles.chart}
+                       />
+                   </div>
                     <div className={styles.popupContentList}>
-                        <div
-                            onClick={handleOpenReplenish}
-                            className={styles.popupContentButton}
-                        >
+                        <div className={styles.popupContentButton} onClick={handleOpenReplenish}>
                             <button>
                                 <p>Пополнить</p>
                             </button>
                         </div>
-
-                        <div
-                            onClick={() => {
-                                dispatch(setPopUpState({ isOpen: false, info: null, type: '', balance: 0, percent: 0, operations: [], balanceChartData: [] }));
-                            }}
-                            className={styles.popupContentButton}
-                        >
-                            <button>
-                                <p>Отправить</p>
-                            </button>
-                        </div>
-
-                        <div
-                            onClick={() => {
-                                dispatch(setPopUpState({ isOpen: false, info: null, type: '', balance: 0, percent: 0, operations: [], balanceChartData: [] }));
-                            }}
-                            className={styles.popupContentButton}
-                        >
+                        {popUpState.info === "MASTER" && (
+                            <div className={styles.popupContentButton} onClick={handleOpenSend}>
+                                <button>
+                                    <p>Отправить</p>
+                                </button>
+                            </div>
+                        )}
+                        <div className={styles.popupContentButton} onClick={handleOpenTransfer}>
                             <button>
                                 <p>Перевести</p>
                             </button>

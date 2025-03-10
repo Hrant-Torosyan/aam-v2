@@ -40,6 +40,25 @@ export interface BalanceChartResponse {
     agentAccount?: number;
 }
 
+export interface OperationItem {
+    id: string;
+    amount: number;
+    date: string;
+    status: "DONE" | "IN_PROCESS" | "FAILED";
+    type: string;
+    depositAddress?: string;
+    depositCurrencyFrom?: string;
+    withdrawalAddress?: string;
+    withdrawalCurrencyFrom?: string;
+    operationFrom?: string;
+    operationTo?: string;
+    projectTitle?: string;
+    projectTerm?: string;
+    projectPeriod?: string;
+    fromUserId?: string;
+    toUserId?: string | null;
+}
+
 export interface ProcessedBalanceChart {
     lab?: string[];
     data?: number[];
@@ -56,7 +75,6 @@ interface BalanceChartRequest {
     refresh?: number;
 }
 
-// Utility function to process the balance chart response
 const processBalanceChartResponse = (response: BalanceChartResponse, period: string): ProcessedBalanceChart => {
     if (!response) {
         return {
@@ -146,9 +164,7 @@ export const analyticsApi = createApi({
                     body: { period, accountType, refresh },
                 };
             },
-            transformResponse: (response: BalanceChartResponse, meta, args) => {
-                return processBalanceChartResponse(response, args.period);
-            },
+            transformResponse: (response: BalanceChartResponse, meta, args) => processBalanceChartResponse(response, args.period),
         }),
 
         getWallets: builder.query<WalletsData, void>({
@@ -178,9 +194,9 @@ export const analyticsApi = createApi({
             },
         }),
 
-        getOperationsListItem: builder.query<any, { id: string }>({
-            query: ({ id }) => ({
-                url: `${ENDPOINTS.OPERATIONS_ITEM}/${id}`,
+        getOperationsListItem: builder.query<OperationItem, string>({
+            query: (id) => ({
+                url: `transaction/operations/${id}`,
                 method: 'GET',
             }),
         }),
@@ -237,7 +253,7 @@ export const analyticsApi = createApi({
         togglePopUp: builder.mutation<void, void>({
             query: () => ({
                 url: `${ENDPOINTS.OPERATIONS_ITEM}/toggle`,
-                method: 'POST',
+                method: 'GET',
             }),
         }),
 
@@ -251,7 +267,7 @@ export const analyticsApi = createApi({
 
         setPopUpData: builder.mutation<void, { operationItem: any; chartData: any }>({
             query: ({ operationItem, chartData }) => ({
-                url: ENDPOINTS.OPERATIONS_ITEM, // Ensure correct URL for pop-up data
+                url: ENDPOINTS.OPERATIONS_ITEM,
                 method: 'POST',
                 body: { operationItem, chartData },
             }),
