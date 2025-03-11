@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MainSelect from "src/ui/MainSelect/MainSelect";
 import MainInput from "src/ui/MainInput/MainInput";
-import { useDispatch, useSelector } from "react-redux";
-import { setOperationsList } from "src/store/analytics/analyticsSlice";
-import { analyticsApi } from "src/store/analytics/analyticsAPI";
+import {analyticsApi, useGetWalletsQuery} from "src/store/analytics/analyticsAPI";
 import styles from "./Send.module.scss";
 import { Infoes, CurrencyKey, AccountDetails } from "./Infoes";
 
@@ -26,9 +24,10 @@ interface NetworkInfo {
 }
 
 const Send: React.FC<SendProps> = ({ setIsOpenSend, setSuccessInfo, setIsOpenSc }) => {
-    const dispatch = useDispatch();
-    const operationsArr = useSelector((state: any) => state.analytics.operationsArr);
-    const { masterAccount } = useSelector((state: any) => state.analytics.analyticsData || {});
+
+    const { data: walletsData, isLoading: isLoadingWallets } = useGetWalletsQuery();
+
+    const masterAccount = walletsData?.masterAccount || 0;
 
     const [sendInfo, setSendInfo] = useState<string>("");
     const [error, setError] = useState<ErrorType | undefined>(undefined);
@@ -109,20 +108,7 @@ const Send: React.FC<SendProps> = ({ setIsOpenSend, setSuccessInfo, setIsOpenSc 
             }
 
             if (response.success) {
-                dispatch(
-                    setOperationsList([
-                        ...operationsArr,
-                        {
-                            id: `${Date.now()}`,
-                            description: `Sent ${sumAmount} ${currency}`,
-                            amount: sumAmount,
-                            date: new Date().toISOString(),
-                            transactionOperationId: `${Date.now()}`,
-                            type: "SEND",
-                            status: "DONE",
-                        },
-                    ])
-                );
+                await analyticsApi.endpoints.getOperationsList.initiate({}); // Refresh operations list
 
                 setIsOpenSend(false);
                 setSuccessInfo(true);
@@ -138,6 +124,7 @@ const Send: React.FC<SendProps> = ({ setIsOpenSend, setSuccessInfo, setIsOpenSc 
             setIsSubmitting(false);
         }
     };
+
     return (
         <div className={styles.send}>
             <div className={styles.popUpProdBlock}>
@@ -165,8 +152,7 @@ const Send: React.FC<SendProps> = ({ setIsOpenSend, setSuccessInfo, setIsOpenSc 
                     <MainSelect
                         selectTitle="Счет:"
                         selectValue={accountOption}
-                        setSelectValue={() => {
-                        }}
+                        setSelectValue={() => {}}
                         dataSelect={[accountOption]}
                     />
 

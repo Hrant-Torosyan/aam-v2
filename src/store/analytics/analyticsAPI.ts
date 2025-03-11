@@ -1,79 +1,26 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {
+    BalanceChartRequest,
+    BalanceChartResponse,
+    DailyBalance,
+    MonthlyBalance, OperationItem, PopUpState,
+    ProcessedBalanceChart, WalletsData
+} from '@/types/types';
 
-const BASE_URL = "http://145.223.99.13:8080/api/rest/";
+const BASE_URL = 'http://145.223.99.13:8080/api/rest/';
 
 const ENDPOINTS = {
-    WALLETS: "wallets",
-    BALANCE_CHART: "wallets/balance/chart",
-    OPERATIONS_LIST: "transaction/operations/list",
-    OPERATIONS_ITEM: "transaction/operations",
-    TRANSFER: "wallets/inner/transfer",
-    REPLENISH: "deposit/payments/create",
-    REPLENISH_GET: "deposit/payments/currency/info",
-    SEND_USER: "wallets/outer/transfer",
-    SEND_WALLET: "withdrawal/payments/request",
-    ANALYTIC: "portfolios/analytic/list",
+    WALLETS: 'wallets',
+    BALANCE_CHART: 'wallets/balance/chart',
+    OPERATIONS_LIST: 'transaction/operations/list',
+    OPERATIONS_ITEM: 'transaction/operations',
+    TRANSFER: 'wallets/inner/transfer',
+    REPLENISH: 'deposit/payments/create',
+    REPLENISH_GET: 'deposit/payments/currency/info',
+    SEND_USER: 'wallets/outer/transfer',
+    SEND_WALLET: 'withdrawal/payments/request',
+    ANALYTIC: 'portfolios/analytic/list',
 };
-
-interface DailyBalance {
-    date: string;
-    amount: number;
-}
-
-interface MonthlyBalance {
-    date: string;
-    amount: number;
-}
-
-export interface WalletsData {
-    masterAccount: number;
-    investmentAccount: number;
-    agentAccount: number;
-}
-
-export interface BalanceChartResponse {
-    dailyBalancesChart: DailyBalance[];
-    monthlyBalancesChart: MonthlyBalance[][] | null;
-    profitability: number;
-    masterAccount?: number;
-    investmentAccount?: number;
-    agentAccount?: number;
-}
-
-export interface OperationItem {
-    id: string;
-    amount: number;
-    date: string;
-    status: "DONE" | "IN_PROCESS" | "FAILED";
-    type: string;
-    depositAddress?: string;
-    depositCurrencyFrom?: string;
-    withdrawalAddress?: string;
-    withdrawalCurrencyFrom?: string;
-    operationFrom?: string;
-    operationTo?: string;
-    projectTitle?: string;
-    projectTerm?: string;
-    projectPeriod?: string;
-    fromUserId?: string;
-    toUserId?: string | null;
-}
-
-export interface ProcessedBalanceChart {
-    lab?: string[];
-    data?: number[];
-    mainData?: { month: string; average: number }[];
-    profitability: number;
-    masterAccount: number;
-    investmentAccount: number;
-    agentAccount: number;
-}
-
-interface BalanceChartRequest {
-    period: string;
-    accountType?: string;
-    refresh?: number;
-}
 
 const processBalanceChartResponse = (response: BalanceChartResponse, period: string): ProcessedBalanceChart => {
     if (!response) {
@@ -90,8 +37,8 @@ const processBalanceChartResponse = (response: BalanceChartResponse, period: str
 
     if (!response.monthlyBalancesChart) {
         const lab = response.dailyBalancesChart.map((item: DailyBalance) =>
-            period === "WEEKLY"
-                ? ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"][new Date(+item.date).getDay()]
+            period === 'WEEKLY'
+                ? ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'][new Date(+item.date).getDay()]
                 : new Date(+item.date).toLocaleDateString()
         );
 
@@ -151,6 +98,7 @@ export const analyticsApi = createApi({
             return headers;
         },
     }),
+    tagTypes: ['PopUp'],
     endpoints: (builder) => ({
         getBalanceChart: builder.query<ProcessedBalanceChart, BalanceChartRequest>({
             query: ({ period, accountType, refresh }) => {
@@ -164,7 +112,8 @@ export const analyticsApi = createApi({
                     body: { period, accountType, refresh },
                 };
             },
-            transformResponse: (response: BalanceChartResponse, meta, args) => processBalanceChartResponse(response, args.period),
+            transformResponse: (response: BalanceChartResponse, meta, args) =>
+                processBalanceChartResponse(response, args.period),
         }),
 
         getWallets: builder.query<WalletsData, void>({
@@ -179,7 +128,7 @@ export const analyticsApi = createApi({
                 const queryParams = new URLSearchParams();
                 if (pageNumber) queryParams.append('pageSize', String(pageNumber));
 
-                const validAccountTypes = ["MASTER", "INVESTMENT", "AGENT"];
+                const validAccountTypes = ['MASTER', 'INVESTMENT', 'AGENT'];
                 const body: Record<string, any> = {};
 
                 if (accountType && validAccountTypes.includes(accountType)) {
@@ -273,6 +222,30 @@ export const analyticsApi = createApi({
             }),
         }),
 
+        getPopUpState: builder.query<PopUpState, void>({
+            queryFn: () => {
+                const popUpData = localStorage.getItem('popUpState');
+                return {
+                    data: popUpData ? JSON.parse(popUpData) : {
+                        isOpen: false,
+                        info: null,
+                        type: '',
+                        balance: 0,
+                        percent: 0
+                    }
+                };
+            },
+            providesTags: ['PopUp'],
+            keepUnusedDataFor: 0,
+        }),
+
+        setPopUpState: builder.mutation<void, PopUpState>({
+            queryFn: (popUpData) => {
+                localStorage.setItem('popUpState', JSON.stringify(popUpData));
+                return { data: undefined };
+            },
+            invalidatesTags: ['PopUp'],
+        }),
     }),
 });
 
@@ -284,12 +257,10 @@ export const {
     useSetTransferMutation,
     useSetReplenishMutation,
     useGetReplenishMinMaxQuery,
-    useSetSendUserMutation,
-    useSetSendWalletMutation,
     useGetAnalyticListQuery,
     useTogglePopUpMutation,
-    useSetPopUpInfoMutation,
-    useSetPopUpDataMutation,
+    useGetPopUpStateQuery,
+    useSetPopUpStateMutation,
 } = analyticsApi;
 
 export default analyticsApi;

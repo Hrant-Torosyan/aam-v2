@@ -75,3 +75,11 @@
     }
   }
 }
+
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  #lineChart {
+    margin-left: 20px;
+    width: calc(65% - 20px) !important;
+  }
+}

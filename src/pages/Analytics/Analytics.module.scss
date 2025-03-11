@@ -31,7 +31,7 @@
         font-size: 14px;
         font-weight: 400;
         line-height: 16px;
-        letter-spacing: 0%;
+        letter-spacing: 0;
         background: rgba(5, 205, 153, 0.1);
       }
     }
@@ -291,6 +291,16 @@
         width: calc(65% - 20px);
         margin-top: 20px;
         margin-left: 20px;
+
+        #lineChart {
+          order: 3;
+        }
+        .doughnutChart {
+          order: 2;
+        }
+        .balance {
+          order: 1;
+        }
       }
     }
   }

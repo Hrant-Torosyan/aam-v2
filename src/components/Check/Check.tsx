@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useDispatch, } from "react-redux";
-import { setPopUpState } from "src/store/analytics/analyticsSlice";
-import { useGetWalletsQuery } from "src/store/analytics/analyticsAPI";
+import { useGetWalletsQuery, useSetPopUpStateMutation } from "src/store/analytics/analyticsAPI";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
 import "swiper/css";
 import styles from "./Check.module.scss";
 
@@ -11,42 +10,26 @@ interface CheckProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface Account {
-    type: string;
-    label: string;
-    balance: number;
-}
-
-// Updated Operation interface to exactly match the one in analyticsSlice
-interface Operation {
-    id: string;
-    description: string;
-    amount: number;
-    date: string | number; // Updated to match the analyticsSlice definition
-    transactionOperationId: string;
-    type: string;
-    status: "DONE" | "IN_PROCESS" | "FAILED"; // Updated to use the union type
-}
-
-interface BalanceChartData {
-    mainData: never[];
-    data: never[];
-    lab: never[];
-    date: string;
-    balance: number;
-    profitability: number;
-    masterAccount: number;
-    investmentAccount: number;
-    agentAccount: number;
-}
-
 const Check: React.FC<CheckProps> = ({ isOpen, setIsOpen }) => {
-    const dispatch = useDispatch();
     const [selectedAccountType, setSelectedAccountType] = useState<string | null>(null);
 
-    const { data: walletsData, isLoading: isLoadingWallets, error: walletsError } = useGetWalletsQuery();
+    const {
+        data: walletsData,
+        isLoading: isLoadingWallets,
+        error: walletsError
+    } = useGetWalletsQuery();
 
-    const accounts: Account[] = [
+    const [setPopUpState, { isLoading: isSettingPopUp }] = useSetPopUpStateMutation();
+
+    if (isLoadingWallets) {
+        return <div>Loading...</div>;
+    }
+
+    if (walletsError) {
+        return <div>Error loading wallets data</div>;
+    }
+
+    const accounts = [
         { type: "MASTER", label: "Основной счет", balance: walletsData?.masterAccount || 0 },
         { type: "INVESTMENT", label: "Инвестиционный счет", balance: walletsData?.investmentAccount || 0 },
         { type: "AGENT", label: "Агентский счет", balance: walletsData?.agentAccount || 0 },
@@ -54,51 +37,54 @@ const Check: React.FC<CheckProps> = ({ isOpen, setIsOpen }) => {
 
     const totalBalance = accounts.reduce((acc, account) => acc + account.balance, 0);
 
-    const handleSelect = (account: Account) => {
+    const handleSelect = async (account: { type: string; label: string; balance: number }) => {
+        const percent = totalBalance > 0 ? Math.round((account.balance / totalBalance) * 100) : 0;
+
+        await setPopUpState({
+            isOpen: true,
+            info: account.type,
+            type: account.label,
+            balance: account.balance,
+            percent: percent
+        });
+
         setSelectedAccountType(account.type);
-
-        // Initialize with an empty array that matches the required Operation type
-        const operationsData: Operation[] = [];
-        const balanceChartData: BalanceChartData[] = [
-            {
-                mainData: [],
-                profitability: 0,
-                data: [],
-                lab: [],
-                balance: account.balance,
-                date: new Date().toISOString(),
-                masterAccount: walletsData?.masterAccount || 0,
-                investmentAccount: walletsData?.investmentAccount || 0,
-                agentAccount: walletsData?.agentAccount || 0,
-            },
-        ];
-
-        const balance = account.balance;
-        const percent = totalBalance > 0 ? Math.round((balance / totalBalance) * 100) : 0;
-
-        dispatch(
-            setPopUpState({
-                isOpen: true,
-                info: account.type,
-                type: account.label,
-                balance: balance,
-                percent: percent,
-                operations: operationsData,
-                balanceChartData: balanceChartData,
-            })
-        );
         setIsOpen(true);
     };
 
     return (
         <div className={styles.checkBlock}>
-            <Swiper slidesPerView={3} spaceBetween={10} className={styles.swiperContainer}>
+            {accounts.map((account) => (
+                <div className={styles.checkBlockItem} key={account.type}>
+                    <p>{account.label}:</p>
+                    <p>${account.balance.toLocaleString() || 0}</p>
+                    <button
+                        onClick={() => handleSelect(account)}
+                        disabled={isSettingPopUp}
+                    >
+                        Подробнее
+                    </button>
+                </div>
+            ))}
+
+            <Swiper
+                slidesPerView={2}
+                spaceBetween={10}
+                pagination={{ clickable: true }}
+                modules={[Pagination]}
+                className={styles.mySwiper}
+            >
                 {accounts.map((account) => (
-                    <SwiperSlide key={account.type} className={styles.swiperSlide}>
+                    <SwiperSlide key={account.type}>
                         <div className={styles.checkBlockItem}>
-                            <p>{account.label}</p>
-                            <p>${account.balance.toLocaleString()}</p>
-                            <button onClick={() => handleSelect(account)}>Подробнее</button>
+                            <p>{account.label}:</p>
+                            <p>${account.balance.toLocaleString() || 0}</p>
+                            <button
+                                onClick={() => handleSelect(account)}
+                                disabled={isSettingPopUp}
+                            >
+                                Подробнее
+                            </button>
                         </div>
                     </SwiperSlide>
                 ))}

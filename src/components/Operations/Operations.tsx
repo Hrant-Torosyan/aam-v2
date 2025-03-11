@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Operations.module.scss";
-import { useDispatch } from "react-redux";
-import { setOperationsList } from "src/store/analytics/analyticsSlice";
 import { useGetOperationsListQuery } from "src/store/analytics/analyticsAPI";
 import OperationPopUp from 'src/components/OperationPopUp/OperationPopUp';
 
@@ -36,12 +34,11 @@ interface OperationItem {
 }
 
 const Operations: React.FC<OperationsProps> = ({
-       count,
-       setShowOperationsList,
-       showOperationsList,
-       accountType,
-   }) => {
-    const dispatch = useDispatch();
+   count,
+   setShowOperationsList,
+   showOperationsList,
+   accountType,
+}) => {
     const [isActive, setIsactive] = useState(false);
     const [operationId, setOperationId] = useState<string>("");
 
@@ -51,22 +48,15 @@ const Operations: React.FC<OperationsProps> = ({
     });
 
     useEffect(() => {
-        if (operationsArr?.transactionOperationsContent?.content) {
-            dispatch(setOperationsList(operationsArr.transactionOperationsContent.content));
-        }
-    }, [operationsArr, dispatch]);
-
-    useEffect(() => {
-        // Reset showOperationsList when component mounts
-        if (showOperationsList !== null) {
+        if (showOperationsList === null) {
             setShowOperationsList(null);
         }
-    }, []);
+    }, [showOperationsList, setShowOperationsList]); // Ensure resetting only if necessary
 
     const displayedOperations = operationsArr?.transactionOperationsContent?.content
-        ? showOperationsList !== null
-            ? operationsArr.transactionOperationsContent.content
-            : operationsArr.transactionOperationsContent.content.slice(0, 3)
+        ? showOperationsList === null
+            ? operationsArr.transactionOperationsContent.content.slice(0, 3)
+            : operationsArr.transactionOperationsContent.content
         : [];
 
     const getOperationTypeText = (type: string): string => {

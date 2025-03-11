@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useGetWalletsQuery, useSetTransferMutation } from "src/store/analytics/analyticsAPI";
-import { setTransferSuccess } from "src/store/analytics/analyticsSlice";
 
 import MainSelect from 'src/ui/MainSelect/MainSelect';
 import MainInput from "src/ui/MainInput/MainInput";
 import styles from './Transfer.module.scss';
-import { AppDispatch } from "@/store/store";
 
 interface AccountDetails {
     name: string;
@@ -25,11 +22,8 @@ const Transfer: React.FC<TransferProps> = ({ setIsOpenTransfer, setIsOpenSc }) =
     const [to, setTo] = useState<string>("");
     const [sumValue, setSumValue] = useState<string>("");
     const [error, setError] = useState<string>("");
-
     const [setTransfer] = useSetTransferMutation();
     const { data: walletsData } = useGetWalletsQuery();
-
-    const dispatch = useDispatch<AppDispatch>();
 
     const getOnePrice = (accountType: string) => {
         switch (accountType) {
@@ -68,12 +62,11 @@ const Transfer: React.FC<TransferProps> = ({ setIsOpenTransfer, setIsOpenSc }) =
         try {
             const res = await setTransfer({ bodyData: { fromAccount, toAccount, amount: sumAmount } }).unwrap();
             if (res.success) {
-                dispatch(setTransferSuccess(true));  // Dispatch success action here
+                setIsOpenTransfer(false);
+                setIsOpenSc(true);
             } else {
-                dispatch(setTransferSuccess(false));
+                setError("Произошла ошибка");
             }
-            setIsOpenTransfer(false);
-            setIsOpenSc(true);
         } catch (error) {
             setError("Произошла ошибка");
         }
@@ -118,7 +111,7 @@ const Transfer: React.FC<TransferProps> = ({ setIsOpenTransfer, setIsOpenSc }) =
                 </div>
                 <div className="popUpProdContent">
                     <MainSelect
-                        selectTitle={defaultFromTitle}  // Use the default title
+                        selectTitle={defaultFromTitle}
                         selectValue={from}
                         setSelectValue={(value) => handleSelectChange(value, setFrom)}
                         dataSelect={[
@@ -128,7 +121,7 @@ const Transfer: React.FC<TransferProps> = ({ setIsOpenTransfer, setIsOpenSc }) =
                         ]}
                     />
                     <MainSelect
-                        selectTitle={defaultToTitle}  // Use the default title
+                        selectTitle={defaultToTitle}
                         selectValue={to}
                         setSelectValue={(value) => handleSelectChange(value, setTo)}
                         dataSelect={[
