@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-
-import { useDispatch } from "react-redux";
-import { setSelectValue, AccountDetails } from "src/store/analytics/analyticsSlice";
+import { useGetBalanceChartQuery, useGetWalletsQuery } from "src/store/analytics/analyticsAPI";  // Import RTK queries
 
 import Select from "src/components/Select/Select";
 import {
@@ -16,23 +14,7 @@ import {
 
 import styles from "./LineChart.module.scss";
 
-interface MainDataItem {
-    month: string;
-    average: number;
-}
-
-interface BalanceChartData {
-    lab?: string[];
-    data: number[];
-    mainData: MainDataItem[];
-    profitability: number;
-    masterAccount: number;
-    investmentAccount: number;
-    agentAccount: number;
-}
-
 interface LineChartProps {
-    balanceChartData?: BalanceChartData;
     color?: string;
     selectValue: string;
     infoPopUp?: boolean;
@@ -40,14 +22,17 @@ interface LineChartProps {
 }
 
 const LineChartComponent: React.FC<LineChartProps> = ({
-      balanceChartData,
-      color = "#348EF1",
-      selectValue,
-      infoPopUp = false,
-      className = ""
-  }) => {
-    const dispatch = useDispatch();
+  color = "#348EF1",
+  selectValue,
+  infoPopUp = false,
+  className = ""
+}) => {
     const [chartData, setChartData] = useState<{ name: string; value: number }[]>([]);
+
+    const { data: balanceChartData, isLoading: isLoadingBalanceChart } = useGetBalanceChartQuery({ period: selectValue });
+    const { data: walletsData, isLoading: isLoadingWallets } = useGetWalletsQuery();
+
+    const isLoading = isLoadingBalanceChart || isLoadingWallets;
 
     const computedChartData = useMemo(() => {
         if (!balanceChartData) return [];
@@ -56,11 +41,11 @@ const LineChartComponent: React.FC<LineChartProps> = ({
 
         const labels = isTimeFrameData
             ? balanceChartData.lab ?? []
-            : balanceChartData.mainData.map(item => item.month);
+            : balanceChartData.mainData?.map(item => item.month) ?? []; // Safe fallback
 
         const values = isTimeFrameData
             ? balanceChartData.data ?? []
-            : balanceChartData.mainData.map(item => item.average);
+            : balanceChartData.mainData?.map(item => item.average) ?? [];
 
         const maxLength = Math.max(labels.length, values.length);
 
@@ -76,24 +61,13 @@ const LineChartComponent: React.FC<LineChartProps> = ({
 
     const maxValue = Math.ceil(chartData.reduce((max, item) => Math.max(max, item.value), 0) * 1.2) || 300;
 
-    const handleSelectChange = (value: string) => {
-        const accountDetails: AccountDetails = {
-            info: value,
-            type: '',
-            balance: 0,
-            percent: 0,
-            color: '',
-            bg: '',
-        };
-
-        dispatch(setSelectValue(accountDetails));
-    };
+    if (isLoading) return <div>Loading...</div>;
 
     return (
         <div className={`${styles.lineChart} ${className}`}> {/* Apply className here */}
             <p className={styles.chartTitle}>График изменения баланса</p>
 
-            {infoPopUp && <Select value={selectValue} onChange={handleSelectChange} />}
+            {infoPopUp && <Select value={selectValue} onChange={() => {}} />}
 
             <ResponsiveContainer width="100%" height={220}>
                 <AreaChart data={chartData} margin={{ top: 20, right: 5, bottom: 5, left: -20 }}>

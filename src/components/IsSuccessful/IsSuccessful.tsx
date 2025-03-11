@@ -1,8 +1,5 @@
-import React, {Dispatch, SetStateAction, useEffect} from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { useTogglePopUpMutation } from "src/store/analytics/analyticsAPI";
-import { setPopUpState } from "src/store/analytics/analyticsSlice";
 import styles from './IsSuccessful.module.scss';
 
 interface IsSuccessfulProps {
@@ -13,21 +10,17 @@ interface IsSuccessfulProps {
 }
 
 const IsSuccessful: React.FC<IsSuccessfulProps> = ({ info, delay }) => {
-    const dispatch = useDispatch();
-    const popUpState = useSelector((state: RootState) => state.analytics.popUp);
     const [togglePopUp] = useTogglePopUpMutation();
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            dispatch(setPopUpState({ ...popUpState, isOpen: false }));
             togglePopUp();
         }, delay);
 
         return () => clearTimeout(timer);
-    }, [dispatch, delay, popUpState, togglePopUp]);
+    }, [delay, togglePopUp]);
 
     const handleClose = () => {
-        dispatch(setPopUpState({ ...popUpState, isOpen: false }));
         togglePopUp();
     };
 

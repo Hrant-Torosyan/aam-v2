@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-// import { useGetAnalyticListQuery } from "src/store/analytics/analyticsAPI"; // Commenting out the API request
 import DoughnutChart from "src/components/DoughnutChart/DoughnutChart";
 import ProdItems from "src/components/ProdItems/ProdItem";
 import styles from './PopUpPortfolio.module.scss';
 
-// Mock data for testing purposes
 const mockAnalyticListData = {
     content: [
         {

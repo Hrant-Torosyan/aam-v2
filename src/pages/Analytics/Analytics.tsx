@@ -9,9 +9,9 @@ import PopUpPortfolio from 'src/components/PopUpPortfolio/PopUpPortfolio';
 import Check from 'src/components/Check/Check';
 import Operations from 'src/components/Operations/Operations';
 import PopUp from 'src/components/PopUp/PopUp';
-import Transfer from 'src/components/Transfer/Transfer';
-import Replenish from 'src/components/Replenish/Replenish';
-import Send from 'src/components/Send/Send';
+import Transfer from 'src/components/PopUp/Transfer/Transfer';
+import Replenish from 'src/components/PopUp/Replenish/Replenish';
+import Send from 'src/components/PopUp/Send/Send';
 import IsSuccessful from 'src/components/IsSuccessful/IsSuccessful';
 
 import balance from 'src/images/svg/balance.svg';
@@ -28,7 +28,7 @@ const Analytics: React.FC = () => {
     const [isOpenTransfer, setIsOpenTransfer] = useState<boolean>(false);
     const [isOpenSc, setIsOpenSc] = useState<boolean>(false);
     const [isOpenReplenish, setIsOpenReplenish] = useState<boolean>(false);
-    const [isOpenSend, setIsOpenSend] = useState<boolean>(false); // Added state for Send popup
+    const [isOpenSend, setIsOpenSend] = useState<boolean>(false);
     const [showOperationsList, setShowOperationsList] = useState<number | null>(null);
     const [successInfo, setSuccessInfo] = useState<boolean>(true);
 
@@ -40,7 +40,6 @@ const Analytics: React.FC = () => {
 
     const isLoading = isLoadingWallets || isLoadingBalanceChart;
 
-    // Add event listeners for custom events from PopUp
     useEffect(() => {
         const handleOpenReplenish = () => {
             setIsOpenReplenish(true);
@@ -54,12 +53,10 @@ const Analytics: React.FC = () => {
             setIsOpenSend(true);
         };
 
-        // Add event listeners
         window.addEventListener('openReplenishPopup', handleOpenReplenish);
         window.addEventListener('openTransferPopup', handleOpenTransfer);
         window.addEventListener('openSendPopup', handleOpenSend);
 
-        // Cleanup function
         return () => {
             window.removeEventListener('openReplenishPopup', handleOpenReplenish);
             window.removeEventListener('openTransferPopup', handleOpenTransfer);
@@ -158,7 +155,7 @@ const Analytics: React.FC = () => {
                         <p>${totalBalance.toLocaleString()}</p>
                     </div>
 
-                    <LineChartComponent balanceChartData={safeBalanceChartData} selectValue={selectValue} />
+                    <LineChartComponent selectValue={selectValue}/>
 
                     <div className={styles.doughnutChart}>
                         <div className={styles.doughnutChartTitle}>Структура портфеля:</div>

@@ -1,8 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 module.exports = {
-    entry: './src/index.tsx',  // Make sure your entry is pointing to your main .tsx file
+    entry: './src/index.tsx',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
@@ -10,9 +14,9 @@ module.exports = {
     },
     mode: 'development',
     resolve: {
-        extensions: ['.ts', '.tsx', '.js'],  // Allow Webpack to resolve .ts and .tsx files
+        extensions: ['.ts', '.tsx', '.js'],
         alias: {
-            '@': path.resolve(__dirname, 'src'), // Alias for 'src' folder
+            '@': path.resolve(__dirname, 'src'),
         },
     },
     module: {
@@ -36,6 +40,9 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html',
+        }),
+        new webpack.DefinePlugin({
+            'process.env.REACT_APP_BASE_URL': JSON.stringify(process.env.REACT_APP_BASE_URL),
         }),
     ],
 };
