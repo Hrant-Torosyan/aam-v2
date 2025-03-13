@@ -19,13 +19,15 @@ interface LineChartProps {
     selectValue: string;
     infoPopUp?: boolean;
     className?: string;
+    id?: string;
 }
 
 const LineChartComponent: React.FC<LineChartProps> = ({
   color = "#348EF1",
   selectValue,
   infoPopUp = false,
-  className = ""
+  className = "",
+ id = "lineChart"
 }) => {
     const [chartData, setChartData] = useState<{ name: string; value: number }[]>([]);
 
@@ -64,7 +66,7 @@ const LineChartComponent: React.FC<LineChartProps> = ({
     if (isLoading) return <div>Loading...</div>;
 
     return (
-        <div className={`${styles.lineChart} ${className}`}> {/* Apply className here */}
+        <div className={`${styles.lineChart} ${className}`} id={id}>
             <p className={styles.chartTitle}>График изменения баланса</p>
 
             {infoPopUp && <Select value={selectValue} onChange={() => {}} />}

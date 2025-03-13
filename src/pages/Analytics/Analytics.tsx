@@ -155,7 +155,7 @@ const Analytics: React.FC = () => {
                         <p>${totalBalance.toLocaleString()}</p>
                     </div>
 
-                    <LineChartComponent selectValue={selectValue}/>
+                    <LineChartComponent selectValue={selectValue} id={styles.lineChart}/>
 
                     <div className={styles.doughnutChart}>
                         <div className={styles.doughnutChartTitle}>Структура портфеля:</div>
