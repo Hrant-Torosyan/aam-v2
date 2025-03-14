@@ -1,7 +1,4 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store/store";
-import { setStep } from "../../../store/auth/authSlice";
+import React, { useState } from "react";
 import MainRegister from "./MainRegister";
 import LoginPage from "../Login/LoginPage";
 import Email from "../ResetPassword/Email";
@@ -12,25 +9,16 @@ interface RegisterPageProps {
 }
 
 const RegisterPage: React.FC<RegisterPageProps> = ({ setPage }) => {
-    const dispatch = useDispatch<AppDispatch>();
-
-    const { step } = useSelector((state: RootState) => state.auth);
-
-    const handleSetStep = (newStep: number) => {
-        dispatch(setStep(newStep));
-    };
-
+    const [step, setStep] = useState(0);
 
     return (
         <div>
             {step === 0 ? (
-                <MainRegister
-                    setPage={setPage} setStep={handleSetStep}
-                />
+                <MainRegister setPage={setPage} setStep={setStep} />
             ) : step === 1 ? (
                 <LoginPage setPage={setPage} />
             ) : step === 2 ? (
-                <Email setPage={setPage} setStep={handleSetStep}/>
+                <Email setPage={setPage} setStep={setStep} />
             ) : (
                 <CheckResetCode setPage={setPage} />
             )}

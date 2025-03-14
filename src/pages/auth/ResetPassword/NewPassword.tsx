@@ -1,34 +1,30 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { useDispatch, useSelector } from "react-redux";
-import { resetPass } from "src/store/auth/authAPI";
-import { AppDispatch, RootState } from "src/store/store";
-import { setNewPassword, setConfirmPassword } from "src/store/auth/authSlice";
+import { useResetPasswordMutation } from "src/store/auth/authAPI";
 
 import PasswordInput from "src/ui/PasswordInput/PasswordInput";
-
-import Back from "src/images/svg/smallLeft.svg";
-
 import Button from "src/ui/Button/Button";
-import styles from "./ResetPassword.module.scss";
-import ErrorMessage from "src/ui/ErrorMessage/ErrorMessage";
 import Loader from "src/ui/Loader/Loader";
+import Popup from "src/ui/Popup/Popup";
+
+import styles from "./ResetPassword.module.scss";
 
 interface NewPasswordProps {
     setStep: (step: number) => void;
     code: string;
     setPage: (page: string) => void;
+    email: string;
 }
 
-const NewPassword: React.FC<NewPasswordProps> = ({ setStep, code }) => {
+const NewPassword: React.FC<NewPasswordProps> = ({ setStep, code, email }) => {
     const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>();
 
-    const { email, newPassword, confirmPassword } = useSelector((state: RootState) => state.auth);
-
+    const [newPassword, setNewPassword] = useState<string>("");
+    const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
+
+    const [resetPassword] = useResetPasswordMutation();
 
     const validateInputs = () => {
         if (!newPassword.trim() || !confirmPassword.trim()) {
@@ -55,42 +51,45 @@ const NewPassword: React.FC<NewPasswordProps> = ({ setStep, code }) => {
         setLoading(true);
 
         try {
-            const res = await dispatch(
-                resetPass({
-                    email,
-                    code,
-                    password: newPassword,
-                    passwordConfirm: confirmPassword,
-                })
-            );
+            const requestData = {
+                email,
+                code,
+                password: newPassword,
+                passwordConfirm: confirmPassword,
+            };
 
+            const response = await resetPassword(requestData).unwrap();
 
-            if (res.meta.requestStatus === "fulfilled") {
+            if (response) {
                 navigate("/");
             } else {
                 setError("Что-то пошло не так");
             }
-        } catch (error) {
-            setError("Что-то пошло не так");
+        } catch (error: any) {
+            console.error("Error resetting password:", error);
+            if (error.data?.detail) {
+                setError(error.data.detail);
+            } else {
+                setError("Что-то пошло не так");
+            }
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.resetPassword}>
+        <Popup
+            title="Восстановление пароля"
+            onSubmit={handleSubmit}
+            error={error}
+            onBack={() => setStep(1)}
+            className={styles.resetPassword}
+        >
             {loading ? (
                 <Loader />
             ) : (
                 <>
-                    <div className={styles.mainClassname}>
-                        <div onClick={() => setStep(1)} className={styles.prevBtn}>
-                            <img src={Back} alt="back"/>
-                        </div>
-                        <h1>Восстановление пароля</h1>
-                    </div>
                     <p>Создайте новый пароль</p>
-                    {error && <ErrorMessage message={error} />}
 
                     <PasswordInput
                         value={newPassword}
@@ -99,32 +98,28 @@ const NewPassword: React.FC<NewPasswordProps> = ({ setStep, code }) => {
                             if (e.target.value.length >= 7) {
                                 setError("");
                             }
-                            dispatch(setNewPassword(e.target.value));
+                            setNewPassword(e.target.value);
                         }}
                         type="password"
-                        error={error ? true : false}
+                        error={Boolean(error)}
                     />
 
                     <PasswordInput
                         value={confirmPassword}
                         placeholder="Повторите пароль"
-                        onChange={(e) => dispatch(setConfirmPassword(e.target.value))}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         type="password"
-                        error={error ? true : false}
+                        error={Boolean(error)}
                     />
 
                     <div className={styles.buttonStyle}>
-                        <Button
-                            type="submit"
-                            variant="primary"
-                            disabled={loading}
-                        >
+                        <Button type="submit" variant="primary" disabled={loading}>
                             Сохранить
                         </Button>
                     </div>
                 </>
             )}
-        </form>
+        </Popup>
     );
 };
 

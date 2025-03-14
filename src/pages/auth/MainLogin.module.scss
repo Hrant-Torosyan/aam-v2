@@ -55,7 +55,9 @@
       display: flex;
       justify-content: flex-end;
       >div {
-        width: 80%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
       }
       form {
         width: 100%;
@@ -195,6 +197,8 @@
       padding-left: 20px;
     }
     .mainLoginContent {
+      padding-right: 0;
+      padding-left: 0;
       .mainLoginForm {
         width: 100%;
         justify-content: center;
@@ -321,8 +325,9 @@
   .mainLogin {
     background: url("../../../public/images/loginBgXl.png");
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: cover;
     .mainLoginContent {
+      padding-left: 0;
       .mainLoginForm {
         width: 100%;
         justify-content: center;
@@ -385,6 +390,7 @@
     background-repeat: no-repeat;
     background-size: 100%;
     .mainLoginContent {
+      padding-left: 0;
       .mainLoginForm {
         width: 100%;
         justify-content: center;
@@ -397,7 +403,6 @@
           }
           h1 {
             font-size: 18px;
-            margin-bottom: 20px;
           }
           h2 {
             margin-bottom: 30px !important;
@@ -487,3 +492,4 @@
     }
   }
 }
+

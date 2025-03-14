@@ -4,7 +4,7 @@ import styles from "./Button.module.scss";
 type ButtonVariant = "primary" | "secondary";
 
 interface ButtonProps {
-	onClick?: () => void;
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	children: React.ReactNode;
 	type?: "button" | "submit" | "reset";
 	variant?: ButtonVariant;
@@ -13,14 +13,13 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({
-	onClick,
-	children,
-	type = "button",
-	variant = "primary",
-	className = "",
-	disabled = false,
-}) => {
-	console.log(disabled);
+										   onClick,
+										   children,
+										   type = "button",
+										   variant = "primary",
+										   className = "",
+										   disabled = false,
+									   }) => {
 	const buttonStyleClass = variant === "primary" ? styles.buttonStyle : styles.buttonStyleToo;
 
 	return (
