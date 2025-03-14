@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import SockJS from "sockjs-client";
 import webstomp from "webstomp-client";
-import { useDispatch, useSelector } from "react-redux";
-import { getNotifications, readNotification } from "src/store/auth/authAPI";
-import { AppDispatch } from "@/store/store";
+import { useGetNotificationsQuery } from "src/store/auth/authAPI";
 import styles from "../Header.module.scss";
 
 interface NotificationProps {
@@ -21,11 +19,6 @@ interface NotificationItem {
     readDate: string | null;
 }
 
-interface NotificationsResponse {
-    content: NotificationItem[];
-    totalElements: number;
-}
-
 const Notification: React.FC<NotificationProps> = ({
    setIsActiveSelectHeader,
    notification,
@@ -33,27 +26,25 @@ const Notification: React.FC<NotificationProps> = ({
    setIsOpenSc,
    setSuccessInfo,
 }) => {
-    const dispatch: AppDispatch = useDispatch();
-    const [notificationInfo, setNotificationInfo] = useState<string | null>(null);
-    const [notifications, setNotifications] = useState<NotificationsResponse | null>(null);
-    const [limitNotification, setLimitNotification] = useState({ pageSize: 3 });
+    const { data: notifications, refetch } = useGetNotificationsQuery({});
+    const [limitNotification, setLimitNotification] = useState(3);
     const [remainingTime, setRemainingTime] = useState(1200);
+    const [notificationInfo, setNotificationInfo] = useState<string | null>(null);
+    const [checkWallet, setCheckWallet] = useState(false);
 
-    const checkWallet = useSelector((state: any) => state.auth.checkWallet);
     const notificationRef = useRef<HTMLDivElement | null>(null);
+
+    // Get wallet status from localStorage or another source if needed
+    useEffect(() => {
+        const userAuth = JSON.parse(localStorage.getItem("userAuth") || "{}");
+        setCheckWallet(!!userAuth.walletConnected);
+    }, []);
 
     useEffect(() => {
         let interval: NodeJS.Timeout | null = null;
-
         if (checkWallet) {
             interval = setInterval(() => {
-                setRemainingTime((prev) => {
-                    if (prev <= 1) {
-                        clearInterval(interval!);
-                        return 0;
-                    }
-                    return prev - 1;
-                });
+                setRemainingTime((prev) => (prev > 1 ? prev - 1 : 0));
             }, 1000);
         } else {
             setRemainingTime(1200);
@@ -66,99 +57,54 @@ const Notification: React.FC<NotificationProps> = ({
 
     useEffect(() => {
         if (remainingTime === 0) {
-            dispatch({ type: "SET_CHECK_WALLET", payload: false });
             setIsOpenSc(true);
             setSuccessInfo(false);
         }
-    }, [remainingTime, dispatch, setIsOpenSc, setSuccessInfo]);
-
-    useEffect(() => {
-        dispatch(getNotifications())
-            .unwrap()
-            .then((res: NotificationsResponse) => {
-                setNotifications(res);
-                const unread = res.content.find((item) => item.readDate === null);
-                if (unread) setNotificationInfo(unread.notificationId);
-            })
-            .catch((error) => {
-                console.error("Error fetching notifications:", error);
-            });
-    }, [dispatch, limitNotification]);
+    }, [remainingTime, setIsOpenSc, setSuccessInfo]);
 
     useEffect(() => {
         const socket = new SockJS("http://145.223.99.13:8080/aam-websocket");
         const stompClient = webstomp.over(socket);
 
-        stompClient.connect(
-            {},
-            () => {
-                stompClient.subscribe(
-                    `/topic/messages.${JSON.parse(localStorage.getItem("userAuth") || "{}").id}`,
-                    (message) => {
-                        const msg = JSON.parse(message.body);
-                        if (msg.type === "USER_DEPOSIT") {
-                            dispatch({ type: "SET_CHECK_WALLET", payload: false });
-                            setIsOpenSc(true);
-                            setSuccessInfo(true);
-                        }
-                        setNotificationInfo(msg.notificationId);
-                    }
-                );
-            },
-            (error) => {
-                console.error("WebSocket Error:", error);
-            }
-        );
+        stompClient.connect({}, () => {
+            const userId = JSON.parse(localStorage.getItem("userAuth") || "{}").id;
+            stompClient.subscribe(`/topic/messages.${userId}`, (message) => {
+                const msg = JSON.parse(message.body);
+                if (msg.type === "USER_DEPOSIT") {
+                    setIsOpenSc(true);
+                    setSuccessInfo(true);
+                }
+                setNotificationInfo(msg.notificationId);
+                refetch();
+            });
+        });
 
         return () => {
-            if (stompClient.connected) {
-                stompClient.disconnect();
-            }
+            if (stompClient.connected) stompClient.disconnect();
         };
-    }, [dispatch, setIsOpenSc, setSuccessInfo]);
+    }, [setIsOpenSc, setSuccessInfo, refetch]);
 
     const handleNotificationClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-
         setIsActiveSelectHeader(false);
 
-        const notRead = notifications?.content
-            .filter((item) => item.readDate === null)
-            .map((item) => item.notificationId);
-
-        if (notification) {
-            if (notRead && notRead.length > 0) {
-                dispatch(readNotification(notRead))
-                    .unwrap()
-                    .then((res: { success: boolean }) => {
-                        if (res.success) {
-                            setNotification(false);
-                            setNotificationInfo(null);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error marking notifications as read:", error);
-                    });
-            } else {
-                setNotification(false);
-            }
-        } else {
-            setNotification(true);
+        // Simply toggle notification visibility without marking as read
+        setNotification(!notification);
+        if (!notification) {
+            setNotificationInfo(null);
         }
     };
 
     const toggleNotificationLimit = (e: React.MouseEvent) => {
         e.stopPropagation();
-        setLimitNotification((prevState) => ({
-            pageSize: prevState.pageSize === 3 ? 10 : 3,
-        }));
+        setLimitNotification((prev) => (prev === 3 ? 10 : 3));
     };
 
     return (
         <div
             ref={notificationRef}
             className={`${styles.notification} ${notification ? styles.activeNotification : styles.unActiveNotification} ${
-                notificationInfo !== null ? styles.active : ""
+                notificationInfo ? styles.active : ""
             }`}
             onClick={handleNotificationClick}
         >
@@ -174,7 +120,7 @@ const Notification: React.FC<NotificationProps> = ({
             </svg>
             <div className={styles.notificationItem}>
                 {notifications?.totalElements ? (
-                    notifications.content.map((item) => (
+                    notifications.content.slice(0, limitNotification).map((item: NotificationItem) => (
                         <div
                             className={`${styles.notificationItemBlock} ${
                                 item.readDate === null ? styles.active : ""
@@ -193,7 +139,7 @@ const Notification: React.FC<NotificationProps> = ({
                 )}
                 {notifications?.totalElements && notifications.totalElements > 3 && (
                     <button onClick={toggleNotificationLimit}>
-                        {limitNotification.pageSize === 3 ? "смотреть полностью" : "скрыть"}
+                        {limitNotification === 3 ? "смотреть полностью" : "скрыть"}
                     </button>
                 )}
             </div>

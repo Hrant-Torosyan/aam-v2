@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { logout } from "src/store/auth/authAPI";
+import { useLogoutMutation } from 'src/store/auth/authAPI';
 import { api } from "src/store/profile/profileAPI";
 import Notification from "./Notification/Notification";
 import IsSuccessful from "src/ui/IsSuccessful/IsSuccessful";
@@ -13,9 +13,6 @@ import bag from "src/images/svg/bag.svg";
 import SelectHeader from "./SelectHeader/SelectHeader";
 
 import styles from "./Header.module.scss";
-import {AppDispatch} from "@/store/store";
-import {useDispatch} from "react-redux";
-
 
 const Header = () => {
     const [notification, setNotification] = useState(false);
@@ -24,6 +21,7 @@ const Header = () => {
     const [isOpenSc, setIsOpenSc] = useState(false);
     const [successInfo, setSuccessInfo] = useState(true);
 
+    const [logout, { isLoading, isError }] = useLogoutMutation();
 
     useEffect(() => {
         api.getUserInfo()
@@ -39,17 +37,19 @@ const Header = () => {
             });
     }, []);
 
-    const dispatch: AppDispatch = useDispatch();
 
-    const handleLogout = () => {
-        dispatch(logout());
+    const handleLogout = async () => {
+        try {
+            await logout();
+        } catch (error) {
+            console.error('Logout failed', error);
+        }
     };
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as HTMLElement;
 
-            // Check if the click is outside of both notification and select header areas
             const isOutsideAll = !target.closest(`.${styles.notification}`) &&
                 !target.closest(`.${styles.profileBlock}`);
 

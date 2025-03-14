@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "src/store/store";
-import { addLinkedUser } from "src/store/auth/authAPI";
+import { useAddLinkedUserMutation } from "src/store/auth/authAPI";
 
 import LoginPage from "src/pages/auth/Login/LoginPage";
 import ResetPassword from "src/pages/auth/ResetPassword/ResetPassword";
@@ -17,11 +14,12 @@ const generateLinkedUserId = () => {
 
 const MainLogin: React.FC = () => {
     const [searchParams] = useSearchParams();
-    const dispatch = useDispatch<AppDispatch>();
     const innerQ = searchParams.get("q");
 
     const [page, setPage] = useState<string>(innerQ ? "register" : "login");
     const [error, setError] = useState<string | null>(null);
+
+    const [addLinkedUser] = useAddLinkedUserMutation();
 
     useEffect(() => {
         if (innerQ) {
@@ -30,12 +28,10 @@ const MainLogin: React.FC = () => {
             if (storedReferral !== innerQ) {
                 const linkedUserId = generateLinkedUserId();
 
-                dispatch(
-                    addLinkedUser({
-                        email: innerQ,
-                        fullName: linkedUserId,
-                    })
-                )
+                addLinkedUser({
+                    email: innerQ,
+                    fullName: linkedUserId,
+                })
                     .unwrap()
                     .then(() => {
                         localStorage.setItem("referral_sent", innerQ);
@@ -46,7 +42,7 @@ const MainLogin: React.FC = () => {
                     });
             }
         }
-    }, [innerQ, dispatch]);
+    }, [innerQ, addLinkedUser]);
 
     const renderPage = () => {
         switch (page) {

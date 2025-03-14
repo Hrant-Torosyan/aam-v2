@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/store/store";
-import { getNotifications, login } from "src/store/auth/authAPI";
-
+import { useLoginMutation } from "src/store/auth/authAPI";
 import Button from "src/ui/Button/Button";
 import PasswordInput from "src/ui/PasswordInput/PasswordInput";
 import ErrorMessage from "src/ui/ErrorMessage/ErrorMessage";
@@ -14,26 +10,20 @@ import styles from "./LoginPage.module.scss";
 
 const LoginPage = ({ setPage }: { setPage: (page: string) => void }) => {
 	const navigate = useNavigate();
-	const dispatch: AppDispatch = useDispatch();
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [globalError, setGlobalError] = useState("");
 
-	const { status, error } = useSelector((state: RootState) => state.auth);
+	const [login, { isLoading, isError, error }] = useLoginMutation();
 
 	useEffect(() => {
-		if (status === "succeeded") {
-			setGlobalError("");
-			navigate("/");
-		}
-	}, [status, navigate]);
+		if (!isError && !error) return;
 
-	useEffect(() => {
-		if (error) {
+		if (isError) {
 			setGlobalError("Неправильный логин или пароль");
 		}
-	}, [error]);
+	}, [isError, error]);
 
 	const validateInputs = (): boolean => {
 		let valid = true;
@@ -48,13 +38,18 @@ const LoginPage = ({ setPage }: { setPage: (page: string) => void }) => {
 		return valid;
 	};
 
-	const handleLogin = (event: React.FormEvent) => {
+	const handleLogin = async (event: React.FormEvent) => {
 		event.preventDefault();
 		setGlobalError("");
 
 		if (!validateInputs()) return;
 
-		dispatch(login({ email, password }));
+		try {
+			await login({ email, password }).unwrap();
+			navigate("/");
+		} catch (err) {
+			console.error(err);
+		}
 	};
 
 	const handleForgotPassword = () => setPage("resetPassword");
@@ -63,6 +58,7 @@ const LoginPage = ({ setPage }: { setPage: (page: string) => void }) => {
 
 	const isInputError = (value: string) => !value.trim() && globalError;
 	const isAuthError = globalError === "Неправильный логин или пароль";
+
 	return (
 		<form id={styles.loginPage} onSubmit={handleLogin}>
 			<h1 className={styles.title}>Вход</h1>
@@ -102,7 +98,7 @@ const LoginPage = ({ setPage }: { setPage: (page: string) => void }) => {
 				Забыли пароль?
 			</p>
 			<div className={styles.buttonStyle}>
-				<Button type="submit" disabled={status === "loading"} variant="primary">
+				<Button type="submit" disabled={isLoading} variant="primary">
 					Войти
 				</Button>
 			</div>

@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "src/store/store";
-import { checkEmail } from "src/store/auth/authAPI";
-import { setEmail } from "src/store/auth/authSlice";
+import { useCheckEmailMutation } from "src/store/auth/authAPI";
 
 import Input from "src/ui/Input/Input";
 import ErrorMessage from "src/ui/ErrorMessage/ErrorMessage";
@@ -11,17 +7,23 @@ import Button from "src/ui/Button/Button";
 import Loader from "src/ui/Loader/Loader";
 
 import Back from "src/images/svg/smallLeft.svg";
-
 import styles from "./ResetPassword.module.scss";
 
-const Email: React.FC<{ setPage: (newPage: string) => void, setStep: (newStep: number) => void }> = ({ setPage, setStep }) => {
-    const dispatch = useDispatch<AppDispatch>();
-    const { email } = useSelector((state: RootState) => state.auth);
+interface EmailProps {
+    setPage: (newPage: string) => void;
+    setStep: (newStep: number) => void;
+    onSubmit?: (emailValue: string) => Promise<void>;
+    isLoading?: boolean;
+}
 
+const Email: React.FC<EmailProps> = ({ setPage, setStep, onSubmit, isLoading }) => {
+    const [email, setEmail] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const [checkEmail, { isLoading: isCheckingEmail }] = useCheckEmailMutation();
 
     const handleRegister = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -37,18 +39,22 @@ const Email: React.FC<{ setPage: (newPage: string) => void, setStep: (newStep: n
         }
 
         setLoading(true);
+        setError("");
 
         try {
-            const action = await dispatch(checkEmail(email));
-
-            if (action.meta.requestStatus === "fulfilled") {
-                setStep(1);
+            if (onSubmit) {
+                await onSubmit(email);
             } else {
-                setError("Такой e-mail не существует");
+                const result = await checkEmail(email).unwrap();
+                console.log("Email check result:", result);
+                setStep(1);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Ошибка при проверке e-mail:", error);
-            setError("Ошибка при проверке e-mail");
+            if (error?.data) {
+                console.error("API Response Error:", error.data);
+            }
+            setError("Такой e-mail не существует");
         } finally {
             setLoading(false);
         }
@@ -56,15 +62,16 @@ const Email: React.FC<{ setPage: (newPage: string) => void, setStep: (newStep: n
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newEmail = e.target.value;
+        setEmail(newEmail);
+
         if (emailRegex.test(newEmail)) {
             setError("");
         }
-        dispatch(setEmail(newEmail));
     };
 
     return (
         <form onSubmit={handleRegister} className={styles.resetPassword} id="email">
-            {loading ? (
+            {loading || isCheckingEmail || isLoading ? (
                 <Loader />
             ) : (
                 <>
@@ -87,11 +94,7 @@ const Email: React.FC<{ setPage: (newPage: string) => void, setStep: (newStep: n
                     />
 
                     <div className={styles.buttonStyle}>
-                        <Button
-                            type="submit"
-                            variant="primary"
-                            disabled={loading}
-                        >
+                        <Button type="submit" variant="primary" disabled={loading || isCheckingEmail || isLoading}>
                             Далее
                         </Button>
                     </div>

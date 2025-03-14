@@ -1,22 +1,17 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "src/store/store"; // Adjust the import to your store location
-import { setEnteredCode, setNewPassword, setConfirmPassword } from "src/store/auth/authSlice";
-import { resetPass } from "src/store/auth/authAPI";
-import { AppDispatch } from "src/store/store";
+import { useResetPasswordMutation } from "src/store/auth/authAPI";
 
 interface CheckResetCodeProps {
     handlePageChange: (page: string) => void;
 }
 
 const CheckResetCode: React.FC<CheckResetCodeProps> = ({ handlePageChange }) => {
-    const dispatch = useDispatch<AppDispatch>();
-
-    const enteredCode = useSelector((state: RootState) => state.auth.enteredCode);
-    const newPassword = useSelector((state: RootState) => state.auth.newPassword);
-    const { email, confirmPassword } = useSelector((state: RootState) => state.auth);
-
+    const [enteredCode, setEnteredCode] = useState<string>("");
+    const [newPassword, setNewPassword] = useState<string>("");
+    const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
+
+    const [resetPassword] = useResetPasswordMutation();
 
     const handleResetPassword = async () => {
         if (!newPassword || !enteredCode || !confirmPassword) {
@@ -30,15 +25,7 @@ const CheckResetCode: React.FC<CheckResetCodeProps> = ({ handlePageChange }) => 
         }
 
         try {
-            await dispatch(
-                resetPass({
-                    email,
-                    code: enteredCode,
-                    password: newPassword,
-                    passwordConfirm: confirmPassword,
-                })
-            ).unwrap();
-
+            await resetPassword({ code: enteredCode, newPassword, confirmPassword }).unwrap();
             alert("Password reset successfully");
             handlePageChange("login");
         } catch (error) {
@@ -53,19 +40,19 @@ const CheckResetCode: React.FC<CheckResetCodeProps> = ({ handlePageChange }) => 
                 type="text"
                 placeholder="Enter reset code"
                 value={enteredCode}
-                onChange={(e) => dispatch(setEnteredCode(e.target.value))}
+                onChange={(e) => setEnteredCode(e.target.value)} // Update enteredCode state
             />
             <input
                 type="password"
                 placeholder="Enter new password"
                 value={newPassword}
-                onChange={(e) => dispatch(setNewPassword(e.target.value))}
+                onChange={(e) => setNewPassword(e.target.value)} // Update newPassword state
             />
             <input
                 type="password"
                 placeholder="Confirm new password"
                 value={confirmPassword}
-                onChange={(e) => dispatch(setConfirmPassword(e.target.value))}
+                onChange={(e) => setConfirmPassword(e.target.value)} // Update confirmPassword state
             />
             <button onClick={handleResetPassword}>Reset Password</button>
             {errorMessage && <p>{errorMessage}</p>}

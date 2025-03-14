@@ -1,228 +1,124 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const BASE_URL = "http://145.223.99.13:8080/api/rest/";
-const URLS = {
-	LOGIN: "auth/signin",
-	SIGNUP: "auth/signup",
-	CHECK_EMAIL: "reset/password/check",
-	VALIDATE_CODE: "reset/password/validate",
-	RESET_PASSWORD: "reset/password/reset",
-	NOTIFICATIONS: "notifications/list",
-	NOTIFICATIONS_READ: "notifications/read",
-};
 
-const fetchData = async (url: string, options: RequestInit) => {
-	try {
-		const response = await fetch(url, options);
-		if (!response.ok) {
-			const errorBody = await response.json();
-			throw new Error(errorBody.message || "Request failed");
-		}
-		return await response.json();
-	} catch (err) {
-		if (err instanceof Error) {
-			throw new Error(err.message);
-		}
-		throw new Error("An unknown error occurred");
-	}
-};
-
-export const login = createAsyncThunk(
-	"auth/login",
-	async (userData: { email: string; password: string }, { rejectWithValue }) => {
-		try {
-			const res = await fetchData(BASE_URL + URLS.LOGIN, {
+export const authApi = createApi({
+	reducerPath: "authApi",
+	baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+	endpoints: (builder) => ({
+		login: builder.mutation<{ token: string }, { email: string; password: string }>({
+			query: (userData) => ({
+				url: "auth/signin",
 				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(userData),
-			});
-			if (res.token) {
-				localStorage.setItem("userAuth", JSON.stringify(res));
-			}
-			return res;
-		} catch (err) {
-			return rejectWithValue(err instanceof Error ? err.message : "An unknown error occurred");
-		}
-	}
-);
-export const signup = createAsyncThunk(
-	"auth/signup",
-	async (
-		userData: { email: string; password: string; confirmPassword: string; fullName: string },
-		{ rejectWithValue }
-	) => {
-		try {
-			const { confirmPassword, fullName, email, password } = userData;
-			const signupData = {
-				full_name: fullName,
-				email,
-				password,
-				company_name: "",
-				investment_amount: "",
-				investment_experience: "",
-				referral: null,
-			};
-
-			const res = await fetchData(BASE_URL + URLS.SIGNUP, {
+				headers: { "Content-Type": "application/json" },
+				body: userData,
+			}),
+			transformResponse: (response: { token: string }) => {
+				localStorage.setItem("userAuth", JSON.stringify(response));
+				return response;
+			},
+		}),
+		signup: builder.mutation({
+			query: ({
+						email,
+						password,
+						fullName,
+						companyName = "",
+						investmentAmount = "",
+						investmentExperience = "",
+						referral = null
+					}) => ({
+				url: "auth/signup",
 				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ ...signupData, confirmPassword }),
-			});
-
-			if (res.token) {
-				localStorage.setItem("userAuth", JSON.stringify(res));
-			}
-			return res;
-		} catch (err) {
-			return rejectWithValue(err instanceof Error ? err.message : "An unknown error occurred");
-		}
-	}
-);
-
-export const checkEmail = createAsyncThunk(
-	"auth/checkEmail",
-	async (email: string, { rejectWithValue }) => {
-		try {
-			const res = await fetchData(BASE_URL + URLS.CHECK_EMAIL, {
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					email,
+					password,
+					full_name: fullName,
+					company_name: companyName,
+					investment_amount: investmentAmount,
+					investment_experience: investmentExperience,
+					referral
+				}),
+			}),
+		}),
+		checkEmail: builder.mutation({
+			query: (email: string) => ({
+				url: "reset/password/check",
 				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ email }),
-			});
-			return res;
-		} catch (err) {
-			return rejectWithValue(err instanceof Error ? err.message : "An unknown error occurred");
-		}
-	}
-);
-
-export const validateCode = createAsyncThunk(
-	"auth/validateCode",
-	async (data: { email: string; code: string }, { rejectWithValue }) => {
-		try {
-			const res = await fetchData(BASE_URL + URLS.VALIDATE_CODE, {
+				headers: { "Content-Type": "application/json" },
+				body: { email },
+			}),
+		}),
+		validateCode: builder.mutation<any, { email: string, code: string }>({
+			query: ({ email, code }) => ({
+				url: "reset/password/validate",
 				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(data),
-			});
-			return res;
-		} catch (err) {
-			return rejectWithValue(err instanceof Error ? err.message : "An unknown error occurred");
-		}
-	}
-);
-
-export const resetPass = createAsyncThunk(
-	"auth/resetPass",
-	async (
-		data: { email: string; code: string; password: string; passwordConfirm: string },
-		{ rejectWithValue }
-	) => {
-		try {
-			const res = await fetch(BASE_URL + URLS.RESET_PASSWORD, {
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ email, code }),
+			}),
+		}),
+		resetPassword: builder.mutation({
+			query: (data) => ({
+				url: "reset/password/reset",
 				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(data),
-			});
-
-			if (res.status === 200) {
-				const responseData = await res.json();
-				return responseData;
-			} else {
-				const errorData = await res.json();
-				return rejectWithValue(errorData.message || "Something went wrong");
-			}
-		} catch (err) {
-			return rejectWithValue(err instanceof Error ? err.message : "An unknown error occurred");
-		}
-	}
-);
-
-export const getNotifications = createAsyncThunk(
-	"auth/getNotifications",
-	async (_, { rejectWithValue }) => {
-		try {
-			const token = JSON.parse(localStorage.getItem("userAuth") || "{}").token;
-			if (!token) throw new Error("User is not authenticated");
-
-			const res = await fetchData(BASE_URL + URLS.NOTIFICATIONS, {
-				method: "GET",
-				headers: {
-					Accept: "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			return res;
-		} catch (err) {
-			return rejectWithValue(err instanceof Error ? err.message : "An unknown error occurred");
-		}
-	}
-);
-
-export const readNotification = createAsyncThunk(
-	"auth/readNotification",
-	async (notificationIds: string[], { rejectWithValue }) => {
-		try {
-			const token = JSON.parse(localStorage.getItem("userAuth") || "{}").token;
-			if (!token) throw new Error("User is not authenticated");
-
-			const res = await fetchData(BASE_URL + URLS.NOTIFICATIONS_READ, {
-				method: "PUT",
-				headers: {
-					Accept: "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify({ notificationIds }),
-			});
-			return res;
-		} catch (err) {
-			return rejectWithValue(err instanceof Error ? err.message : "An unknown error occurred");
-		}
-	}
-);
-
-export const addLinkedUser = createAsyncThunk(
-	"auth/addLinkedUser",
-	async (userData: { email: string; fullName: string }, { rejectWithValue }) => {
-		try {
-			const token = JSON.parse(localStorage.getItem("userAuth") || "{}").token;
-			if (!token) throw new Error("User is not authenticated");
-
-			const res = await fetchData(BASE_URL + "linked-users/add", {
-				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify(userData),
-			});
-			return res;
-		} catch (err) {
-			return rejectWithValue(err instanceof Error ? err.message : "An unknown error occurred");
-		}
-	}
-);
-
-export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
-	try {
-		localStorage.removeItem("userAuth");
-		window.location.href = "/login";
-	} catch (err) {
-		return rejectWithValue(err instanceof Error ? err.message : "Logout failed");
-	}
+				headers: { "Content-Type": "application/json" },
+				body: data,
+			}),
+		}),
+		getNotifications: builder.query({
+			query: () => {
+				const token = JSON.parse(localStorage.getItem("userAuth") || "{}").token;
+				if (!token) throw new Error("User is not authenticated");
+				return {
+					url: "notifications/list",
+					method: "GET",
+					headers: { Authorization: `Bearer ${token}` },
+				};
+			},
+		}),
+		readNotification: builder.mutation({
+			query: (notificationIds) => {
+				const token = JSON.parse(localStorage.getItem("userAuth") || "{}").token;
+				if (!token) throw new Error("User is not authenticated");
+				return {
+					url: "notifications/read",
+					method: "PUT",
+					headers: { Authorization: `Bearer ${token}` },
+					body: { notificationIds },
+				};
+			},
+		}),
+		addLinkedUser: builder.mutation({
+			query: (userData) => {
+				const token = JSON.parse(localStorage.getItem("userAuth") || "{}").token;
+				if (!token) throw new Error("User is not authenticated");
+				return {
+					url: "linked-users/add",
+					method: "POST",
+					headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+					body: userData,
+				};
+			},
+		}),
+		logout: builder.mutation<void, void>({
+			queryFn: async () => {
+				localStorage.removeItem("userAuth");
+				window.location.href = "/login";
+				return { data: undefined };
+			},
+		}),
+	}),
 });
+
+export const {
+	useLoginMutation,
+	useSignupMutation,
+	useCheckEmailMutation,
+	useValidateCodeMutation,
+	useResetPasswordMutation,
+	useGetNotificationsQuery,
+	useReadNotificationMutation,
+	useAddLinkedUserMutation,
+	useLogoutMutation,
+} = authApi;

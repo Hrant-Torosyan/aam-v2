@@ -1,12 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { useCheckEmailMutation, useValidateCodeMutation } from "src/store/auth/authAPI";
 
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "src/store/store";
-import { setStep } from "src/store/auth/authSlice";
-
+import Email from "./Email";
 import Code from "./Code";
 import NewPassword from "./NewPassword";
-import Email from "./Email";
 
 import styles from "./ResetPassword.module.scss";
 
@@ -15,22 +12,68 @@ interface ResetPasswordProps {
 }
 
 const ResetPassword: React.FC<ResetPasswordProps> = ({ setPage }) => {
-    const dispatch = useDispatch<AppDispatch>();
+    const [step, setStep] = useState(0);
+    const [email, setEmail] = useState<string>("");
+    const [enteredCode, setEnteredCode] = useState<string>("");
+    const [error, setError] = useState<string>("");
 
-    const { step, enteredCode } = useSelector((state: RootState) => state.auth);
+    const [checkEmail, { isLoading: isCheckingEmail }] = useCheckEmailMutation();
+    const [validateCode] = useValidateCodeMutation();
 
-    const handleSetStep = (newStep: number) => {
-        dispatch(setStep(newStep));
+    const handleCheckEmail = async (emailValue: string) => {
+        try {
+            setEmail(emailValue);
+            await checkEmail(emailValue).unwrap();
+            setError("");
+            setStep(1);
+        } catch (error: any) {
+            console.error("Error during email check:", error);
+            setError(error?.data?.message || "This email address is not registered or another error occurred.");
+            throw error;
+        }
+    };
+
+    const handleValidateCode = async (code: string) => {
+        try {
+            await validateCode({ code, email }).unwrap();
+            setEnteredCode(code);
+            setError("");
+            setStep(2);
+        } catch (error: any) {
+            console.error("Error during code validation:", error);
+            setError(error?.data?.message || "Invalid verification code or it has expired.");
+            throw error;
+        }
     };
 
     return (
         <div className={styles.resetPasswordWrapper}>
+            {error && (
+                <div className={styles.errorMessage}>
+                    {error}
+                </div>
+            )}
+
             {step === 0 ? (
-                <Email setPage={setPage} setStep={handleSetStep} />
+                <Email
+                    onSubmit={handleCheckEmail}
+                    setPage={setPage}
+                    setStep={setStep}
+                    isLoading={isCheckingEmail}
+                />
             ) : step === 1 ? (
-                <Code setPage={setPage} setStep={handleSetStep} />
+                <Code
+                    setStep={setStep}
+                    email={email}
+                    onCodeValidated={handleValidateCode}
+                />
             ) : (
-                <NewPassword setPage={setPage} setStep={handleSetStep} code={enteredCode} />
+                <NewPassword
+                    setPage={setPage}
+                    setStep={setStep}
+                    code={enteredCode}
+                    email={email}
+                />
             )}
         </div>
     );
