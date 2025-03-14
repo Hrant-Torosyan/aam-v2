@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { useCheckEmailMutation } from "src/store/auth/authAPI";
 
 import Input from "src/ui/Input/Input";
-import ErrorMessage from "src/ui/ErrorMessage/ErrorMessage";
 import Button from "src/ui/Button/Button";
 import Loader from "src/ui/Loader/Loader";
+import Popup from "src/ui/Popup/Popup";
 
-import Back from "src/images/svg/smallLeft.svg";
 import styles from "./ResetPassword.module.scss";
 
 interface EmailProps {
@@ -70,20 +69,19 @@ const Email: React.FC<EmailProps> = ({ setPage, setStep, onSubmit, isLoading }) 
     };
 
     return (
-        <form onSubmit={handleRegister} className={styles.resetPassword} id="email">
+        <Popup
+            title="Восстановление пароля"
+            onSubmit={handleRegister}
+            error={error}
+            isLoading={loading || isCheckingEmail || isLoading}
+            onBack={() => setPage("login")}
+            className={styles.resetPassword}
+        >
             {loading || isCheckingEmail || isLoading ? (
                 <Loader />
             ) : (
                 <>
-                    <div className={styles.mainClassname}>
-                        <div onClick={() => setPage("login")} className={styles.prevBtn}>
-                            <img src={Back} alt="back" />
-                        </div>
-                        <h1>Восстановление пароля</h1>
-                    </div>
                     <p>Введите E-mail, на который зарегистрирован аккаунт</p>
-
-                    {error && <ErrorMessage message={error} />}
 
                     <Input
                         type="text"
@@ -93,14 +91,14 @@ const Email: React.FC<EmailProps> = ({ setPage, setStep, onSubmit, isLoading }) 
                         error={Boolean(error)}
                     />
 
-                    <div className={styles.buttonStyle}>
+                    <div>
                         <Button type="submit" variant="primary" disabled={loading || isCheckingEmail || isLoading}>
                             Далее
                         </Button>
                     </div>
                 </>
             )}
-        </form>
+        </Popup>
     );
 };
 

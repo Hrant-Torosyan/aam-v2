@@ -1,13 +1,16 @@
 import React, { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import { useSignupMutation } from "src/store/auth/authAPI";
+
 import Input from "src/ui/Input/Input";
 import PasswordInput from "src/ui/PasswordInput/PasswordInput";
+import Popup from "src/ui/Popup/Popup";
 import Button from "src/ui/Button/Button";
-import ErrorMessage from "src/ui/ErrorMessage/ErrorMessage";
-import styles from "./RegisterPage.module.scss";
-import Back from "src/images/svg/smallLeft.svg";
+
 import check from "src/images/svg/shape.svg";
+
+import styles from "./RegisterPage.module.scss"
 
 interface MainRegisterProps {
     setPage: (page: string) => void;
@@ -60,16 +63,15 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage }) => {
     };
 
     return (
-        <form className={styles.registerPage} onSubmit={handleRegister}>
-            <div className={styles.mainClassname}>
-                <div onClick={() => setPage("login")} className={styles.prevBtn}>
-                    <img src={Back} alt="Назад" />
-                </div>
-                <h1>Регистрация</h1>
-            </div>
-
-            {globalError && <ErrorMessage message={globalError} />}
-
+        <Popup
+            title="Регистрация"
+            onBack={() => setPage("login")}
+            onSubmit={handleRegister}
+            submitButtonText="Регистрация"
+            isLoading={isLoading}
+            error={globalError}
+            className={styles.registerPage}
+        >
             <div className={styles.inputWrapper}>
                 <Input
                     type="text"
@@ -79,6 +81,7 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage }) => {
                     error={Boolean(globalError && !fullName.trim())}
                 />
             </div>
+
 
             <div className={styles.inputWrapper}>
                 <Input
@@ -111,15 +114,17 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage }) => {
             </div>
 
             <div className={styles.checkBox} onClick={() => setConfirmOne(!confirmOne)}>
-                <div className={`${styles.checkBoxMain} ${confirmOne ? styles.active : ""} ${globalError && !confirmOne ? styles.error : ""}`}>
-                    {confirmOne && <img src={check} alt="check" />}
+                <div
+                    className={`${styles.checkBoxMain} ${confirmOne ? styles.active : ""} ${globalError && !confirmOne ? styles.error : ""}`}>
+                    {confirmOne && <img src={check} alt="check"/>}
                 </div>
                 <p>Подтверждаю данные</p>
             </div>
 
             <div className={styles.checkBox} onClick={() => setConfirmTwo(!confirmTwo)}>
-                <div className={`${styles.checkBoxMain} ${confirmTwo ? styles.active : ""} ${globalError && !confirmTwo ? styles.error : ""}`}>
-                    {confirmTwo && <img src={check} alt="check" />}
+                <div
+                    className={`${styles.checkBoxMain} ${confirmTwo ? styles.active : ""} ${globalError && !confirmTwo ? styles.error : ""}`}>
+                    {confirmTwo && <img src={check} alt="check"/>}
                 </div>
                 <p>Согласен с условиями политики конфиденциальности</p>
             </div>
@@ -127,7 +132,7 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage }) => {
             <Button type="submit" variant="primary" disabled={isLoading}>
                 {isLoading ? "Регистрация..." : "Регистрация"}
             </Button>
-        </form>
+        </Popup>
     );
 };
 

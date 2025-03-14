@@ -12,12 +12,12 @@ interface CodeProps {
     setStep: (step: number) => void;
     email: string;
     onCodeValidated?: (code: string) => Promise<void>;
+    error: string;
 }
 
-const Code: React.FC<CodeProps> = ({ setStep, email, onCodeValidated }) => {
+const Code: React.FC<CodeProps> = ({ setStep, email, onCodeValidated, error }) => {
     const [inputs, setInputs] = useState<string[]>(new Array(4).fill(""));
     const [isInputEmpty, setIsInputEmpty] = useState(true);
-    const [errorMessage, setErrorMessage] = useState<string>("");
     const [loading, setLoading] = useState(false);
 
     const [validateCode] = useValidateCodeMutation();
@@ -52,12 +52,11 @@ const Code: React.FC<CodeProps> = ({ setStep, email, onCodeValidated }) => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        setErrorMessage("");
 
         const enteredCode = inputs.join("");
 
         if (!enteredCode.trim() || enteredCode.length !== 4) {
-            setErrorMessage("Введите код");
+            // Handle error (optional custom error message)
             return;
         }
 
@@ -72,8 +71,7 @@ const Code: React.FC<CodeProps> = ({ setStep, email, onCodeValidated }) => {
             }
         } catch (error: any) {
             console.error("Error validating code:", error);
-            setErrorMessage("Неверный код. Попробуйте снова.");
-            setInputs(new Array(4).fill(""));
+            // Handle error if needed
         } finally {
             setLoading(false);
         }
@@ -93,15 +91,15 @@ const Code: React.FC<CodeProps> = ({ setStep, email, onCodeValidated }) => {
                     </div>
                     <p>Введите код, который мы отправили на Вашу почту</p>
 
-                    {errorMessage && (
-                        <ErrorMessage message={errorMessage} />
+                    {error && (
+                        <ErrorMessage message={error} />
                     )}
 
                     <div className={styles.codeInputs}>
                         {inputs.map((input, index) => (
                             <div
                                 key={index}
-                                className={!errorMessage ? styles.codeInput : `${styles.codeInput} ${styles.error}`}
+                                className={error ? `${styles.codeInput} ${styles.error}` : styles.codeInput}
                             >
                                 <input
                                     id={`code-input-${index}`}
@@ -110,7 +108,7 @@ const Code: React.FC<CodeProps> = ({ setStep, email, onCodeValidated }) => {
                                     value={input}
                                     onChange={(e) => handleChange(index, e.target.value)}
                                     onPaste={index === 0 ? handlePaste : undefined}
-                                    className={!errorMessage ? "" : styles.errorInput}
+                                    className={error ? styles.errorInput : ""}
                                 />
                             </div>
                         ))}

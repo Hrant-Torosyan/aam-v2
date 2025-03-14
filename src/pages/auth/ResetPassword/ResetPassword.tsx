@@ -29,7 +29,6 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ setPage }) => {
         } catch (error: any) {
             console.error("Error during email check:", error);
             setError(error?.data?.message || "This email address is not registered or another error occurred.");
-            throw error;
         }
     };
 
@@ -41,19 +40,12 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ setPage }) => {
             setStep(2);
         } catch (error: any) {
             console.error("Error during code validation:", error);
-            setError(error?.data?.message || "Invalid verification code or it has expired.");
-            throw error;
+            setError("Неверный код. Попробуйте снова.");
         }
     };
 
     return (
         <div className={styles.resetPasswordWrapper}>
-            {error && (
-                <div className={styles.errorMessage}>
-                    {error}
-                </div>
-            )}
-
             {step === 0 ? (
                 <Email
                     onSubmit={handleCheckEmail}
@@ -66,6 +58,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ setPage }) => {
                     setStep={setStep}
                     email={email}
                     onCodeValidated={handleValidateCode}
+                    error={error}
                 />
             ) : (
                 <NewPassword

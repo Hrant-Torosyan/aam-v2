@@ -5,9 +5,8 @@ import { useResetPasswordMutation } from "src/store/auth/authAPI";
 import PasswordInput from "src/ui/PasswordInput/PasswordInput";
 import Button from "src/ui/Button/Button";
 import Loader from "src/ui/Loader/Loader";
-import ErrorMessage from "src/ui/ErrorMessage/ErrorMessage";
+import Popup from "src/ui/Popup/Popup";
 
-import Back from "src/images/svg/smallLeft.svg";
 import styles from "./ResetPassword.module.scss";
 
 interface NewPasswordProps {
@@ -79,20 +78,18 @@ const NewPassword: React.FC<NewPasswordProps> = ({ setStep, code, email }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.resetPassword}>
+        <Popup
+            title="Восстановление пароля"
+            onSubmit={handleSubmit}
+            error={error}
+            onBack={() => setStep(1)}
+            className={styles.resetPassword}
+        >
             {loading ? (
                 <Loader />
             ) : (
                 <>
-                    <div className={styles.mainClassname}>
-                        <div onClick={() => setStep(1)} className={styles.prevBtn}>
-                            <img src={Back} alt="back" />
-                        </div>
-                        <h1>Восстановление пароля</h1>
-                    </div>
                     <p>Создайте новый пароль</p>
-
-                    {error && <ErrorMessage message={error} />}
 
                     <PasswordInput
                         value={newPassword}
@@ -122,7 +119,7 @@ const NewPassword: React.FC<NewPasswordProps> = ({ setStep, code, email }) => {
                     </div>
                 </>
             )}
-        </form>
+        </Popup>
     );
 };
 
