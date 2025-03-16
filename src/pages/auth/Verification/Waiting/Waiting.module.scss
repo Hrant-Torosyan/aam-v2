@@ -1,0 +1,42 @@
+.waitingContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 300px;
+  width: 100%;
+  min-height: 171px;
+  margin: 150px auto;
+
+  h3 {
+    margin: 8px 0 9px;
+    font-weight: 400;
+    font-size: 18px;
+    leading-trim: Cap height;
+    line-height: 21px;
+    letter-spacing: -0.1%;
+    text-align: center;
+    color: #000000;
+  }
+  p {
+    font-weight: 700;
+    font-size: 14px;
+    leading-trim: Cap height;
+    line-height: 137%;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #0E1A32;
+  }
+}
+
+@media (max-width: 768px) {
+  .waitingContent {
+    h3 {
+      font-size: 16px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+  }
+}

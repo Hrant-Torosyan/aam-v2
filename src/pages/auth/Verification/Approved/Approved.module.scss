@@ -1,0 +1,39 @@
+.approvedContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 347px;
+  width: 100%;
+  min-height: 171px;
+  margin: 50px auto 30px;
+
+  img {
+    margin-bottom: 46px;
+  }
+
+  h3 {
+    margin: 8px 0 9px;
+    font-weight: 500;
+    font-size: 18px;
+  }
+  p {
+    font-family: "Unbounded", sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 19px;
+    color: #A6A6A6;
+  }
+}
+
+@media (max-width: 768px) {
+  .approvedContent {
+    h3 {
+      font-size: 16px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+  }
+}

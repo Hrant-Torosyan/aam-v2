@@ -14,7 +14,7 @@ const options = [
     { value: 'ANNUAL', label: 'Год' }
 ];
 
-const Select: React.FC<SelectProps> = ({ value, onChange, className }) => { // Updated parameter to use className
+const Select: React.FC<SelectProps> = ({ value, onChange, className }) => {
     const [isActiveSelect, setIsActiveSelect] = useState(false);
 
     const toggleSelect = () => {

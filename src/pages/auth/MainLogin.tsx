@@ -5,53 +5,65 @@ import { useAddLinkedUserMutation } from "src/store/auth/authAPI";
 import LoginPage from "src/pages/auth/Login/LoginPage";
 import ResetPassword from "src/pages/auth/ResetPassword/ResetPassword";
 import RegisterPage from "src/pages/auth/Register/RegisterPage";
+import VerificationPage from "src/pages/auth/Verification/Verification";
+import DocumentsPage from "src/pages/auth/Verification/Documents/Documents";
+import WaitingPage from "src/pages/auth/Verification/Waiting/Waiting";
+import ApprovedPage from "src/pages/auth/Verification/Approved/Approved";
+import SignPage from "src/pages/auth/Verification/Sign/Sign";
+import CanceledPage from "src/pages/auth/Verification/Canceled/CanceledPage";
 
 import styles from "./MainLogin.module.scss";
 
-const generateLinkedUserId = () => {
-    return `user_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}`;
-};
 
 const MainLogin: React.FC = () => {
     const [searchParams] = useSearchParams();
-    const innerQ = searchParams.get("q");
+    const referralEmail = searchParams.get("q");
 
-    const [page, setPage] = useState<string>(innerQ ? "register" : "login");
+    const [page, setPage] = useState<string>(referralEmail ? "register" : "login");
     const [error, setError] = useState<string | null>(null);
-
     const [addLinkedUser] = useAddLinkedUserMutation();
 
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [step, setStep] = useState<number>(0);
+
     useEffect(() => {
-        if (innerQ) {
+        if (referralEmail) {
             const storedReferral = localStorage.getItem("referral_sent");
 
-            if (storedReferral !== innerQ) {
-                const linkedUserId = generateLinkedUserId();
-
-                addLinkedUser({
-                    email: innerQ,
-                    fullName: linkedUserId,
-                })
+            if (storedReferral !== referralEmail) {
+                addLinkedUser({ email: referralEmail, fullName: `user_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}` })
                     .unwrap()
-                    .then(() => {
-                        localStorage.setItem("referral_sent", innerQ);
-                    })
-                    .catch((error) => {
-                        setError("Ошибка при отправке реферала. Попробуйте снова.");
-                        console.error("Error sending referral:", error);
-                    });
+                    .then(() => localStorage.setItem("referral_sent", referralEmail))
+                    .catch(() => setError("Ошибка при отправке реферала. Попробуйте снова."));
             }
         }
-    }, [innerQ, addLinkedUser]);
+    }, [referralEmail, addLinkedUser]);
+
+    const handleLoginComplete = () => {
+        setPage("verify");
+    };
 
     const renderPage = () => {
         switch (page) {
             case "login":
-                return <LoginPage setPage={setPage} />;
+                return <LoginPage setPage={setPage} onLoginComplete={handleLoginComplete} email={email} password={password} setEmail={setEmail} setPassword={setPassword} />;
             case "resetPassword":
                 return <ResetPassword setPage={setPage} />;
             case "register":
                 return <RegisterPage setPage={setPage} />;
+            case "verify":
+                return <VerificationPage setPage={setPage} setStep={setStep} />;
+            case "documents":
+                return <DocumentsPage setPage={setPage} setStep={setStep} />;
+            case "waiting":
+                return <WaitingPage setPage={setPage} setStep={setStep} />;
+            case "approved":
+                return <ApprovedPage setPage={setPage} setStep={setStep} />;
+            case "sign":
+                return <SignPage />;
+            case "canceled":
+                return <CanceledPage setPage={setPage}/>;
             default:
                 return <h2 className={styles.pageNotFound}>404 - Page Not Found</h2>;
         }

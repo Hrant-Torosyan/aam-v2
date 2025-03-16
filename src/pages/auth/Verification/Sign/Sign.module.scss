@@ -1,0 +1,91 @@
+.signContent {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+  min-height: 171px;
+  margin: 34px auto 23px;
+  padding: 0 20px;
+
+  p {
+    font-family: "Unbounded", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 28px;
+    vertical-align: middle;
+    text-align: start;
+
+  }
+
+  .confirm {
+    margin-top: 23px;
+  }
+
+  .confirmRadio:checked + .confirmLabel .confirmText {
+    color: #000;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: -1.1%;
+  }
+
+  .confirmText {
+    margin-right: 8px;
+  }
+
+  .confirmRadio {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #2e93ef;
+    background-color: #fff;
+    text-align: center;
+
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .confirmRadio:checked {
+    background-color: #fff;
+    border-color: #2e93ef;
+  }
+
+  .confirmRadio:checked::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #2e93ef;
+  }
+
+  .confirmLabel {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+    margin-bottom: 37px;
+  }
+
+  .confirmText {
+    width: 90%;
+    font-size: 12px;
+    font-weight: 600;
+    color: #212529;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .signContent {
+    p {
+      font-size: 12px;
+    }
+  }
+}

@@ -7,7 +7,7 @@ interface PopupProps {
     title: string;
     children: ReactNode;
     onBack?: () => void;
-    onSubmit: (e: React.FormEvent) => void;
+    onSubmit?: (e: React.FormEvent) => void;
     submitButtonText?: string;
     isLoading?: boolean;
     error?: string;

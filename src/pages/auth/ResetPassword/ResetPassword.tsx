@@ -12,6 +12,7 @@ interface ResetPasswordProps {
 }
 
 const ResetPassword: React.FC<ResetPasswordProps> = ({ setPage }) => {
+
     const [step, setStep] = useState(0);
     const [email, setEmail] = useState<string>("");
     const [enteredCode, setEnteredCode] = useState<string>("");
