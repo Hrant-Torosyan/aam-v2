@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-
-import { useNavigate } from "react-router-dom";
 import { useSignupMutation } from "src/store/auth/authAPI";
 
 import Input from "src/ui/Input/Input";
@@ -10,16 +8,15 @@ import Button from "src/ui/Button/Button";
 
 import check from "src/images/svg/shape.svg";
 
-import styles from "./RegisterPage.module.scss"
+import styles from "./RegisterPage.module.scss";
 
 interface MainRegisterProps {
     setPage: (page: string) => void;
     setStep: (newStep: number) => void;
+    onComplete: (userEmail: string, userPassword: string) => void;
 }
 
-const MainRegister: React.FC<MainRegisterProps> = ({ setPage }) => {
-    const navigate = useNavigate();
-
+const MainRegister: React.FC<MainRegisterProps> = ({ setPage, setStep, onComplete }) => {
     const [email, setEmail] = useState("");
     const [fullName, setFullName] = useState("");
     const [password, setPassword] = useState("");
@@ -55,9 +52,16 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage }) => {
                 investmentExperience: "",
                 referral: null,
             }).unwrap();
-            navigate("/");
+
+            onComplete(email, password);
+            setStep(1);
         } catch (error: any) {
-            setGlobalError(error?.data?.detail || "Ошибка регистрации");
+
+            if (error?.data?.detail?.includes("Username is exist")) {
+                setGlobalError("Имя пользователя уже существует");
+            } else {
+                setGlobalError(error?.data?.detail || "Ошибка регистрации");
+            }
             console.error("Registration failed:", error);
         }
     };
@@ -67,7 +71,7 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage }) => {
             title="Регистрация"
             onBack={() => setPage("login")}
             onSubmit={handleRegister}
-            submitButtonText="Регистрация"
+            submitButtonText={isLoading ? "Регистрация..." : "Регистрация"}
             isLoading={isLoading}
             error={globalError}
             className={styles.registerPage}
@@ -81,7 +85,6 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage }) => {
                     error={Boolean(globalError && !fullName.trim())}
                 />
             </div>
-
 
             <div className={styles.inputWrapper}>
                 <Input
@@ -115,16 +118,18 @@ const MainRegister: React.FC<MainRegisterProps> = ({ setPage }) => {
 
             <div className={styles.checkBox} onClick={() => setConfirmOne(!confirmOne)}>
                 <div
-                    className={`${styles.checkBoxMain} ${confirmOne ? styles.active : ""} ${globalError && !confirmOne ? styles.error : ""}`}>
-                    {confirmOne && <img src={check} alt="check"/>}
+                    className={`${styles.checkBoxMain} ${confirmOne ? styles.active : ""} ${globalError && !confirmOne ? styles.error : ""}`}
+                >
+                    {confirmOne && <img src={check} alt="check" />}
                 </div>
                 <p>Подтверждаю данные</p>
             </div>
 
             <div className={styles.checkBox} onClick={() => setConfirmTwo(!confirmTwo)}>
                 <div
-                    className={`${styles.checkBoxMain} ${confirmTwo ? styles.active : ""} ${globalError && !confirmTwo ? styles.error : ""}`}>
-                    {confirmTwo && <img src={check} alt="check"/>}
+                    className={`${styles.checkBoxMain} ${confirmTwo ? styles.active : ""} ${globalError && !confirmTwo ? styles.error : ""}`}
+                >
+                    {confirmTwo && <img src={check} alt="check" />}
                 </div>
                 <p>Согласен с условиями политики конфиденциальности</p>
             </div>
