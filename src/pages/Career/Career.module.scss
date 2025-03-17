@@ -1,0 +1,602 @@
+.career {
+  width: 100%;
+  overflow: hidden;
+  .careerTitle {
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h1 {
+      color: rgb(52, 142, 241);
+      font-family: "Unbounded", sans-serif;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: -0.1%;
+    }
+    .careerButton {
+      width: 50%;
+      background: linear-gradient(
+                      158.2deg,
+                      rgb(44, 115, 243) -103.971%,
+                      rgb(48, 205, 231) 151.363%
+      );
+      border-radius: 50px;
+      overflow: hidden;
+      padding: 3px;
+      button {
+        width: 100%;
+        background: white;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 20px;
+        letter-spacing: 0px;
+        text-align: left;
+        padding: 13px 35px;
+        span {
+          color: rgb(48, 205, 231);
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+
+  .careerContent {
+    .careerContentBottomContainer {
+      display: flex;
+      border: 2px solid #348ef1;
+      border-radius: 25px;
+      overflow: hidden;
+      padding: 25px;
+
+      .careerContentBottom {
+        width: 60%;
+        padding: 40px 50px;
+        .careerContentBottomTitle {
+          color: #348ef1;
+          font-size: 20px;
+          width: 30%;
+        }
+
+        .careerContentLvlList {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 10px 0;
+          border-bottom: 2px solid rgb(233, 239, 251);
+          position: relative;
+          .careerContentLvlListItem {
+            text-align: center;
+            .LvlBlock {
+              display: flex;
+              justify-content: center;
+              .LvlBlockImg {
+                margin: 0 5px;
+                width: 70px;
+                height: 70px;
+                border-radius: 20px;
+                padding: 20px;
+              }
+            }
+
+            p {
+              color: rgb(14, 26, 50);
+              font-size: 20px;
+              font-weight: 600;
+              line-height: 24px;
+              margin-top: 5px;
+            }
+          }
+          &:last-child {
+            border: none;
+          }
+          &:nth-child(4) {
+            opacity: 0.5;
+          }
+          &:nth-child(5) {
+            opacity: 0.3;
+          }
+
+          .careerContentLvlListInfo {
+            color: rgb(52, 142, 241);
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 24px;
+            text-align: right;
+            width: 200px;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(0, -50%);
+          }
+        }
+      }
+    }
+
+    .careerContentItem {
+      display: flex;
+      position: relative;
+      .careerContentImg {
+        width: 40%;
+        display: flex;
+        align-items: center;
+        img {
+          width: 100%;
+        }
+      }
+      .careerContentTop {
+        width: 60%;
+        border-radius: 50px;
+        padding: 0px 0 10px 0;
+        position: relative;
+        .fon {
+          position: absolute;
+          top: -60px;
+          right: -20px;
+          z-index: -1;
+        }
+        .careerContentTopItem {
+          width: 70%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          > h1 {
+            background: linear-gradient(158.13deg, rgb(44, 115, 243), rgb(48, 205, 231));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: "Unbounded";
+            font-size: 36px;
+            font-weight: 500;
+            line-height: 44px;
+            margin: 30px 0;
+            letter-spacing: 0%;
+            text-align: left;
+          }
+          > p {
+            color: rgb(51, 63, 72);
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28px;
+            letter-spacing: 0%;
+            text-align: left;
+            margin-bottom: 30px;
+          }
+
+          .careerLink {
+            background: linear-gradient(
+                            158.2deg,
+                            rgb(44, 115, 243) -103.971%,
+                            rgb(48, 205, 231) 151.363%
+            );
+            margin-bottom: 40px;
+            border-radius: 30px;
+            padding: 2px;
+
+            .careerLinkItem {
+              border-radius: 30px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 14px 30px;
+              p {
+                color: white;
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 17px;
+                margin-right: 20px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+              .coped {
+                fill: rgb(150, 197, 249);
+              }
+            }
+          }
+          .linkActive {
+            background: linear-gradient(
+                            158.2deg,
+                            rgb(44, 115, 243) -103.971%,
+                            rgb(48, 205, 231) 151.363%
+            );
+            svg {
+              path {
+                fill: #2c73f3;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .career {
+    .careerTitle {
+      margin-bottom: 20px;
+      h1 {
+        font-size: 20px;
+      }
+      .careerButton {
+        width: auto;
+        padding: 1px;
+        button {
+          font-size: 12px;
+          padding: 6px 20px;
+          p {
+            display: none;
+          }
+          span {
+            color: rgb(48, 205, 231);
+            margin-left: 0;
+          }
+        }
+      }
+    }
+    .careerContent {
+      .careerContentBottomContainer {
+        padding: 0;
+        flex-direction: column;
+        border: none;
+        gap: 25px;
+        .careerContentBottom {
+          border: 2px solid #348ef1;
+          border-radius: 25px;
+          width: 100%;
+          padding: 15px;
+          .careerContentBottomTitle {
+            color: #348ef1;
+            font-size: 16px;
+            width: 30%;
+          }
+
+          .careerContentLvlList {
+            padding: 15px 0;
+            .careerContentLvlListItem {
+              .LvlBlock {
+                .LvlBlockImg {
+                  width: 25px;
+                  height: 25px;
+                  padding: 0px;
+                }
+              }
+
+              p {
+                font-size: 15px;
+                margin-top: 10px;
+              }
+            }
+
+            .careerContentLvlListInfo {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+      .careerContentItem {
+        flex-direction: column;
+        align-items: center;
+        .careerContentImg {
+          width: 70%;
+        }
+        .careerContentTop {
+          width: 100%;
+          .fon {
+            display: none;
+          }
+          .careerContentTopItem {
+            width: 100%;
+            > h1 {
+              font-size: 25px;
+              line-height: 30px;
+              margin: 10px 0;
+            }
+            > p {
+              font-size: 14px;
+              line-height: 15px;
+              margin-bottom: 20px;
+            }
+
+            .careerLink {
+              margin-bottom: 20px;
+              .careerLinkItem {
+                padding: 5px 15px;
+                p {
+                  color: white;
+                  font-size: 13px;
+                  line-height: 14px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .career {
+    .careerTitle {
+      margin-bottom: 20px;
+      h1 {
+        font-size: 20px;
+      }
+      .careerButton {
+        width: auto;
+        padding: 1px;
+        button {
+          font-size: 12px;
+          padding: 6px 20px;
+          p {
+            display: none;
+          }
+          span {
+            color: rgb(48, 205, 231);
+            margin-left: 0;
+          }
+        }
+      }
+    }
+    .careerContent {
+      .careerContentBottomContainer {
+        padding: 0;
+        flex-direction: column;
+        border: none;
+        gap: 25px;
+        .careerContentBottom {
+          border: 2px solid #348ef1;
+          border-radius: 25px;
+          width: 100%;
+          padding: 15px;
+          .careerContentBottomTitle {
+            color: #348ef1;
+            font-size: 16px;
+            width: 30%;
+          }
+
+          .careerContentLvlList {
+            padding: 15px 0;
+            .careerContentLvlListItem {
+              .LvlBlock {
+                .LvlBlockImg {
+                  width: 25px;
+                  height: 25px;
+                  padding: 0px;
+                }
+              }
+
+              p {
+                font-size: 15px;
+                margin-top: 10px;
+              }
+            }
+
+            .careerContentLvlListInfo {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+      .careerContentItem {
+        flex-direction: column;
+        align-items: center;
+        .careerContentImg {
+          width: 70%;
+        }
+        .careerContentTop {
+          width: 100%;
+          .fon {
+            display: none;
+          }
+          .careerContentTopItem {
+            width: 100%;
+            > h1 {
+              font-size: 25px;
+              line-height: 30px;
+              margin: 10px 0;
+            }
+            > p {
+              font-size: 14px;
+              line-height: 15px;
+              margin-bottom: 20px;
+            }
+
+            .careerLink {
+              margin-bottom: 20px;
+              .careerLinkItem {
+                padding: 5px 15px;
+                p {
+                  color: white;
+                  font-size: 13px;
+                  line-height: 14px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .career {
+    .careerTitle {
+      margin-bottom: 20px;
+      h1 {
+        font-size: 20px;
+      }
+      .careerButton {
+        width: 50%;
+        padding: 1px;
+        button {
+          font-size: 11px;
+          padding: 6px 16px;
+          span {
+            color: rgb(48, 205, 231);
+            margin-left: 5px;
+          }
+        }
+      }
+    }
+    .careerContent {
+      .careerContentBottomContainer {
+        padding: 15px;
+        .careerContentBottom {
+          width: 50%;
+          padding: 15px;
+          .careerContentBottomTitle {
+            color: #348ef1;
+            font-size: 16px;
+            width: 30%;
+          }
+
+          .careerContentLvlList {
+            padding: 15px 0;
+            .careerContentLvlListItem {
+              .LvlBlock {
+                .LvlBlockImg {
+                  width: 25px;
+                  height: 25px;
+                  padding: 0px;
+                }
+              }
+
+              p {
+                font-size: 15px;
+                margin-top: 10px;
+              }
+            }
+
+            .careerContentLvlListInfo {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+      .careerContentItem {
+        .careerContentImg {
+          width: 50%;
+        }
+        .careerContentTop {
+          width: 50%;
+          .fon {
+            width: 60%;
+          }
+          .careerContentTopItem {
+            width: 100%;
+            > h1 {
+              font-size: 25px;
+              line-height: 30px;
+              margin: 10px 0;
+            }
+            > p {
+              font-size: 14px;
+              line-height: 15px;
+              margin-bottom: 20px;
+            }
+
+            .careerLink {
+              margin-bottom: 20px;
+              .careerLinkItem {
+                padding: 5px 15px;
+                p {
+                  color: white;
+                  font-size: 13px;
+                  line-height: 14px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 998px) and (max-width: 1199.98px) {
+  .career {
+    .careerTitle {
+      margin-bottom: 30px;
+    }
+    .careerContent {
+      .careerContentBottomContainer {
+        .careerContentBottom {
+          width: 50%;
+
+          padding: 15px;
+          .careerContentBottomTitle {
+            color: #348ef1;
+            font-size: 18px;
+            width: 30%;
+          }
+
+          .careerContentLvlList {
+            padding: 15px 0;
+            .careerContentLvlListItem {
+              .LvlBlock {
+                .LvlBlockImg {
+                  width: 40px;
+                  height: 40px;
+                  padding: 5px;
+                }
+              }
+
+              p {
+                font-size: 18px;
+                margin-top: 10px;
+              }
+            }
+
+            .careerContentLvlListInfo {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+      .careerContentItem {
+        .careerContentImg {
+          width: 50%;
+        }
+        .careerContentTop {
+          width: 50%;
+          .careerContentTopItem {
+            width: 100%;
+            padding-right: 20px;
+            > h1 {
+              font-size: 30px;
+              line-height: 35px;
+              margin: 10px 0;
+            }
+            > p {
+              font-size: 15px;
+              line-height: 18px;
+              margin-bottom: 20px;
+            }
+
+            .careerLink {
+              margin-bottom: 20px;
+              .careerLinkItem {
+                padding: 10px 20px;
+                p {
+                  color: white;
+                  font-size: 14px;
+                  line-height: 14px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

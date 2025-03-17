@@ -1,0 +1,158 @@
+.userLvl {
+  width: 40%;
+  border: 2px solid #348ef1;
+  border-radius: 25px;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  .userLvlTitle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    h1 {
+      background: linear-gradient(158.13deg, rgb(44, 115, 243), rgb(48, 205, 231));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 24px;
+      letter-spacing: 0%;
+      text-align: left;
+    }
+  }
+  .userLvlInfoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+
+    .userLvlInfo {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      .userLvlInfoName {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 24px;
+
+        img{
+          width: 32px;
+          height: 32px;
+          margin-right: 13px;
+        }
+        p {
+          width: 50%;
+          text-align: start;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 100%;
+        }
+      }
+      h4 {
+        width: 20%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .userLvl {
+    padding: 20px;
+    width: 100%;
+    .userLvlTitle {
+      margin-bottom: 20px;
+      h1 {
+        font-size: 18px;
+      }
+    }
+    .userLvlInfoContainer {
+      gap: 20px;
+      .userLvlInfo {
+        .userLvlInfoName {
+          p {
+            font-size: 12px;
+            width: 48%;
+          }
+        }
+        h4 {
+          width: 20%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .userLvl {
+    padding: 20px;
+    width: 100%;
+    .userLvlTitle {
+      margin-bottom: 20px;
+      h1 {
+        font-size: 18px;
+      }
+    }
+    .userLvlInfoContainer {
+      gap: 20px;
+      .userLvlInfo {
+        .userLvlInfoName {
+          p {
+            font-size: 12px;
+            width: 48%;
+          }
+        }
+        h4 {
+          width: 20%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .userLvl {
+    padding: 20px 10px;
+    width: 50%;
+    .userLvlTitle {
+      margin-bottom: 20px;
+      h1 {
+        font-size: 18px;
+      }
+    }
+    .userLvlInfoContainer {
+      .userLvlInfo {
+        .userLvlInfoName {
+          p {
+            font-size: 12px;
+            width: 48%;
+          }
+        }
+        h4 {
+          width: 20%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .userLvl {
+    width: 50%;
+  }
+}

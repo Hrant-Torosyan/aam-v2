@@ -6,8 +6,7 @@ import {
     MonthlyBalance, OperationItem, PopUpState,
     ProcessedBalanceChart, WalletsData
 } from '@/types/types';
-
-const BASE_URL = 'http://145.223.99.13:8080/api/rest/';
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const ENDPOINTS = {
     WALLETS: 'wallets',
