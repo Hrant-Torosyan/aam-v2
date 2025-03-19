@@ -7,8 +7,11 @@
     display: none !important;
     height: 160px;
   }
+  .swiper-horizontal {
+    display: none !important;
+  }
 
-  .swiper-android .swiper-slide, .swiper-ios .swiper-slide, .swiper-wrapper {
+  .swiper-backface-hidden .swiper-slide{
     display: none !important;
   }
 
