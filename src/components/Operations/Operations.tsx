@@ -34,30 +34,35 @@ interface OperationItem {
 }
 
 const Operations: React.FC<OperationsProps> = ({
-   count,
-   setShowOperationsList,
-   showOperationsList,
-   accountType,
-}) => {
+                                                   count,
+                                                   setShowOperationsList,
+                                                   showOperationsList,
+                                                   accountType,
+                                               }) => {
     const [isActive, setIsactive] = useState(false);
     const [operationId, setOperationId] = useState<string>("");
+    const [showAll, setShowAll] = useState(false);
+
+    // Use the showOperationsList value if provided, otherwise use count
+    const queryPageNumber = showOperationsList !== null ? showOperationsList : count;
 
     const { data: operationsArr, isLoading } = useGetOperationsListQuery({
         accountType,
-        pageNumber: count,
+        pageNumber: queryPageNumber,
     });
 
     useEffect(() => {
         if (showOperationsList === null) {
-            setShowOperationsList(null);
+            setShowAll(false);
+        } else {
+            setShowAll(true);
         }
-    }, [showOperationsList, setShowOperationsList]); // Ensure resetting only if necessary
+    }, [showOperationsList]);
 
-    const displayedOperations = operationsArr?.transactionOperationsContent?.content
-        ? showOperationsList === null
-            ? operationsArr.transactionOperationsContent.content.slice(0, 3)
-            : operationsArr.transactionOperationsContent.content
-        : [];
+    const operations = operationsArr?.transactionOperationsContent?.content || [];
+
+    // If showing all operations, use the full array. Otherwise show only the first 'count' items
+    const displayedOperations = showAll ? operations : operations.slice(0, count);
 
     const getOperationTypeText = (type: string): string => {
         switch (type) {
@@ -129,12 +134,19 @@ const Operations: React.FC<OperationsProps> = ({
     );
 
     const toggleOperationsList = () => {
-        if (showOperationsList === null) {
-            setShowOperationsList(operationsArr?.transactionOperationsContent?.totalElements || 1);
+        if (!showAll) {
+            // When showing all operations, use the total number of operations available
+            setShowOperationsList(operationsArr?.transactionOperationsContent?.totalElements || count);
         } else {
+            // When reverting to showing fewer operations
             setShowOperationsList(null);
         }
+        setShowAll(!showAll);
     };
+
+    // Show the "show more/hide" button only if there are more operations than the count
+    const totalOperations = operationsArr?.transactionOperationsContent?.totalElements || 0;
+    const showToggleButton = totalOperations > count;
 
     return (
         <div className={styles.operationBlock}>
@@ -152,16 +164,16 @@ const Operations: React.FC<OperationsProps> = ({
             <div className={styles.operationBlockContent}>
                 {isLoading ? (
                     <p className={styles.loading}>Загрузка...</p>
-                ) : operationsArr?.transactionOperationsContent?.content?.length ? (
+                ) : operations.length ? (
                     operationBlocks
                 ) : (
                     <p className={styles.empty}>Пока что пусто</p>
                 )}
             </div>
 
-            {operationsArr?.transactionOperationsContent?.content?.length > 3 && (
+            {showToggleButton && (
                 <button onClick={toggleOperationsList}>
-                    {showOperationsList === null ? "смотреть полностью" : "скрыть"}
+                    {!showAll ? "смотреть полностью" : "скрыть"}
                 </button>
             )}
         </div>

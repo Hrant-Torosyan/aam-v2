@@ -6,21 +6,23 @@ interface IsSuccessfulProps {
     info: boolean;
     delay: number;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
-    setIsOpenTransfer: Dispatch<SetStateAction<boolean>>;
+    setIsOpenTransfer?: Dispatch<SetStateAction<boolean>>;
 }
 
-const IsSuccessful: React.FC<IsSuccessfulProps> = ({ info, delay }) => {
+const IsSuccessful: React.FC<IsSuccessfulProps> = ({ info, delay, setIsOpen }) => {
     const [togglePopUp] = useTogglePopUpMutation();
 
     useEffect(() => {
         const timer = setTimeout(() => {
+            setIsOpen(false);
             togglePopUp();
         }, delay);
 
         return () => clearTimeout(timer);
-    }, [delay, togglePopUp]);
+    }, [delay, setIsOpen, togglePopUp]);
 
     const handleClose = () => {
+        setIsOpen(false);
         togglePopUp();
     };
 
