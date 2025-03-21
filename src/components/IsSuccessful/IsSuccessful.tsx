@@ -15,7 +15,6 @@ const IsSuccessful: React.FC<IsSuccessfulProps> = ({ info, delay, setIsOpen }) =
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsOpen(false);
-            togglePopUp();
         }, delay);
 
         return () => clearTimeout(timer);
@@ -23,7 +22,6 @@ const IsSuccessful: React.FC<IsSuccessfulProps> = ({ info, delay, setIsOpen }) =
 
     const handleClose = () => {
         setIsOpen(false);
-        togglePopUp();
     };
 
     return (

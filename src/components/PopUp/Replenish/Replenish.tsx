@@ -19,14 +19,12 @@ interface AccountDetails {
 
 interface Props {
     setIsOpenReplenish: React.Dispatch<React.SetStateAction<boolean>>;
-    walletsData: any;
     setSuccessInfo: React.Dispatch<React.SetStateAction<boolean>>;
     setIsOpenSc: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Replenish: React.FC<Props> = ({
     setIsOpenReplenish,
-    walletsData,
     setSuccessInfo,
     setIsOpenSc,
 }) => {

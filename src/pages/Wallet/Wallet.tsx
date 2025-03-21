@@ -16,26 +16,72 @@ const Wallet: React.FC = () => {
     const [showOperationsList, setShowOperationsList] = useState<number | null>(null);
     const [isOpenSc, setIsOpenSc] = useState(false);
     const [successInfo, setSuccessInfo] = useState(true);
+    const [isOpenReplenish, setIsOpenReplenish] = useState<boolean>(false);
+    const [isOpenSend, setIsOpenSend] = useState<boolean>(false);
+    const [isOpenTransfer, setIsOpenTransfer] = useState<boolean>(false);
 
     const { data: walletsData, isLoading: isLoadingWallets } = useGetWalletsQuery();
 
     const isLoading = isLoadingWallets;
 
     useEffect(() => {
+        const handleOpenReplenish = () => {
+            setIsOpenReplenish(true);
+            setActivePopup("Replenish");
+        };
+
+        const handleOpenTransfer = () => {
+            setIsOpenTransfer(true);
+            setActivePopup("Transfer");
+        };
+
+        const handleOpenSend = () => {
+            setIsOpenSend(true);
+            setActivePopup("Send");
+        };
+
+        // Listen for both the general popup event and specific popup events
         const handleOpenPopup = (event: Event) => {
             const customEvent = event as CustomEvent;
             setActivePopup(customEvent.detail);
         };
 
         window.addEventListener("openPopup", handleOpenPopup);
+        window.addEventListener("openReplenishPopup", handleOpenReplenish);
+        window.addEventListener("openTransferPopup", handleOpenTransfer);
+        window.addEventListener("openSendPopup", handleOpenSend);
+
         return () => {
             window.removeEventListener("openPopup", handleOpenPopup);
+            window.removeEventListener("openReplenishPopup", handleOpenReplenish);
+            window.removeEventListener("openTransferPopup", handleOpenTransfer);
+            window.removeEventListener("openSendPopup", handleOpenSend);
         };
     }, []);
 
     useEffect(() => {
-        setIsOpen(!!activePopup || isOpenSc);
-    }, [activePopup, isOpenSc]);
+        setIsOpen(!!activePopup || isOpenSc || isOpenReplenish || isOpenSend || isOpenTransfer);
+    }, [activePopup, isOpenSc, isOpenReplenish, isOpenSend, isOpenTransfer]);
+
+    useEffect(() => {
+        if (activePopup === "Replenish") {
+            setIsOpenReplenish(true);
+            setIsOpenSend(false);
+            setIsOpenTransfer(false);
+        } else if (activePopup === "Send") {
+            setIsOpenSend(true);
+            setIsOpenReplenish(false);
+            setIsOpenTransfer(false);
+        } else if (activePopup === "Transfer") {
+            setIsOpenTransfer(true);
+            setIsOpenReplenish(false);
+            setIsOpenSend(false);
+        } else if (activePopup === null) {
+            setIsOpenReplenish(false);
+            setIsOpenSend(false);
+            setIsOpenTransfer(false);
+        }
+    }, [activePopup]);
 
     const totalBalance = useMemo(() => {
         return (
@@ -45,6 +91,18 @@ const Wallet: React.FC = () => {
         );
     }, [walletsData]);
 
+    const dispatchOpenReplenish = () => {
+        window.dispatchEvent(new CustomEvent("openReplenishPopup"));
+    };
+
+    const dispatchOpenTransfer = () => {
+        window.dispatchEvent(new CustomEvent("openTransferPopup"));
+    };
+
+    const dispatchOpenSend = () => {
+        window.dispatchEvent(new CustomEvent("openSendPopup"));
+    };
+
     if (isLoading) {
         return <div className={styles.loader}><Loader /></div>;
     }
@@ -53,7 +111,10 @@ const Wallet: React.FC = () => {
         <div className={styles.wallet}>
             {isOpenSc && (
                 <IsSuccessful
-                    setIsOpenTransfer={() => setActivePopup(null)}
+                    setIsOpenTransfer={() => {
+                        setActivePopup(null);
+                        setIsOpenTransfer(false);
+                    }}
                     info={successInfo}
                     delay={1000}
                     setIsOpen={setIsOpenSc}
@@ -62,27 +123,35 @@ const Wallet: React.FC = () => {
 
             {isOpen && <PopUp />}
 
-            {activePopup === "Replenish" && (
+            {isOpenReplenish && (
                 <Replenish
                     setIsOpenSc={setIsOpenSc}
-                    walletsData={walletsData}
-                    setIsOpenReplenish={() => setActivePopup(null)}
+                    setIsOpenReplenish={(value) => {
+                        if (!value) setActivePopup(null);
+                        setIsOpenReplenish(value);
+                    }}
                     setSuccessInfo={setSuccessInfo}
                 />
             )}
 
-            {activePopup === "Send" && (
+            {isOpenSend && (
                 <Send
                     setIsOpenSc={setIsOpenSc}
-                    setIsOpenSend={() => setActivePopup(null)}
+                    setIsOpenSend={(value) => {
+                        if (!value) setActivePopup(null);
+                        setIsOpenSend(value);
+                    }}
                     setSuccessInfo={setSuccessInfo}
                 />
             )}
 
-            {activePopup === "Transfer" && walletsData && totalBalance > 0 && (
+            {isOpenTransfer && walletsData && totalBalance > 0 && (
                 <Transfer
                     setIsOpenSc={setIsOpenSc}
-                    setIsOpenTransfer={() => setActivePopup(null)}
+                    setIsOpenTransfer={(value) => {
+                        if (!value) setActivePopup(null);
+                        setIsOpenTransfer(value);
+                    }}
                 />
             )}
 
@@ -93,17 +162,17 @@ const Wallet: React.FC = () => {
                         ${totalBalance.toLocaleString()}
                     </div>
                     <div className={styles.walletButton}>
-                        <button onClick={() => setActivePopup("Replenish")}>
+                        <button onClick={dispatchOpenReplenish}>
                             Пополнить
                         </button>
                     </div>
                     <div className={styles.walletButton}>
-                        <button onClick={() => setActivePopup("Transfer")}>
+                        <button onClick={dispatchOpenTransfer}>
                             Перевести
                         </button>
                     </div>
                     <div className={styles.walletButton}>
-                        <button onClick={() => setActivePopup("Send")}>
+                        <button onClick={dispatchOpenSend}>
                             Отправить
                         </button>
                     </div>
@@ -116,6 +185,7 @@ const Wallet: React.FC = () => {
                 count={6}
                 showOperationsList={showOperationsList}
                 setShowOperationsList={setShowOperationsList}
+                className={styles.walletList}
             />
         </div>
     );
