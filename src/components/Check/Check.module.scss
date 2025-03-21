@@ -6,13 +6,18 @@
   .swiper {
     display: none !important;
     height: 160px;
+
+    .swiper-backface-hidden .swiper-slide {
+      display: none !important;
+
+    }
   }
   .swiper-horizontal {
     display: none !important;
   }
 
-  .swiper-backface-hidden .swiper-slide{
-    display: none !important;
+  .mySwiper {
+    display: none;
   }
 
   .checkBlockItem {
@@ -60,6 +65,9 @@
 @media (max-width: 575.98px) {
   .checkBlock {
     margin-bottom: 15px;
+    .mySwiper {
+      display: block;
+    }
     .swiper {
       display: block !important;
     }

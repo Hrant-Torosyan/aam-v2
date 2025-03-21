@@ -116,7 +116,6 @@ const Analytics: React.FC = () => {
             {isOpenReplenish && (
                 <Replenish
                     setIsOpenSc={setIsOpenSc}
-                    walletsData={walletsData}
                     setIsOpenReplenish={setIsOpenReplenish}
                     setSuccessInfo={setSuccessInfo}
                 />

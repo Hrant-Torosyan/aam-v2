@@ -7,7 +7,7 @@ import Select from "src/components/Select/Select";
 
 const PopUp: React.FC = () => {
     const [selectValue, setSelectValue] = useState<string>('WEEKLY');
-    const [showOperationsList, setShowOperationsList] = useState<number | null>(3);
+    const [showOperationsList, setShowOperationsList] = useState<number | null>(null);
 
     const { data: popUpState } = useGetPopUpStateQuery();
     const [setPopUpState] = useSetPopUpStateMutation();
@@ -56,7 +56,11 @@ const PopUp: React.FC = () => {
                             <p>Доля от общего баланса: <span>{percent}%</span></p>
                             <p>Кол-во операций за месяц: <span>{operationsCount}</span></p>
                         </div>
-                        <Operations count={6} showOperationsList={showOperationsList} setShowOperationsList={setShowOperationsList}/>
+                        <Operations
+                            count={3}
+                            showOperationsList={showOperationsList}
+                            setShowOperationsList={setShowOperationsList}
+                        />
                     </div>
                     <div className={styles.chartSelect}>
                         <Select value={selectValue} onChange={setSelectValue} className={`${styles.selected} ${styles.customClassName}`}/>

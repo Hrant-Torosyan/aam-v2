@@ -1,28 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./Operations.module.scss";
 import { useGetOperationsListQuery } from "src/store/analytics/analyticsAPI";
-import OperationPopUp from 'src/components/OperationPopUp/OperationPopUp';
+import OperationPopUp from "src/components/OperationPopUp/OperationPopUp";
 
-function formatDate(milliseconds: number | string): string {
+const months = [
+    "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
+    "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"
+];
+
+const formatDate = (milliseconds: number | string): string => {
     const date = new Date(Number(milliseconds));
-
-    const months = [
-        "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
-        "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря",
-    ];
-
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-
-    return `${day} ${month}, ${year}`;
-}
+    return `${date.getDate()} ${months[date.getMonth()]}, ${date.getFullYear()}`;
+};
 
 interface OperationsProps {
     count: number;
     showOperationsList: number | null;
     setShowOperationsList: React.Dispatch<React.SetStateAction<number | null>>;
     accountType?: string;
+    className?: string;
 }
 
 interface OperationItem {
@@ -33,124 +29,50 @@ interface OperationItem {
     status: "DONE" | "IN_PROCESS" | "FAILED";
 }
 
+const operationTypes: Record<string, string> = {
+    DIVIDEND_PAYMENT: "Выплата по дивидендам",
+    PROJECT_INVEST: "Инвестиция",
+    PROJECT_DELETE: "По закрытии проекта",
+    TRANSFER_BETWEEN_WALLETS: "Внутренний перевод",
+    TRANSFER_BETWEEN_USERS_WALLETS: "Перевод пользователю",
+    WITHDRAWALS: "Вывод средств",
+    DEPOSITS: "Пополнения",
+    DEFAULT: "Комиссия"
+};
+
+const statusClasses: Record<string, string> = {
+    DONE: styles.done,
+    IN_PROCESS: styles.progress,
+    FAILED: styles.failed
+};
+
+const statusTexts: Record<string, string> = {
+    DONE: "Выполнено",
+    IN_PROCESS: "В процессе",
+    FAILED: "Неуспешно"
+};
+
 const Operations: React.FC<OperationsProps> = ({
-                                                   count,
-                                                   setShowOperationsList,
-                                                   showOperationsList,
-                                                   accountType,
-                                               }) => {
-    const [isActive, setIsactive] = useState(false);
+   count,
+   showOperationsList,
+   setShowOperationsList,
+   accountType,
+   className
+}) => {
+    const [isActive, setIsActive] = useState(false);
     const [operationId, setOperationId] = useState<string>("");
-    const [showAll, setShowAll] = useState(false);
 
-    // Use the showOperationsList value if provided, otherwise use count
-    const queryPageNumber = showOperationsList !== null ? showOperationsList : count;
-
-    const { data: operationsArr, isLoading } = useGetOperationsListQuery({
-        accountType,
-        pageNumber: queryPageNumber,
-    });
-
-    useEffect(() => {
-        if (showOperationsList === null) {
-            setShowAll(false);
-        } else {
-            setShowAll(true);
-        }
-    }, [showOperationsList]);
-
+    const pageSize = showOperationsList !== null ? showOperationsList : count;
+    const { data: operationsArr, isLoading } = useGetOperationsListQuery({ accountType, pageNumber: pageSize });
     const operations = operationsArr?.transactionOperationsContent?.content || [];
-
-    // If showing all operations, use the full array. Otherwise show only the first 'count' items
-    const displayedOperations = showAll ? operations : operations.slice(0, count);
-
-    const getOperationTypeText = (type: string): string => {
-        switch (type) {
-            case "DIVIDEND_PAYMENT":
-                return "Выплата по дивидендам";
-            case "PROJECT_INVEST":
-                return "Инвестиция";
-            case "PROJECT_DELETE":
-                return "По закрытии проекта";
-            case "TRANSFER_BETWEEN_WALLETS":
-                return "Внутренний перевод";
-            case "TRANSFER_BETWEEN_USERS_WALLETS":
-                return "Перевод пользователю";
-            case "WITHDRAWALS":
-                return "Вывод средств";
-            case "DEPOSITS":
-                return "Пополнения";
-            default:
-                return "Комиссия";
-        }
-    };
-
-    const getStatusText = (status: string): string => {
-        switch (status) {
-            case "DONE":
-                return "Выполнено";
-            case "IN_PROCESS":
-                return "В процессе";
-            default:
-                return "Неуспешно";
-        }
-    };
-
-    const getStatusClass = (status: string): string => {
-        switch (status) {
-            case "DONE":
-                return styles.done;
-            case "IN_PROCESS":
-                return styles.progress;
-            default:
-                return styles.failed;
-        }
-    };
-
-    const handleOperationClick = (id: string) => {
-        setOperationId(id);
-        setIsactive(true);
-    };
-
-    const operationBlocks = displayedOperations.map(
-        (item: OperationItem, key: number) => (
-            <div
-                onClick={() => handleOperationClick(item.transactionOperationId)}
-                key={key}
-                className={styles.operationBlockItem}
-            >
-                <div className={styles.operationBlockMain}>
-                    {getOperationTypeText(item.type)}
-                </div>
-                <div className={styles.operationBlockInfo}>
-                    <p>{formatDate(item.date)}</p>
-                    <p>${parseFloat(item.amount.toString().replace(/[^\d.-]/g, "")).toLocaleString()}</p>
-                    <div className={getStatusClass(item.status)}>
-                        <span>{getStatusText(item.status)}</span>
-                    </div>
-                </div>
-            </div>
-        )
-    );
-
-    const toggleOperationsList = () => {
-        if (!showAll) {
-            // When showing all operations, use the total number of operations available
-            setShowOperationsList(operationsArr?.transactionOperationsContent?.totalElements || count);
-        } else {
-            // When reverting to showing fewer operations
-            setShowOperationsList(null);
-        }
-        setShowAll(!showAll);
-    };
-
-    // Show the "show more/hide" button only if there are more operations than the count
+    const isShowingAll = showOperationsList !== null;
+    const displayedOperations = isShowingAll ? operations : operations.slice(0, count);
     const totalOperations = operationsArr?.transactionOperationsContent?.totalElements || 0;
     const showToggleButton = totalOperations > count;
 
     return (
-        <div className={styles.operationBlock}>
-            {isActive && <OperationPopUp setIsactive={setIsactive} operationId={operationId} />}
+        <div className={`${styles.operationBlock} ${className || ""}`}>
+            {isActive && <OperationPopUp setIsactive={setIsActive} operationId={operationId} />}
 
             <div className={`${styles.operationBlockItem} ${styles.title}`}>
                 <div className={styles.operationBlockMain}>Операция</div>
@@ -165,15 +87,33 @@ const Operations: React.FC<OperationsProps> = ({
                 {isLoading ? (
                     <p className={styles.loading}>Загрузка...</p>
                 ) : operations.length ? (
-                    operationBlocks
+                    displayedOperations.map((item: OperationItem) => (
+                        <div
+                            key={item.transactionOperationId}
+                            className={styles.operationBlockItem}
+                            onClick={() => {
+                                setOperationId(item.transactionOperationId);
+                                setIsActive(true);
+                            }}
+                        >
+                            <div className={styles.operationBlockMain}>{operationTypes[item.type] || operationTypes.DEFAULT}</div>
+                            <div className={styles.operationBlockInfo}>
+                                <p>{formatDate(item.date)}</p>
+                                <p>${parseFloat(item.amount.toString().replace(/[^\d.-]/g, "")).toLocaleString()}</p>
+                                <div className={statusClasses[item.status] || styles.failed}>
+                                    <span>{statusTexts[item.status]}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))
                 ) : (
                     <p className={styles.empty}>Пока что пусто</p>
                 )}
             </div>
 
             {showToggleButton && (
-                <button onClick={toggleOperationsList}>
-                    {!showAll ? "смотреть полностью" : "скрыть"}
+                <button onClick={() => setShowOperationsList(isShowingAll ? null : totalOperations)}>
+                    {!isShowingAll ? "смотреть полностью" : "скрыть"}
                 </button>
             )}
         </div>
