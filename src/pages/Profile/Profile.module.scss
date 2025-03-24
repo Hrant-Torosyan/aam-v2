@@ -1,0 +1,832 @@
+.mainProfile {
+  .mainProfileContent {
+    display: flex;
+    .mainProfileContentItem {
+      width: 30%;
+    }
+    .mainProfileUserCard {
+      border: 2px solid rgba(46, 147, 239, 0.3);
+      border-radius: 25px;
+      background: rgb(255, 255, 255);
+      padding: 30px;
+      margin-bottom: 20px;
+      position: relative;
+      .userInfoEdit {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        cursor: pointer;
+        svg {
+          path {
+            transition: 0.5s;
+          }
+        }
+        &:hover {
+          svg {
+            path {
+              stroke: #2c73f3;
+            }
+          }
+        }
+      }
+      .mainProfileUserInfo {
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+        img {
+          width: 80px;
+          height: 80px;
+          object-fit: cover;
+
+          border-radius: 50%;
+        }
+        .mainProfileUserInfoName {
+          margin-left: 25px;
+          h1 {
+            color: rgb(14, 26, 50);
+            font-size: 18px;
+            font-weight: 600;
+            width: 90%;
+            line-height: 22px;
+          }
+          span {
+            color: rgb(163, 174, 208);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 17px;
+          }
+        }
+      }
+
+      .mainProfileUserInfos {
+        display: flex;
+        align-items: center;
+        padding: 10px 20px;
+        .mainProfileUserInfosImg {
+          margin-right: 20px;
+          background: white;
+          width: 40px;
+          border-radius: 10px;
+          box-shadow: 5px 5px 10px 0px rgba(22, 52, 80, 0.1);
+          img {
+            padding: 8px;
+          }
+        }
+
+        .mainProfileUserInfosItem {
+          width: calc(100% - 60px);
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        span {
+          color: rgb(163, 174, 208);
+          font-size: 17px;
+          font-weight: 400;
+        }
+        p {
+          color: rgb(14, 26, 50);
+          font-size: 17px;
+          margin-top: 3px;
+          font-weight: 500;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          a {
+            color: #44b7ff;
+          }
+        }
+      }
+    }
+    .mainProfileContentProducts {
+      width: 70%;
+      .products {
+        margin: 0;
+        padding-left: 20px;
+        .product {
+          &:nth-child(1),
+          &:nth-child(2) {
+            margin-top: 0 !important;
+          }
+          &:nth-child(2n) {
+            margin-left: 20px !important;
+          }
+          width: calc(50% - 10px);
+          margin: 20px 0 0 0 !important;
+        }
+      }
+    }
+  }
+
+  .mainProfileContentMobile {
+    display: none;
+    .mainProfileUserCard {
+      display: flex;
+      justify-content: space-between;
+      .mainProfileUserCardItem {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .mainProfileUserInfo {
+          margin-bottom: 30px;
+        }
+        .mainProfileUserInfos {
+          padding: 10px 20px;
+        }
+      }
+    }
+    .mainProfileContentProducts {
+      .products {
+        padding-left: 0;
+        padding-bottom: 20px;
+      }
+      width: 100%;
+    }
+  }
+}
+.mainProfileTitle {
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  h1 {
+    color: rgb(52, 142, 241);
+    font-family: "Unbounded", sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.1%;
+  }
+  .mainProfileButton {
+    background: linear-gradient(
+                    158.2deg,
+                    rgb(44, 115, 243) -103.971%,
+                    rgb(48, 205, 231) 151.363%
+    );
+    border-radius: 50px;
+    overflow: hidden;
+    padding: 3px;
+    button {
+      background: white;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      letter-spacing: 0px;
+      text-align: left;
+      padding: 13px 35px;
+      display: flex;
+      align-items: center;
+      span {
+        margin-left: 5px;
+        color: rgb(48, 205, 231);
+      }
+    }
+  }
+}
+
+.profileEditContent {
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+  }
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 2px solid rgba(46, 147, 239, 0.3);
+  border-radius: 25px;
+  padding: 35px;
+  .profileImage {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 30px;
+    .imageUploadBlock {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .errorText {
+        height: 20px;
+        color: rgb(229, 92, 92);
+      }
+    }
+    .imageUpload {
+      width: 150px;
+      height: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      object-fit: cover;
+      label {
+        cursor: pointer;
+      }
+      input {
+        display: none;
+      }
+      .fon {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(255, 255, 255, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          width: 35%;
+          border-radius: 50%;
+          object-fit: cover
+        }
+        transition: 0.5s;
+        &:hover {
+          opacity: 0;
+        }
+      }
+    }
+  }
+  .button {
+    background: linear-gradient(
+                    158.2deg,
+                    rgb(44, 115, 243) -103.971%,
+                    rgb(48, 205, 231) 151.363%
+    );
+    border-radius: 50px;
+    overflow: hidden;
+    padding: 3px;
+    button {
+      background: white;
+      display: flex;
+      align-items: center;
+      border-radius: 50px;
+      transition: 0.5s;
+      padding: 15px 60px;
+      p {
+        background: linear-gradient(158.2deg, rgb(44, 115, 243), rgb(48, 205, 231));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 20px;
+        letter-spacing: 0px;
+      }
+    }
+    &:hover {
+      button {
+        background: transparent;
+        p {
+          background: none;
+          -webkit-background-clip: border-box;
+          background-clip: border-box;
+          -webkit-text-fill-color: initial;
+          color: white;
+        }
+      }
+    }
+  }
+  .mobileButton {
+    display: none;
+  }
+
+  .profileEditInputs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    svg {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .datePickerContainer {
+      position: relative;
+      width: 100%;
+
+      input {
+        padding: 17px 25px;
+        border-radius: 12px;
+        width: 100%;
+        font-size: 16px;
+        background: rgb(255, 255, 255);
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+
+        &::placeholder {
+          color: rgba(14, 26, 50, 0.5);
+          font-size: 16px;
+          font-weight: 400;
+        }
+      }
+
+      .calendarIcon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        z-index: 1;
+      }
+
+      .calendarWrapper {
+        position: absolute;
+        top: calc(100% + -35px);
+        left: 0;
+        z-index: 1000;
+        width: 100%;
+
+        .react-datepicker {
+          width: 100%;
+          border: none;
+          font-family: inherit;
+
+          &__header {
+            background: white;
+            border-bottom: 1px solid rgba(46, 147, 239, 0.2);
+          }
+
+          &__month {
+            margin: 0.5rem;
+          }
+
+          &__day {
+            margin: 0.2rem;
+            border-radius: 50%;
+
+            &--selected {
+              background: linear-gradient(
+                              158.2deg,
+                              rgb(44, 115, 243) -20%,
+                              rgb(48, 205, 231) 120%
+              );
+              color: white;
+            }
+
+            &:hover {
+              background-color: rgba(46, 147, 239, 0.1);
+            }
+          }
+        }
+      }
+    }
+
+    .profileEditInput {
+      .dateProfile {
+        position: relative;
+        z-index: 100;
+
+        .inputStyle {
+          background: rgba(46, 147, 239, 0.3);
+          border-radius: 14px;
+          padding: 2px;
+          position: relative;
+          overflow: visible !important;
+
+          &:focus-within {
+            background: linear-gradient(225deg, rgb(12, 94, 255), rgb(0, 180, 210) 100%);
+          }
+
+          &.error {
+            background: rgb(229, 92, 92);
+          }
+        }
+      }
+    }
+
+    .line {
+      border-top: 2px solid rgb(192, 223, 250);
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    .profileEditInputsList {
+      width: calc(50% - 20px);
+    }
+    .profileEditInput {
+      width: 100%;
+      margin-bottom: 20px;
+
+      p {
+        color: rgb(14, 26, 50);
+        font-size: 19.38px;
+        font-weight: 600;
+        line-height: 27.68px;
+      }
+      .inputStyle {
+        background: rgba(46, 147, 239, 0.3);
+        border-radius: 14px;
+        padding: 2px;
+        position: relative;
+        overflow: hidden;
+        &:focus-within {
+          background: linear-gradient(225deg, rgb(12, 94, 255), rgb(0, 180, 210) 100%);
+        }
+        input {
+          padding: 17px 25px;
+          border-radius: 12px;
+          overflow: hidden;
+          width: 100%;
+          font-size: 16px;
+
+          background: rgb(255, 255, 255);
+          position: relative;
+          display: inline-block;
+          &::placeholder {
+            color: rgba(14, 26, 50, 0.5);
+            font-size: 16px;
+            font-weight: 400;
+          }
+        }
+      }
+      .inputStyle.error {
+        background: rgb(229, 92, 92);
+      }
+    }
+    .inputStyleDate {
+      .buttons {
+        top: 0px;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        right: 10px;
+        height: 100%;
+        z-index: 1;
+      }
+
+      .increment,
+      .decrement {
+        cursor: pointer;
+        height: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        path {
+          transition: 0.5s;
+        }
+        &:hover {
+          path {
+            fill: #2c73f3;
+          }
+        }
+      }
+    }
+
+    .profileEditInputDateList {
+      display: flex;
+
+      .inputStyleDate {
+        &:nth-child(2) {
+          margin: 0 20px;
+        }
+        &:nth-child(3),
+        &:nth-child(2) {
+          width: 33%;
+        }
+        &:nth-child(1) {
+          width: 28%;
+        }
+      }
+    }
+    .profileEditInputPhone {
+      .inputStyle {
+        display: flex;
+        input {
+          border-radius: 0 12px 12px 0;
+        }
+        .plus {
+          border-radius: 12px 0 0 12px;
+          font-size: 20px;
+          line-height: 16px;
+          padding: 17px 15px;
+          background: white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 2px;
+        }
+      }
+    }
+  }
+
+}
+@media (max-width: 575.98px) {
+  .mainProfileTitle {
+    margin-bottom: 30px;
+    h1 {
+      font-size: 18px;
+    }
+    .mainProfileButton {
+      padding: 2px;
+      button {
+        padding: 8px 30px;
+        font-size: 12px;
+        p {
+          display: none;
+        }
+      }
+    }
+  }
+  .mainProfile {
+    .mainProfileContent {
+      display: none;
+      .mainProfileContentProducts {
+        width: 100%;
+        .products {
+          margin: 0;
+          padding-left: 0;
+          .product {
+            margin: 0 !important;
+            &:nth-child(2n) {
+              margin: 0 !important;
+            }
+            &:nth-child(1n) {
+              margin-top: 20px !important;
+            }
+            width: 100%;
+          }
+        }
+      }
+    }
+    .mainProfileContentMobile {
+      display: block !important;
+      .mainProfileUserCard {
+        flex-direction: column;
+        padding: 25px;
+        .userInfoEdit {
+          top: 15px;
+          right: 15px;
+        }
+        .mainProfileUserInfo {
+          margin-bottom: 20px;
+          img {
+            width: 60px;
+            height: 60px;
+          }
+          .mainProfileUserInfoName {
+            margin-left: 20px;
+            h1 {
+              color: rgb(14, 26, 50);
+              font-size: 16px;
+              line-height: 16px;
+            }
+            span {
+              font-size: 13px;
+            }
+          }
+        }
+
+        .mainProfileUserInfos {
+          padding: 10px 20px !important ;
+          .mainProfileUserInfosImg {
+            width: 40px;
+            img {
+              padding: 10px;
+            }
+          }
+          span {
+            color: rgb(163, 174, 208);
+            font-size: 15px;
+            font-weight: 400;
+          }
+          p {
+            font-size: 15px;
+          }
+        }
+      }
+    }
+  }
+  .profileEditContent {
+    border: none;
+    padding: 0;
+    .profileImage {
+      justify-content: center;
+      margin-top: 50px;
+      .imageUpload {
+        width: 120px;
+        height: 120px;
+        .fon {
+          img {
+            width: 30%;
+          }
+        }
+      }
+      .button {
+        display: none;
+      }
+    }
+    .mobileButton {
+      display: block;
+      padding: 2px;
+      width: 100%;
+      text-align: center;
+
+      button {
+        width: 100%;
+        text-align: center;
+        display: inline-block;
+        padding: 13px 50px;
+        p {
+          font-size: 15px;
+        }
+      }
+    }
+    .profileEditInputs {
+      .profileEditInputsList {
+        width: 100%;
+      }
+      .profileEditInput {
+        p {
+          font-size: 16px;
+        }
+        .inputStyle {
+          input {
+            padding: 11px 20px;
+            font-size: 14px;
+            &::placeholder {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .mainProfileTitle {
+    margin-bottom: 30px;
+    h1 {
+      font-size: 20px;
+    }
+    .mainProfileButton {
+      padding: 2px;
+      button {
+        padding: 8px 20px;
+        font-size: 12px;
+      }
+    }
+  }
+  .mainProfile {
+    .mainProfileContent {
+      display: none;
+    }
+    .mainProfileContentMobile {
+      display: block !important;
+    }
+  }
+  .profileEditContent {
+    .profileImage {
+      .imageUpload {
+        width: 120px;
+        height: 120px;
+        .fon {
+          img {
+            width: 30%;
+          }
+        }
+      }
+      .button {
+        padding: 2px;
+        button {
+          padding: 13px 50px;
+          p {
+            font-size: 15px;
+          }
+        }
+      }
+    }
+    .profileEditInputs {
+      .profileEditInputsList {
+        width: 100%;
+      }
+      .profileEditInput {
+        width: 100%;
+        p {
+          font-size: 16px;
+        }
+        .inputStyle {
+          padding: 2px;
+
+          input {
+            padding: 11px 20px;
+            font-size: 15px;
+            &::placeholder {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .mainProfileTitle {
+    margin-bottom: 30px;
+    h1 {
+      font-size: 22px;
+    }
+    .mainProfileButton {
+      padding: 3px;
+      button {
+        padding: 10px 35px;
+      }
+    }
+  }
+  .mainProfile {
+    .mainProfileContent {
+      display: none;
+    }
+    .mainProfileContentMobile {
+      display: block !important;
+    }
+  }
+  .profileEditContent {
+    .profileEditInputs {
+      .profileEditInputsList {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .mainProfileTitle {
+    margin-bottom: 30px;
+    h1 {
+      font-size: 22px;
+    }
+    .mainProfileButton {
+      padding: 3px;
+      button {
+        padding: 10px 35px;
+      }
+    }
+  }
+  .mainProfile {
+    .mainProfileContent {
+      .mainProfileContentItem {
+        .mainProfileUserCard {
+          padding: 20px;
+          .userInfoEdit {
+            top: 15px;
+            right: 15px;
+          }
+          .mainProfileUserInfo {
+            margin-bottom: 20px;
+            img {
+              width: 60px;
+              height: 60px;
+            }
+            .mainProfileUserInfoName {
+              margin-left: 20px;
+              h1 {
+                color: rgb(14, 26, 50);
+                font-size: 16px;
+                line-height: 16px;
+              }
+              span {
+                font-size: 13px;
+              }
+            }
+          }
+
+          .mainProfileUserInfos {
+            padding: 10px 5px;
+            .mainProfileUserInfosImg {
+              width: 40px;
+              img {
+                padding: 10px;
+              }
+            }
+            span {
+              color: rgb(163, 174, 208);
+              font-size: 15px;
+              font-weight: 400;
+            }
+            p {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+}

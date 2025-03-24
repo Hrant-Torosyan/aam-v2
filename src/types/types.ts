@@ -63,3 +63,59 @@ export interface BalanceChartRequest {
     accountType?: string;
     refresh?: number;
 }
+
+
+export interface UserImage {
+    name: string;
+    url: string;
+}
+
+export interface ProfileProduct {
+    id: string;
+    title: string;
+    description?: string;
+    imageUrl?: string;
+    price?: number;
+}
+
+export interface ProfileProducts {
+    items: ProfileProduct[];
+    totalCount: number;
+    content?: ProfileProduct[];
+}
+
+export interface ProfitData {
+    profit: number;
+    transactions: Array<any>;
+    amount?: number;
+}
+
+export interface UserImage {
+    name: string;
+    url: string;
+}
+
+export interface UserInfo {
+    email?: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    fullName?: string | null;
+    image?: UserImage | null;
+    birthDay?: string | null;
+    city?: string;
+    country?: string | null;
+    countryShort?: string | null;
+    phone?: string;
+    website?: string;
+    instagramUrl?: string;
+    twitterUrl?: string;
+    facebookUrl?: string;
+    vkUrl?: string;
+    userAccountType?: string;
+    status?: boolean;
+}
+
+export interface ProfileProduct {
+    id: string;
+    name: string;
+}
