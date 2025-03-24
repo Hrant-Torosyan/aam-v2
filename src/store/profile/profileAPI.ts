@@ -1,118 +1,158 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { UserInfo, ProfileProducts, ProfitData } from "src/types/types";
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const getAuthHeader = () => ({
-    Authorization: `Bearer ${JSON.parse(localStorage.getItem("userAuth") || "{}").token}`,
+const getAuthToken = (): string => {
+    try {
+        const userAuth = localStorage.getItem("userAuth");
+        if (!userAuth) return "";
+        return `Bearer ${JSON.parse(userAuth).token}`;
+    } catch (error) {
+        console.error("Error retrieving auth token:", error);
+        return "";
+    }
+};
+
+const uploadImageFile = async (files: File[]): Promise<string> => {
+    if (!files || files.length === 0) {
+        throw new Error("No files provided for upload");
+    }
+
+    const formData = new FormData();
+    let imageName = null;
+
+    for (let index = 0; index < files.length; index++) {
+        const file = files[index];
+        imageName = file.name;
+        formData.append(`files[${index}].image`, file);
+        formData.append(`files[${index}].imageName`, file.name);
+        formData.append(`files[${index}].type`, "USER");
+    }
+
+    console.log("Uploading image:", imageName);
+
+    const response = await fetch(`${BASE_URL}media/store`, {
+        method: 'POST',
+        headers: {
+            Authorization: getAuthToken()
+        },
+        body: formData
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Upload failed:", response.status, errorText);
+        throw new Error(`Image upload failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    if (data?.data && imageName && data.data[imageName]) {
+        return data.data[imageName];
+    }
+
+    throw new Error("Image upload response missing expected data");
+};
+
+export const profileApi = createApi({
+    reducerPath: 'profileApi',
+    baseQuery: fetchBaseQuery({
+        baseUrl: BASE_URL,
+        prepareHeaders: (headers) => {
+            headers.set('Accept', 'application/json');
+            headers.set('Content-Type', 'application/json');
+
+            const token = getAuthToken();
+            if (token) {
+                headers.set('Authorization', token);
+            }
+
+            return headers;
+        },
+    }),
+    tagTypes: ['UserInfo', 'ProfileProducts', 'Profit', 'ProfileCareer'],
+    endpoints: (builder) => ({
+        getUserInfo: builder.query<UserInfo, undefined>({
+            query: () => ({
+                url: 'users/profiles/me',
+                method: 'GET',
+                params: { _t: Date.now() }
+            }),
+            providesTags: ['UserInfo']
+        }),
+
+        updateUserInfo: builder.mutation<any, any>({
+            query: (userData) => ({
+                url: 'users/profiles',
+                method: 'POST',
+                body: userData,
+            }),
+            invalidatesTags: ['UserInfo', 'ProfileProducts', 'Profit', 'ProfileCareer']
+        }),
+
+        uploadUserImage: builder.mutation<string, File[]>({
+            queryFn: async (files) => {
+                try {
+                    const result = await uploadImageFile(files);
+                    return { data: result };
+                } catch (error: any) {
+                    return {
+                        error: {
+                            status: error.status || 500,
+                            data: error.message || 'Unknown error'
+                        } as FetchBaseQueryError
+                    };
+                }
+            },
+            invalidatesTags: ['UserInfo']
+        }),
+
+        resetUserPassword: builder.mutation<any, { oldPassword: string; newPassword: string }>({
+            query: (passwordData) => ({
+                url: 'users/profiles/change-password',
+                method: 'POST',
+                body: passwordData,
+            })
+        }),
+
+        getProfileProducts: builder.query<ProfileProducts, { filter: string; query: string }>({
+            query: (queryParams) => ({
+                url: `portfolios/list?${new URLSearchParams(queryParams as any).toString()}`,
+                method: 'POST',
+                body: {},
+                params: { _t: Date.now() }
+            }),
+            providesTags: ['ProfileProducts']
+        }),
+
+        getProfit: builder.query<ProfitData, undefined>({
+            query: () => ({
+                url: 'users/profiles/profit',
+                method: 'GET',
+                params: { _t: Date.now() }
+            }),
+            providesTags: ['Profit']
+        }),
+
+        getProfileCareer: builder.query<any, undefined>({
+            query: () => ({
+                url: 'users/profiles/career',
+                method: 'GET',
+                params: { _t: Date.now() }
+            }),
+            providesTags: ['ProfileCareer']
+        }),
+    }),
 });
 
-export const api = {
-    async getUserInfo() {
-        const response = await fetch(`${BASE_URL}users/profiles/me`, {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                ...getAuthHeader(),
-            },
-        });
-        if (!response.ok) throw new Error("Failed to fetch user info");
-        return response.json();
-    },
-
-    async setUserInfo(userData: any) {
-        const response = await fetch(`${BASE_URL}users/profiles`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                ...getAuthHeader(),
-            },
-            body: JSON.stringify(userData),
-        });
-        if (!response.ok) throw new Error("Failed to update user info");
-        return response.json();
-    },
-    async setUserImage(userData: File[]) {
-        const formData = new FormData();
-        let name: string | null = null;
-
-        userData.forEach((file, index) => {
-            name = file.name; // Set the name to the current file's name
-            formData.append(`files[${index}].image`, file);
-            formData.append(`files[${index}].imageName`, file.name);
-            formData.append(`files[${index}].type`, "USER");
-        });
-
-        const response = await fetch(`${BASE_URL}media/store`, {
-            method: "POST",
-            headers: {
-                Authorization: getAuthHeader().Authorization,
-            },
-            body: formData,
-        });
-
-        if (!response.ok) throw new Error("Failed to upload user image");
-
-        const data = await response.json();
-
-        if (!name) {
-            throw new Error("File name is null. Cannot retrieve uploaded file data.");
-        }
-
-        return data.data[name];
-    },
-
-    async resetPassword(userData: any) {
-        const response = await fetch(`${BASE_URL}users/profiles/change-password`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                ...getAuthHeader(),
-            },
-            body: JSON.stringify(userData),
-        });
-        if (!response.ok) throw new Error("Failed to reset password");
-        return response.json();
-    },
-
-    async getProfileProducts(queryData: any) {
-        const queryString = queryData ? `?${new URLSearchParams(queryData).toString()}` : "";
-        const response = await fetch(`${BASE_URL}portfolios/list${queryString}`, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                ...getAuthHeader(),
-            },
-            body: JSON.stringify({}),
-        });
-        if (!response.ok) throw new Error("Failed to fetch profile products");
-        return response.json();
-    },
-
-    async getProfit() {
-        const response = await fetch(`${BASE_URL}users/profiles/profit`, {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                ...getAuthHeader(),
-            },
-        });
-        if (!response.ok) throw new Error("Failed to fetch profit");
-        return response.json();
-    },
-
-    async getProfileCareer() {
-        const response = await fetch(`${BASE_URL}users/profiles/career`, {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                ...getAuthHeader(),
-            },
-        });
-        if (!response.ok) throw new Error("Failed to fetch profile career");
-        return response.json();
-    },
-};
+export const {
+    useGetUserInfoQuery,
+    useUpdateUserInfoMutation,
+    useUploadUserImageMutation,
+    useResetUserPasswordMutation,
+    useGetProfileProductsQuery,
+    useGetProfitQuery,
+    useGetProfileCareerQuery,
+} = profileApi;

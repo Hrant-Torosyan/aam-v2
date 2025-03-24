@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useLogoutMutation } from 'src/store/auth/authAPI';
-import { api } from "src/store/profile/profileAPI";
+import { useGetUserInfoQuery } from "src/store/profile/profileAPI";
 import Notification from "./Notification/Notification";
 import IsSuccessful from "src/ui/IsSuccessful/IsSuccessful";
 import analytics from "src/images/svg/analitycs.svg";
@@ -14,29 +14,47 @@ import SelectHeader from "./SelectHeader/SelectHeader";
 
 import styles from "./Header.module.scss";
 
+interface SelectHeaderUserData {
+    fullName: string;
+    image?: {
+        url: string;
+    };
+}
+
 const Header = () => {
     const [notification, setNotification] = useState(false);
     const [isActiveSelectHeader, setIsActiveSelectHeader] = useState(false);
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState<SelectHeaderUserData | null>(null);
     const [isOpenSc, setIsOpenSc] = useState(false);
     const [successInfo, setSuccessInfo] = useState(true);
 
-    const [logout, { isLoading, isError }] = useLogoutMutation();
+    const [logout] = useLogoutMutation();
+
+    const { data: userInfo, isError } = useGetUserInfoQuery(undefined, {
+        refetchOnMountOrArgChange: true
+    });
 
     useEffect(() => {
-        api.getUserInfo()
-            .then((res) => {
-                if (!res.status) {
-                    setUserData(res);
-                } else {
-                    logout();
-                }
-            })
-            .catch((error) => {
-                console.error("Error fetching user data", error);
+        if (userInfo) {
+            setUserData({
+                fullName: getDisplayName(userInfo),
+                image: userInfo.image || undefined
             });
-    }, []);
+        } else if (isError) {
+            logout();
+        }
+    }, [userInfo, isError, logout]);
 
+    const getDisplayName = (user: any): string => {
+        if (user.firstName || user.lastName) {
+            return `${user.firstName || ''} ${user.lastName || ''}`.trim();
+        }
+
+        if (user.fullName) {
+            return user.fullName;
+        }
+        return user.email?.split('@')[0] || 'User';
+    };
 
     const handleLogout = async () => {
         try {

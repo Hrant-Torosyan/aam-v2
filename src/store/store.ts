@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './auth/authSlice';
-import userReducer from './profile/profileSlice';
 import { analyticsApi } from './analytics/analyticsAPI';
 import { authApi } from './auth/authAPI';
 import analyticsReducer from './analytics/analyticsSlice';
 import { careerApi } from './career/career';
+import { profileApi } from './profile/profileAPI';
+import userReducer from './profile/profileSlice';
 
 export const store = configureStore({
     reducer: {
@@ -14,12 +15,14 @@ export const store = configureStore({
         [analyticsApi.reducerPath]: analyticsApi.reducer,
         [authApi.reducerPath]: authApi.reducer,
         [careerApi.reducerPath]: careerApi.reducer,
+        [profileApi.reducerPath]: profileApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
             .concat(analyticsApi.middleware)
             .concat(authApi.middleware)
-            .concat(careerApi.middleware),
+            .concat(careerApi.middleware)
+            .concat(profileApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

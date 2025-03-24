@@ -1,0 +1,667 @@
+.mainProfileTitle {
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  h1 {
+    color: rgb(52, 142, 241);
+    font-family: "Unbounded", sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.1%;
+  }
+  .mainProfileButton {
+    background: linear-gradient(
+                    158.2deg,
+                    rgb(44, 115, 243) -103.971%,
+                    rgb(48, 205, 231) 151.363%
+    );
+    border-radius: 50px;
+    overflow: hidden;
+    padding: 3px;
+    button {
+      background: white;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      letter-spacing: 0px;
+      text-align: left;
+      padding: 13px 35px;
+      display: flex;
+      align-items: center;
+      span {
+        margin-left: 5px;
+        color: rgb(48, 205, 231);
+      }
+    }
+  }
+}
+.mainProfileTitle {
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  h1 {
+    color: rgb(52, 142, 241);
+    font-family: "Unbounded", sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.1%;
+  }
+  .mainProfileButton {
+    background: linear-gradient(
+                    158.2deg,
+                    rgb(44, 115, 243) -103.971%,
+                    rgb(48, 205, 231) 151.363%
+    );
+    border-radius: 50px;
+    overflow: hidden;
+    padding: 3px;
+    button {
+      background: white;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      letter-spacing: 0px;
+      text-align: left;
+      padding: 13px 35px;
+      display: flex;
+      align-items: center;
+      span {
+        margin-left: 5px;
+        color: rgb(48, 205, 231);
+      }
+    }
+  }
+}
+
+.mainInfo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  min-height: 219px;
+  position: relative;
+
+  .userInfoEdit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 296px;
+    height: 50px;
+    position: absolute;
+    box-sizing: border-box;
+    padding: 15px;
+    background-color: white;
+    border-radius: 30px;
+    border: solid 2px transparent;
+    top: 170px;
+    order: 3;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      margin: -5px;
+      border-radius: inherit;
+      background: linear-gradient(95.63deg, #2c73f3 -33.22%, #30cde7 106.45%);
+    }
+    span {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c73f3;
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+      transition: 0.3s;
+    }
+    transition: 0.3s;
+    svg {
+      path {
+        transition: 0.3s;
+      }
+    }
+    cursor: pointer;
+    &:hover {
+      background: transparent;
+      svg {
+        path {
+          stroke: white;
+        }
+      }
+      span {
+        color: white;
+      }
+    }
+
+    .svgBackground svg {
+      display: flex;
+    }
+  }
+  .user {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    position: relative;
+    order: 1;
+
+    .socialLinks {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: row;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 50%;
+      img {
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        margin-right: 8px;
+      }
+    }
+
+    .userContent {
+      display: flex;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+
+    .userName {
+      width: 152px;
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-left: 24px;
+
+      h1 {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 21.94px;
+        color: #0e1a32;
+        text-wrap: wrap;
+      }
+    }
+  }
+
+  .userOwnInfo {
+    display: flex;
+    flex-direction: column;
+    height: 225px;
+    flex-wrap: wrap;
+    margin-left: 78px;
+    order: 2;
+  }
+
+  .mainProfileUserInfos {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    width: 291px;
+
+    .mainProfileUserInfosImg {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 18px;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      box-shadow: 5px 5px 10px 0px #1634501a;
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .mainProfileUserInfosItem {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      span {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 19.11px;
+        color: #a3aed0;
+      }
+
+      p,
+      a {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 24.64px;
+        color: #0e1a32;
+        text-decoration: none;
+      }
+    }
+  }
+}
+@media (max-width: 1199.98px) {
+  .userInfoWrapper {
+    min-height: 277px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .mainInfo {
+    .userOwnInfo {
+      min-height: 277px;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      margin-left: 69px;
+    }
+
+    .mainProfileUserInfos {
+      height: 49px;
+      margin-bottom: 0;
+    }
+
+    .userInfoEdit {
+      width: 257px;
+    }
+
+    .user {
+      .userName {
+        height: auto;
+      }
+      .avatar {
+        width: 80px;
+        height: 80px;
+      }
+      .userName h1 {
+        font-size: 14px;
+        width: min-content;
+      }
+      .socialLinks {
+        position: static;
+        margin-top: 24px;
+      }
+    }
+  }
+
+}
+
+@media (max-width: 767.99px) {
+  .mainProfile {
+    padding: 0 15px;
+
+    .mainInfo {
+      display: flex;
+      flex-direction: column;
+      padding: 15px 15px;
+      border: 2px solid rgba(46, 147, 239, 0.3);
+      border-radius: 25px;
+
+      .userOwnInfo {
+        order: 2;
+        margin: 22px 0 41px;
+      }
+
+      .userInfoEdit {
+        order: 3;
+        margin-top: 16px;
+        position: relative;
+        top: 0;
+      }
+
+      .user {
+        order: 1;
+      }
+    }
+  }
+  .userInfoWrapper {
+    min-height: auto;
+
+    .userContent {
+      align-items: center;
+    }
+  }
+  .mainProfileTitle {
+    h1 {
+      font-size: 18px;
+    }
+  }
+}
+@media (max-width: 576.98px) {
+  .mainInfo {
+    .userInfoEdit {
+      width: 100%;
+    }
+  }
+}
+@media (max-width: 575.98px) {
+  .mainProfileTitle {
+    margin-bottom: 30px;
+    h1 {
+      font-size: 18px;
+    }
+    .mainProfileButton {
+      padding: 2px;
+      button {
+        padding: 8px 30px;
+        font-size: 12px;
+        p {
+          display: none;
+        }
+      }
+    }
+  }
+  .mainProfile {
+    .mainProfileContent {
+      display: none;
+      .mainProfileContentProducts {
+        width: 100%;
+        .products {
+          margin: 0;
+          padding-left: 0;
+          .product {
+            margin: 0 !important;
+            &:nth-child(2n) {
+              margin: 0 !important;
+            }
+            &:nth-child(1n) {
+              margin-top: 20px !important;
+            }
+            width: 100%;
+          }
+        }
+      }
+    }
+    .mainProfileContentMobile {
+      display: block !important;
+      .mainProfileUserCard {
+        flex-direction: column;
+        padding: 25px;
+        .userInfoEdit {
+          top: 15px;
+          right: 15px;
+        }
+        .mainProfileUserInfo {
+          margin-bottom: 20px;
+          img {
+            width: 60px;
+            height: 60px;
+          }
+          .mainProfileUserInfoName {
+            margin-left: 20px;
+            h1 {
+              color: rgb(14, 26, 50);
+              font-size: 16px;
+              line-height: 16px;
+            }
+            span {
+              font-size: 13px;
+            }
+          }
+        }
+
+        .mainProfileUserInfos {
+          padding: 10px 20px !important ;
+          .mainProfileUserInfosImg {
+            width: 40px;
+            img {
+              padding: 10px;
+            }
+          }
+          span {
+            color: rgb(163, 174, 208);
+            font-size: 15px;
+            font-weight: 400;
+          }
+          p {
+            font-size: 15px;
+          }
+        }
+      }
+    }
+  }
+  .profileEditContent {
+    border: none;
+    padding: 0;
+    .profileImage {
+      justify-content: center;
+      margin-top: 50px;
+      .imageUpload {
+        width: 120px;
+        height: 120px;
+        .fon {
+          img {
+            width: 30%;
+          }
+        }
+      }
+      .button {
+        display: none;
+      }
+    }
+    .mobileButton {
+      display: block;
+      padding: 2px;
+      width: 100%;
+      text-align: center;
+
+      button {
+        width: 100%;
+        text-align: center;
+        display: inline-block;
+        padding: 13px 50px;
+        p {
+          font-size: 15px;
+        }
+      }
+    }
+    .profileEditInputs {
+      .profileEditInputsList {
+        width: 100%;
+      }
+      .profileEditInput {
+        p {
+          font-size: 16px;
+        }
+        .inputStyle {
+          input {
+            padding: 11px 20px;
+            font-size: 14px;
+            &::placeholder {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .mainProfileTitle {
+    margin-bottom: 30px;
+    h1 {
+      font-size: 20px;
+    }
+    .mainProfileButton {
+      padding: 2px;
+      button {
+        padding: 8px 20px;
+        font-size: 12px;
+      }
+    }
+  }
+  .mainProfile {
+    .mainProfileContent {
+      display: none;
+    }
+    .mainProfileContentMobile {
+      display: block !important;
+    }
+  }
+  .profileEditContent {
+    .profileImage {
+      .imageUpload {
+        width: 120px;
+        height: 120px;
+        .fon {
+          img {
+            width: 30%;
+          }
+        }
+      }
+      .button {
+        padding: 2px;
+        button {
+          padding: 13px 50px;
+          p {
+            font-size: 15px;
+          }
+        }
+      }
+    }
+    .profileEditInputs {
+      .profileEditInputsList {
+        width: 100%;
+      }
+      .profileEditInput {
+        width: 100%;
+        p {
+          font-size: 16px;
+        }
+        .inputStyle {
+          padding: 2px;
+
+          input {
+            padding: 11px 20px;
+            font-size: 15px;
+            &::placeholder {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .mainProfileTitle {
+    margin-bottom: 30px;
+    h1 {
+      font-size: 22px;
+    }
+    .mainProfileButton {
+      padding: 3px;
+      button {
+        padding: 10px 35px;
+      }
+    }
+  }
+  .mainProfile {
+    .mainProfileContent {
+      display: none;
+    }
+    .mainProfileContentMobile {
+      display: block !important;
+    }
+  }
+  .profileEditContent {
+    .profileEditInputs {
+      .profileEditInputsList {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .mainProfileTitle {
+    margin-bottom: 30px;
+    h1 {
+      font-size: 22px;
+    }
+    .mainProfileButton {
+      padding: 3px;
+      button {
+        padding: 10px 35px;
+      }
+    }
+  }
+  .mainProfile {
+    .mainProfileContent {
+      .mainProfileContentItem {
+        .mainProfileUserCard {
+          padding: 20px;
+          .userInfoEdit {
+            top: 15px;
+            right: 15px;
+          }
+          .mainProfileUserInfo {
+            margin-bottom: 20px;
+            img {
+              width: 60px;
+              height: 60px;
+            }
+            .mainProfileUserInfoName {
+              margin-left: 20px;
+              h1 {
+                color: rgb(14, 26, 50);
+                font-size: 16px;
+                line-height: 16px;
+              }
+              span {
+                font-size: 13px;
+              }
+            }
+          }
+
+          .mainProfileUserInfos {
+            padding: 10px 5px;
+            .mainProfileUserInfosImg {
+              width: 40px;
+              img {
+                padding: 10px;
+              }
+            }
+            span {
+              color: rgb(163, 174, 208);
+              font-size: 15px;
+              font-weight: 400;
+            }
+            p {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+}

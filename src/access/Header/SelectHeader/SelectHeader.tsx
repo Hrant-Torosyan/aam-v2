@@ -70,7 +70,6 @@ const SelectHeader: React.FC<SelectHeaderProps> = ({
         >
             <img src={userData?.image?.url || "./images/avatar.png"} alt="user" />
             <div className={styles.selectHeader}>
-                <p>{userData?.fullName?.split(" ")[0] || "User"}</p>
                 <img src="./images/angle.png" alt="dropdown icon" />
                 <div className={styles.selectItem}>
                     <NavLink to="/profile" onClick={(e) => e.stopPropagation()}>
