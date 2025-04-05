@@ -332,9 +332,10 @@
       }
 
       #lineChart {
-        width: calc(65% - 20px) !important;
-        margin-left: 20px !important;
-        order: 4;
+        order: 3;
+        margin-left: 0 !important;
+        margin-top: 20px;
+        width: 100% !important;
       }
     }
   }

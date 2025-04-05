@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BASE_URL = "http://145.223.99.13:8080/api/rest/";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 interface ProfileCareerData {
     referral: string;
