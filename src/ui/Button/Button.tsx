@@ -13,13 +13,13 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({
-										   onClick,
-										   children,
-										   type = "button",
-										   variant = "primary",
-										   className = "",
-										   disabled = false,
-									   }) => {
+   onClick,
+   children,
+   type = "button",
+   variant = "primary",
+   className = "",
+   disabled = false,
+}) => {
 	const buttonStyleClass = variant === "primary" ? styles.buttonStyle : styles.buttonStyleToo;
 
 	return (

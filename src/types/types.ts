@@ -119,3 +119,63 @@ export interface ProfileProduct {
     id: string;
     name: string;
 }
+
+
+export interface UserAuth {
+    token: string;
+}
+
+export interface Project {
+    id: string;
+    title: string;
+    description?: string;
+    category?: string;
+    type?: string;
+    tags: string[];
+    image?: {
+        url: string;
+    };
+    country?: string;
+    minPrice?: number;
+    active?: boolean;
+    projectId?: string;
+    productType?: string;
+    companyLogo?: {
+        url: string;
+    };
+}
+
+export interface Employee {
+    id: string;
+    name: string;
+    position: string;
+    image?: {
+        url: string;
+    };
+}
+
+export interface Investor {
+    id: string;
+    name: string;
+    investmentAmount: number;
+    date: string;
+}
+
+export interface HistoryItem {
+    id: string;
+    date: string;
+    title: string;
+    description: string;
+}
+
+export interface ApiResponse<T> {
+    data: T;
+    success: boolean;
+    message?: string;
+}
+
+export interface QueryData {
+    [key: string]: string | number | boolean;
+}
+
+export type PeriodType = 'WEEKLY' | 'MONTHLY' | 'YEARLY';

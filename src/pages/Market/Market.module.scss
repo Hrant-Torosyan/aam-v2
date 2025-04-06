@@ -1,0 +1,235 @@
+.market {
+  .marketTitle {
+    width: 100%;
+    height: 45px;
+    h1 {
+      color: rgb(52, 142, 241);
+      font-family: "Unbounded", sans-serif;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: -0.1%;
+      text-align: left;
+
+    }
+  }
+
+  .filterBlock {
+    min-height: 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+
+    .switcher {
+      position: relative;
+      padding: 3px;
+      display: flex;
+      width: fit-content;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 25px;
+        padding: 2px;
+        background: linear-gradient(
+                        158.2deg,
+                        rgb(44, 115, 243) -103.971%,
+                        rgb(48, 205, 231) 151.363%
+        );
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        z-index: 0;
+      }
+
+      button {
+        width: 152px;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 14px;
+        background: linear-gradient(95.63deg, #2c73f3 -33.22%, #30cde7 106.45%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+        z-index: 1;
+
+        &.active {
+          background: linear-gradient(95.63deg, #2c73f3 -33.22%, #30cde7 106.45%);
+          color: #fff;
+          -webkit-background-clip: unset;
+          -webkit-text-fill-color: unset;
+        }
+      }
+    }
+  }
+
+  .search {
+    max-width: 562px;
+    width: 100%;
+    position: relative;
+
+    .inputStyle {
+      background: rgba(46, 147, 239, 0.3);
+      border-radius: 50px;
+      padding: 2px;
+      position: relative;
+      overflow: hidden;
+      &:focus-within {
+        background: linear-gradient(-225deg, rgb(12, 94, 255), rgb(0, 180, 210) 50%);
+        & + .icon {
+          svg {
+            path {
+              fill: url(#paint0_linear_564_47281) !important;
+            }
+          }
+        }
+      }
+      input {
+        border: none;
+        border-radius: 30px;
+        background: rgb(255, 255, 255);
+        padding: 10px 27px;
+        width: 100%;
+        outline: none;
+        font-size: 18px;
+      }
+    }
+
+    .icon {
+      position: absolute;
+      right: 0;
+      top: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 11px 27px;
+      svg {
+        path {
+          fill: rgba(46, 147, 239, 0.3);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .market {
+    .marketTitle {
+      width: 50%;
+
+      h1 {
+        font-size: 18px;
+      }
+    }
+
+    .filterBlock {
+      .switcher {
+        width: 100%;
+
+        button {
+          width: 50%;
+        }
+      }
+    }
+
+    .search {
+      max-width: unset;
+      width: 100%;
+      margin-top: 28px;
+
+      .inputStyle {
+        input {
+          padding: 13px 18px;
+          font-size: 15px;
+        }
+      }
+      .icon {
+        padding: 14px 20px;
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .market {
+    .marketTitle {
+      width: 50%;
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+
+    .search {
+      max-width: unset;
+      width: 100%;
+      margin-top: 28px;
+
+      .inputStyle {
+        input {
+          padding: 10px 27px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .market {
+    .marketTitle {
+      width: 50%;
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+
+    .search {
+      max-width: unset;
+      width: 100%;
+      margin-top: 28px;
+
+      .inputStyle {
+        input {
+          padding: 10px 27px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .market {
+    .marketTitle {
+      width: 50%;
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+
+    .search {
+      max-width: unset;
+      width: 100%;
+      margin-top: 28px;
+
+      .inputStyle {
+        input {
+          padding: 10px 27px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
