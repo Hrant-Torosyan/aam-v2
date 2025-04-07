@@ -7,7 +7,7 @@ import { careerApi } from './career/career';
 import { profileApi } from './profile/profileAPI';
 import userReducer from './profile/profileSlice';
 import { marketApi } from './market/marketAPI';
-import { projectsApi } from './productInfo/productInfo';
+import { projectsApi } from 'src/store/product/product';
 
 export const store = configureStore({
     reducer: {

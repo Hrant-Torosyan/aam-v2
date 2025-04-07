@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+// In Products.tsx
+import React, { useRef } from "react";
 import styles from "./Products.module.scss";
 import Product from "../Product/Product";
 import leftArrow from "src/images/svg/leftArrow.svg";
@@ -13,6 +14,7 @@ interface ProductsProps {
     type?: "LIST" | "SLIDER";
     hiddenHeader?: boolean;
     setHiddenHeader?: (value: string) => void;
+    onSelectProduct?: (id: string) => void;
 }
 
 const Products: React.FC<ProductsProps> = ({
@@ -21,13 +23,21 @@ const Products: React.FC<ProductsProps> = ({
    type = "LIST",
    hiddenHeader = false,
    setHiddenHeader = () => {},
+   onSelectProduct = () => {},
 }) => {
-    const [prodId, setProdId] = useState<string | null>(null);
     const swiperRef = useRef<SwiperType | null>(null);
 
     const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
         event.currentTarget.onerror = null;
         event.currentTarget.src = "https://flagsapi.com/RU/flat/64.png";
+    };
+
+    const handleSelectProduct = (id: string) => {
+        console.log("Products - Selected product:", id);
+        if (id) {
+            onSelectProduct(id);
+            setHiddenHeader("hidden");
+        }
     };
 
     const productsList = Array.isArray(products) ? products : [];
@@ -43,7 +53,12 @@ const Products: React.FC<ProductsProps> = ({
                                 prod={prod}
                                 info={info}
                                 projectId={prod.projectId || prod.id}
-                                setProdId={setProdId}
+                                setProdId={(id) => {
+                                    if (onSelectProduct) {
+                                        onSelectProduct(id);
+                                    }
+                                    setHiddenHeader("hidden");
+                                }}
                                 handleImageError={handleImageError}
                                 setHiddenHeader={setHiddenHeader}
                             />
@@ -72,7 +87,7 @@ const Products: React.FC<ProductsProps> = ({
                                             prod={prod}
                                             info={info}
                                             projectId={prod.projectId || prod.id}
-                                            setProdId={setProdId}
+                                            setProdId={handleSelectProduct} // Pass our new handler
                                             handleImageError={handleImageError}
                                             setHiddenHeader={setHiddenHeader}
                                         />

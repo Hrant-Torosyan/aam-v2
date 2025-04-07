@@ -5,6 +5,8 @@ import CategoriesButtons from "src/ui/CategoriesButtons/CategoriesButtons";
 import { useGetProjectsMutation, useGetCategoriesQuery } from "src/store/market/marketAPI";
 import { Project } from "@/types/types";
 import Products from "src/components/Products/Products";
+import ProductDetails from "src/pages/ProductDetails/ProductDetails";
+import Loader from "src/ui/Loader/Loader";
 
 interface Category {
     id: string;
@@ -23,6 +25,7 @@ const Market: React.FC = () => {
     const [selectedType, setSelectedType] = useState<string>("ASSET");
     const [hasInteracted, setHasInteracted] = useState<boolean>(false);
     const [hiddenHeader, setHiddenHeader] = useState<boolean>(false);
+    const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
     const [getProjects, { isLoading: isProjectsLoading }] = useGetProjectsMutation();
     const { data: categoriesData, isLoading: isCategoriesLoading } = useGetCategoriesQuery(selectedType);
@@ -130,26 +133,25 @@ const Market: React.FC = () => {
         }
     };
 
+    const handleProductSelect = (id: string) => {
+        setSelectedProductId(id);
+    };
+
+    const handleCloseDetails = () => {
+        setSelectedProductId(null);
+        setHiddenHeader(false);
+    };
+
+    const handleSetHiddenHeader = (value: string) => {
+        setHiddenHeader(value === "hidden");
+    };
+
     const isLoading = isProjectsLoading || isCategoriesLoading;
 
     return (
-        <Suspense
-            fallback={
-                <div className={styles.loader}>
-                    <img
-                        src="https://i.pinimg.com/originals/92/63/9c/92639cac9c1a0451744f9077ddec0bed.gif"
-                        alt="loader"
-                    />
-                </div>
-            }
-        >
+        <Suspense fallback={<Loader />}>
             {isLoading ? (
-                <div className={styles.loader}>
-                    <img
-                        src="https://i.pinimg.com/originals/92/63/9c/92639cac9c1a0451744f9077ddec0bed.gif"
-                        alt="loader"
-                    />
-                </div>
+                <Loader />
             ) : (
                 <div className={styles.market}>
                     {!hiddenHeader && (
@@ -187,18 +189,27 @@ const Market: React.FC = () => {
                             )}
                         </>
                     )}
-                    {products && products.length > 0 ? (
-                        <Products
-                            info={"Market"}
-                            products={products}
-                            hiddenHeader={hiddenHeader}
-                            setHiddenHeader={(value) => setHiddenHeader(value === "hidden")}
+
+                    {selectedProductId ? (
+                        <ProductDetails
+                            prodId={selectedProductId}
+                            onClose={handleCloseDetails}
                         />
                     ) : (
-                        !isLoading && (
-                            <div className={styles.notProd || ""}>
-                                В магазине не найдено продуктов
-                            </div>
+                        products && products.length > 0 ? (
+                            <Products
+                                info={"Market"}
+                                products={products}
+                                hiddenHeader={hiddenHeader}
+                                setHiddenHeader={handleSetHiddenHeader}
+                                onSelectProduct={handleProductSelect}
+                            />
+                        ) : (
+                            !isLoading && (
+                                <div className={styles.notProd || ""}>
+                                    В магазине не найдено продуктов
+                                </div>
+                            )
                         )
                     )}
                 </div>

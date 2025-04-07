@@ -1,6 +1,7 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { formatNumber } from "src/utils/formatNumber";
-import { useGetProductInfoQuery } from "src/store/productInfo/productInfo";
+import { useGetProductInfoQuery } from "src/store/product/product";
 import { Project } from "@/types/types";
 import styles from "../Products/Products.module.scss";
 
@@ -22,17 +23,21 @@ const Product: React.FC<ProductProps> = ({
      setHiddenHeader,
      fullWidth = false,
  }) => {
+    const navigate = useNavigate();
+
     const { data: mainData } = useGetProductInfoQuery(prod.projectId || "", {
         skip: !prod.projectId,
     });
 
     const handleClick = () => {
-        if (info === "Briefcase") {
-            setProdId(prod.id);
-        } else {
-            setProdId(prod.projectId || "");
+        const id = info === "Briefcase" ? prod.id : (prod.projectId || "");
+
+        if (id) {
+            navigate(`/market/product/${id}`);
+
+            setProdId(id);
+            setHiddenHeader("hidden");
         }
-        setHiddenHeader("hidden");
     };
 
     return (
