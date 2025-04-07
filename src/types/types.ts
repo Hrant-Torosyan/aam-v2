@@ -143,6 +143,7 @@ export interface Project {
     companyLogo?: {
         url: string;
     };
+    profit?: number
 }
 
 export interface Employee {
@@ -179,3 +180,30 @@ export interface QueryData {
 }
 
 export type PeriodType = 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+
+export interface PaginatedResponse<T> {
+    content: T[];
+    empty: boolean;
+    first: boolean;
+    last: boolean;
+    number: number;
+    numberOfElements: number;
+    pageable: {
+        pageNumber: number;
+        pageSize: number;
+        sort: {
+            sorted: boolean;
+            empty: boolean;
+            unsorted: boolean;
+        };
+        offset: number;
+    };
+    size: number;
+    sort: {
+        sorted: boolean;
+        empty: boolean;
+        unsorted: boolean;
+    };
+    totalElements: number;
+    totalPages: number;
+}

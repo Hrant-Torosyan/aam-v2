@@ -7,6 +7,7 @@ import Layout from 'src/layouts/Layouts';
 
 const Analytics = lazy(() => import("src/pages/Analytics/Analytics"));
 const Market = lazy(() => import("src/pages/Market/Market"));
+const ProductDetails = lazy(() => import("src/pages/ProductDetails/ProductDetails"));
 const Briefcase = lazy(() => import("src/pages/Briefcase/Briefcase"));
 const Wallet = lazy(() => import("src/pages/Wallet/Wallet"));
 const Career = lazy(() => import("src/pages/Career/Career"));
@@ -32,6 +33,7 @@ const App: React.FC = () => {
                     >
                         <Route path="/" element={<Analytics />} />
                         <Route path="/market" element={<Market />} />
+                        <Route path="/market/product/:productId" element={<ProductDetails />} />
                         <Route path="/briefcase" element={<Briefcase />} />
                         <Route path="/wallet" element={<Wallet />} />
                         <Route path="/career" element={<Career />} />
