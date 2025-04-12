@@ -11,7 +11,7 @@ import {
     GetSimilarProductsArgs
 } from 'src/types/types';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://aams.live/api/rest/';
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const productApi = createApi({
     reducerPath: 'productApi',

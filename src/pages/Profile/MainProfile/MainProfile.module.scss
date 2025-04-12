@@ -3,6 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  text-align: left;
   h1 {
     color: rgb(52, 142, 241);
     font-family: "Unbounded", sans-serif;
@@ -223,6 +224,7 @@
     flex-wrap: wrap;
     margin-bottom: 24px;
     width: 291px;
+    text-align: left;
 
     .mainProfileUserInfosImg {
       display: flex;
@@ -283,6 +285,7 @@
     .mainProfileUserInfos {
       height: 49px;
       margin-bottom: 0;
+      text-align: left;
     }
 
     .userInfoEdit {

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styles from "./ProductDetails.module.scss";
-import { useGetProductInfoQuery } from "src/store/product/product";
+
+import { useGetProductInfoQuery } from "src/store/product/productApi";
 import { useFilterByTagsMutation } from "src/store/market/marketAPI";
+import {Project, ProjectWithInvestmentData} from "src/types/types";
+
 import Loader from "src/ui/Loader/Loader";
 import AboutCompany from "./AboutCompany/AboutCompany";
 import ProductSlider from "./ProductSlider/ProductSlider";
@@ -15,7 +17,11 @@ import Documents from './Documents/Documents';
 import Map from './Map/Map';
 import Investors from './Investors/Investors';
 import SimilarSlider from './SimilarSlider/SimilarSlider';
-import { Project } from "src/types/types";
+import PopUpProd from 'src/components/PopUpProd/PopUpProd';
+import IsSuccessful from "src/components/IsSuccessful/IsSuccessful";
+
+import styles from "./ProductDetails.module.scss";
+
 
 interface ProductDetailsProps {
     prodId?: string;
@@ -33,6 +39,33 @@ interface PresentationData {
     }>;
 }
 
+const IsSuccessfulWrapper: React.FC<{
+    setIsOpenTransfer: React.Dispatch<React.SetStateAction<string | false>>;
+    info: boolean;
+    delay: number;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setIsOpenTransfer, info, delay, setIsOpen }) => {
+    const handleSetIsOpenTransfer: React.Dispatch<React.SetStateAction<boolean>> = (value) => {
+        if (typeof value === 'function') {
+            setIsOpenTransfer(prevState => {
+                const newBoolValue = value(prevState === "start");
+                return newBoolValue ? "start" : false;
+            });
+        } else {
+            setIsOpenTransfer(value ? "start" : false);
+        }
+    };
+
+    return (
+        <IsSuccessful
+            setIsOpenTransfer={handleSetIsOpenTransfer}
+            info={info}
+            delay={delay}
+            setIsOpen={setIsOpen}
+        />
+    );
+};
+
 const ProductDetails: React.FC<ProductDetailsProps> = ({
    prodId,
    onClose,
@@ -43,6 +76,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     const navigate = useNavigate();
     const [popUpProdNew, setPopUpProdNew] = useState<string | false>(false);
     const [profileProducts, setProfileProducts] = useState<Project[]>([]);
+    const [isOpenSc, setIsOpenSc] = useState<boolean>(false);
+    const [successInfo, setSuccessInfo] = useState<boolean>(true);
 
     const id = prodId || productId || "";
 
@@ -115,88 +150,111 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         })) || []
     };
 
+    // Cast the product to ProjectWithInvestmentData for PopUpProd component
+    const projectWithInvestmentData = product as unknown as ProjectWithInvestmentData;
+
     return (
-        <div className={styles.productInfo}>
-            <div className={styles.productInfoTitle}>
-                <button onClick={handleClose}>
-                    <svg
-                        width="7"
-                        height="12"
-                        viewBox="0 0 7 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M6 1L1 6L6 11"
-                            stroke="#0E1A32"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                    </svg>
-                    <span>Назад</span>
-                </button>
-                <h1>{product.title}</h1>
-                {product.profit && <div className={styles.percent}>+{product.profit}%</div>}
-            </div>
+        <>
+            {isOpenSc && (
+                <IsSuccessfulWrapper
+                    setIsOpenTransfer={setPopUpProdNew}
+                    info={successInfo}
+                    delay={1000}
+                    setIsOpen={setIsOpenSc}
+                />
+            )}
 
-            <div className={styles.productInfoContent}>
-                <div className={styles.productInfoItem}>
-                    <ProductSlider mainData={product} />
+            {popUpProdNew && product && (
+                <PopUpProd
+                    setIsOpenSc={setIsOpenSc}
+                    setSuccessInfo={setSuccessInfo}
+                    mainData={projectWithInvestmentData}
+                    setPopUpProdNew={setPopUpProdNew}
+                    popUpProdNew={popUpProdNew}
+                />
+            )}
 
-                    <div className={`${styles.productInfoUserConent} ${styles.contentMobile}`}>
+            <div className={styles.productInfo}>
+                <div className={styles.productInfoTitle}>
+                    <button onClick={handleClose}>
+                        <svg
+                            width="7"
+                            height="12"
+                            viewBox="0 0 7 12"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M6 1L1 6L6 11"
+                                stroke="#0E1A32"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                        <span>Назад</span>
+                    </button>
+                    <h1>{product.title}</h1>
+                    {product.profit && <div className={styles.percent}>+{product.profit}%</div>}
+                </div>
+
+                <div className={styles.productInfoContent}>
+                    <div className={styles.productInfoItem}>
+                        <ProductSlider mainData={product} />
+
+                        <div className={`${styles.productInfoUserConent} ${styles.contentMobile}`}>
+                            <UserInfo
+                                mainData={product}
+                                setPopUpProdNew={setPopUpProdNew}
+                            />
+                        </div>
+                        <DetailsOfFund mainData={product} />
+                        {product.companyDescription && (
+                            <AboutCompany mainData={{
+                                financialIndicatorContent: product.companyDescription,
+                                mediaImages: product.mediaImages
+                            }} />
+                        )}
+                        {presentationData.presentations.length > 0 && (
+                            <Presentation mainData={presentationData} />
+                        )}
+                        {(product.ceoPosition || product.ceoLastname || product.ceoFirstname || product.ceoImage?.url || product.employeesContent) && (
+                            <Team
+                                prodId={id}
+                                ceoPosition={product.ceoPosition}
+                                ceoLastname={product.ceoLastname}
+                                ceoFirstname={product.ceoFirstname}
+                                ceoImage={product.ceoImage?.url}
+                                employeesContent={product.employeesContent}
+                            />
+                        )}
+                        {product.mediaVideo && <Video mainData={product} />}
+                        {product.documents && product.documents.length > 0 && <Documents mainData={product} />}
+                        {(product.locationLatitude || product.locationLongitude) && <Map mainData={product} />}
+                        {product.type !== "ASSET" && <Investors prodId={id} mainData={product} />}
+                        {profileProducts?.length > 0 && (
+                            <SimilarSlider
+                                handleImageError={handleImageError}
+                                setHiddenHeader={setHiddenHeader}
+                                setProdId={setProdId}
+                                prodId={id}
+                                products={profileProducts}
+                                info={{
+                                    tags: product.tags || [],
+                                }}
+                            />
+                        )}
+                    </div>
+
+                    <div className={styles.productInfoUserConent}>
                         <UserInfo
                             mainData={product}
                             setPopUpProdNew={setPopUpProdNew}
                         />
                     </div>
-                    <DetailsOfFund mainData={product} />
-                    {product.companyDescription && (
-                        <AboutCompany mainData={{
-                            financialIndicatorContent: product.companyDescription,
-                            mediaImages: product.mediaImages
-                        }} />
-                    )}
-                    {presentationData.presentations.length > 0 && (
-                        <Presentation mainData={presentationData} />
-                    )}
-                    {(product.ceoPosition || product.ceoLastname || product.ceoFirstname || product.ceoImage?.url || product.employeesContent) && (
-                        <Team
-                            prodId={id}
-                            ceoPosition={product.ceoPosition}
-                            ceoLastname={product.ceoLastname}
-                            ceoFirstname={product.ceoFirstname}
-                            ceoImage={product.ceoImage?.url}
-                            employeesContent={product.employeesContent}
-                        />
-                    )}
-                    {product.mediaVideo && <Video mainData={product} />}
-                    {product.documents && product.documents.length > 0 && <Documents mainData={product} />}
-                    {(product.locationLatitude || product.locationLongitude) && <Map mainData={product} />}
-                    {product.type !== "ASSET" && <Investors prodId={id} mainData={product} />}
-                    {profileProducts?.length > 0 && (
-                        <SimilarSlider
-                            handleImageError={handleImageError}
-                            setHiddenHeader={setHiddenHeader}
-                            setProdId={setProdId}
-                            prodId={id}
-                            products={profileProducts}
-                            info={{
-                                tags: product.tags || [],
-                            }}
-                            sliderView={true}
-                        />
-                    )}
-                </div>
-
-                <div className={styles.productInfoUserConent}>
-                    <UserInfo
-                        mainData={product}
-                        setPopUpProdNew={setPopUpProdNew}
-                    />
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

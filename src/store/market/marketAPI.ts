@@ -33,20 +33,18 @@ export const marketApi = createApi({
     }),
     endpoints: (builder) => ({
         getProjects: builder.mutation<ProjectsResponse, ProjectListParams>({
-            query: (params) => {
-                // Create body with only defined values to keep payload small
+            query: (params = {}) => {
                 const bodyData: Record<string, any> = {};
 
-                // Only add properties that actually have values
                 if (params.title && params.title.trim() !== "") {
                     bodyData.title = params.title.trim();
                 }
 
-                if (params.category !== null && params.category !== undefined) {
+                if (params.category && params.category !== "all") {
                     bodyData.category = params.category;
                 }
 
-                if (params.type !== null && params.type !== undefined) {
+                if (params.type && params.type !== "all") {
                     bodyData.type = params.type;
                 }
 
@@ -72,7 +70,6 @@ export const marketApi = createApi({
 
         getCategories: builder.query<CategoriesResponse, string>({
             query: (selectedType) => {
-                // Handle empty string case properly
                 if (selectedType === "") {
                     return 'projects/categories';
                 }
