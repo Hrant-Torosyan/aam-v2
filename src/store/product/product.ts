@@ -7,14 +7,14 @@ import {
     BalanceChartResponse,
     QueryData,
     PeriodType,
-    ProcessedBalanceChart
+    ProcessedBalanceChart,
+    GetSimilarProductsArgs
 } from 'src/types/types';
 
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://aams.live/api/rest/';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
-export const projectsApi = createApi({
-    reducerPath: 'projectsApi',
+export const productApi = createApi({
+    reducerPath: 'productApi',
     baseQuery: fetchBaseQuery({
         baseUrl: BASE_URL,
         prepareHeaders: (headers) => {
@@ -37,11 +37,6 @@ export const projectsApi = createApi({
 
             return headers;
         },
-        fetchFn: async (input, init) => {
-            console.log("Request URL:", typeof input === 'string' ? input : input.url);
-            console.log("Auth headers:", init?.headers);
-            return fetch(input, init);
-        }
     }),
     endpoints: (builder) => ({
         getProductInfo: builder.query<Project, string>({
@@ -80,10 +75,10 @@ export const projectsApi = createApi({
                 method: 'POST',
                 body: { period },
             }),
-            transformResponse: (response: BalanceChartResponse, meta, arg) => {
+            transformResponse: (response: BalanceChartResponse) => {
                 if (response?.monthlyBalancesChart === null) {
                     const lab = response?.dailyBalancesChart?.map((item) => {
-                        if (arg.period === 'WEEKLY') {
+                        if (response.period === 'WEEKLY') {
                             return ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'][new Date(+item.date).getDay()];
                         }
                         return new Date(+item.date).toISOString().split('T')[0];
@@ -134,6 +129,21 @@ export const projectsApi = createApi({
                 }
             },
         }),
+
+        getSimilarProducts: builder.query<Project[], GetSimilarProductsArgs>({
+            query: ({ tags }) => ({
+                url: 'projects/filter-by-tags',
+                method: 'POST',
+                body: { tags },
+                params: { _t: Date.now() }
+            }),
+            transformResponse: (response: Project[], meta, arg) => {
+                if (arg.excludeId) {
+                    return response.filter(project => project.id !== arg.excludeId);
+                }
+                return response;
+            },
+        }),
     }),
 });
 
@@ -143,4 +153,5 @@ export const {
     useGetProductTeamQuery,
     useGetProductInvestorsQuery,
     useGetBalanceChartQuery,
-} = projectsApi;
+    useGetSimilarProductsQuery,
+} = productApi;

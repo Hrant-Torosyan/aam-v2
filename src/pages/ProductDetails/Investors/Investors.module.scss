@@ -1,0 +1,228 @@
+.investors {
+  text-align: center;
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 29.26px;
+    color: #000000;
+    text-align: left;
+  }
+
+  .cardTitle {
+    height: 61px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 32px;
+
+    p {
+      width: 42px;
+      height: 32px;
+      padding: 5px 15px 5px 15px;
+      border-radius: 40px;
+      border: 1px solid #00B4D24D;
+      font-size: 18px;
+      font-weight: 700;
+      color: #00B4D2;
+      margin-left: 32px;
+    }
+  }
+
+  .investorsItems {
+    display: flex;
+  }
+  .investorsItem {
+    width: 150px;
+    height: 172px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 15px;
+    border: 1px solid #C5E1FB80;
+    box-shadow: 0px 1px 13px 0px #A6CDF91A;
+    margin-right: 16px;
+    background: #F4F7FE80;
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 19.63px;
+      color: #0E1A32;
+    }
+    img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      text-align: center;
+      margin-bottom: 19px;
+    }
+  }
+  button {
+    color: rgb(150, 197, 249);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    transition: 0.5s;
+    border-radius: 20px;
+    padding: 10px 20px;
+
+    &:hover {
+      background: rgba(150, 197, 249, 0.15);
+    }
+  }
+
+  .seeMore {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 36px;
+    cursor: pointer;
+
+    span {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: -0.001em;
+      color: #96C5F9;
+      margin-right: 10px;
+    }
+    img {
+      width: 17px;
+      height: 12px;
+    }
+  }
+}
+
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .investors {
+    margin: 0 !important;
+
+    > p {
+      margin-bottom: 25px;
+    }
+    .investorsItem {
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+
+      h3 {
+        font-size: 15px;
+      }
+      img {
+        width: 55px;
+        height: 55px;
+      }
+    }
+    button {
+      font-size: 13px;
+      padding: 8px 17px;
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .investors {
+    > p {
+      margin-bottom: 25px;
+    }
+    .investorsItem {
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+
+      h3 {
+        font-size: 15px;
+      }
+      img {
+        width: 55px;
+        height: 55px;
+      }
+    }
+    button {
+      font-size: 13px;
+      padding: 8px 17px;
+    }
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .investors {
+    .cardTitle h2 {
+      font-size: 18px;
+    }
+    .investorsItems {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 10px 0;
+      max-height: 250px;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    .investorsItem {
+      width: 159px;
+      margin-right: 16px;
+    }
+
+
+    .cardTitle {
+      margin-bottom: 0;
+      p {
+        width: 26px;
+        height: 26px;
+        font-size: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .investorsItem {
+
+      h3 {
+        font-size: 14px;
+      }
+      img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  }
+}
+
+@media (max-width: 576.99px) {
+  .investors {
+    .cardTitle h2 {
+      font-size: 16px;
+    }
+    .investorsItems {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 10px 0;
+      max-height: 250px;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    .investorsButtons {
+      justify-content: center;
+      margin-top: 0;
+    }
+    .seeMore {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,225 @@
+.productSlider {
+  .productSliderActive {
+    width: 100%;
+    height: 486px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      border-radius: 20px;
+      object-fit: cover;
+    }
+  }
+}
+
+.productSliderThumbnails {
+  position: relative;
+
+  :global(.slick-track) {
+    display: flex;
+    width: 100%;
+  }
+
+  :global(.slick-list) {
+    padding: 0 10px;
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    overflow: hidden;
+  }
+
+  :global(.slick-slide) {
+    margin: 16px 8px;
+
+    & > div {
+      height: 100%;
+    }
+
+    img {
+      max-width: 226px !important;
+      width: 100% !important;
+      height: 121px !important;
+      border-radius: 10px;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+      object-fit: cover;
+    }
+  }
+
+  .active {
+    opacity: 1 !important;
+  }
+
+  :global(.slick-arrow) {
+    display: none;
+  }
+
+  .arrow {
+    position: absolute;
+    top: 40%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+
+    svg {
+      width: 13px;
+      height: 21px;
+      color: #000;
+    }
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
+  }
+}
+
+.popupSlider {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(128, 128, 128, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  padding: 10px;
+
+  .popupContent {
+    position: relative;
+    width: 100%;
+    max-width: 90%;
+    height: 80vh;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    padding: 20px;
+    overflow: hidden;
+    animation: slideUp 0.3s ease-out;
+
+    .popupArrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      padding: 20px;
+      cursor: pointer;
+      color: #000;
+
+      svg {
+        width: 40px;
+        height: 40px;
+      }
+
+      &.left {
+        left: 15px;
+      }
+
+      &.right {
+        right: 15px;
+      }
+    }
+
+    .popupImage {
+      width: 90%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .closePopup {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 1199.98px) {
+  .productSlider {
+    .productSliderActive {
+      height: 402px;
+    }
+  }
+
+  .productSliderThumbnails {
+    .arrow {
+      display: none;
+    }
+
+    :global(.slick-list) {
+      width: 100%;
+    }
+
+    .thumbnailsContainer {
+      width: 100%;
+      padding: 0;
+
+      img {
+        width: 153.6px;
+        height: 104px !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 576.99px) {
+  .productSlider {
+    .productSliderActive {
+      height: 202px;
+    }
+  }
+
+  .productSliderThumbnails {
+    :global(.slick-list) {
+      padding: 0 5px 0 0;
+    }
+
+    :global(.slick-slide) {
+      margin: 16px 0;
+
+      img {
+        border-radius: 8px;
+        width: 100% !important;
+        height: 90px !important;
+        object-fit: cover;
+      }
+    }
+
+    :global(.slick-track) {
+      gap: 8px;
+    }
+
+    :global(.slick-slide:first-child) {
+      margin-left: 0;
+    }
+  }
+}

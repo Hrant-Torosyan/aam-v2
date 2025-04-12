@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useLogoutMutation } from "src/store/auth/authAPI";
+import headerArrow from "src/images/svg/headerArrow.svg"
 import styles from "./SelectHeader.module.scss";
 
 interface SelectHeaderProps {
@@ -70,7 +71,7 @@ const SelectHeader: React.FC<SelectHeaderProps> = ({
         >
             <img src={userData?.image?.url || "./images/avatar.png"} alt="user" />
             <div className={styles.selectHeader}>
-                <img src="./images/angle.png" alt="dropdown icon" />
+                <img src={headerArrow} alt="dropdown icon" />
                 <div className={styles.selectItem}>
                     <NavLink to="/profile" onClick={(e) => e.stopPropagation()}>
                         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">

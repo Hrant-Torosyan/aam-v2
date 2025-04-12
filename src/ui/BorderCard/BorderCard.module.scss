@@ -1,0 +1,16 @@
+.prodInfoCard {
+  &:first-child {
+    margin: 0;
+  }
+  border: 2px solid rgba(46, 147, 239, 0.3);
+  border-radius: 25px;
+  background: rgb(255, 255, 255);
+  padding: 35px;
+  margin-top: 25px;
+
+  @media (max-width: 576.99px) {
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 15px;
+  }
+}

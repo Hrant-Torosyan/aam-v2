@@ -1,0 +1,273 @@
+.Presentation {
+  margin: 64px 0;
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 24px;
+    text-align: left;
+  }
+
+  .hide {
+    display: none !important;
+  }
+  .seeMore, .hideAll {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 36px;
+    cursor: pointer;
+
+    span {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: -0.001em;
+      color: #96C5F9;
+      margin-right: 10px;
+    }
+    img {
+      width: 17px;
+      height: 12px;
+    }
+
+    .hideArrow {
+      transform: rotate(180deg);
+    }
+  }
+  .PresentationWrapper {
+    min-height: 194px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    .downloadAll {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      box-sizing: border-box;
+      padding: 15px;
+      background-color: white;
+      border-radius: 30px;
+      border: solid 2px transparent;
+      order: 3;
+      position: relative;
+      width: fit-content;
+
+      &:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 25px;
+        padding: 2px;
+        background: linear-gradient(158.2deg, rgb(44, 115, 243) -103.971%, rgb(48, 205, 231) 151.363%);
+        mask:
+                linear-gradient(#000 0 0) content-box,
+                linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        z-index: 0;
+      }
+      span {
+        width: 152px;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 14px;
+        background: linear-gradient(95.63deg, #2C73F3 -33.22%, #30CDE7 106.45%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+        z-index: 1;
+
+        &.active {
+          background: linear-gradient(95.63deg, #2C73F3 -33.22%, #30CDE7 106.45%);
+          color: #fff;
+          -webkit-background-clip: unset;
+          -webkit-text-fill-color: unset;
+        }
+      }
+    }
+  }
+
+}
+
+@media (max-width: 1199.98px) {
+  .Presentation {
+    margin: 24px 0;
+    h1 {
+      font-size: 18px;
+    }
+
+    .show {
+      display: none !important;
+    }
+
+    .presentationButtons {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      align-items: center;
+
+      .hide {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        box-sizing: border-box;
+        padding: 15px;
+        background-color: white;
+        border-radius: 30px;
+        border: solid 2px transparent;
+        order: 3;
+        position: relative;
+        width: fit-content;
+
+        &:before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 25px;
+          padding: 2px;
+          background: linear-gradient(158.2deg, rgb(44, 115, 243) -103.971%, rgb(48, 205, 231) 151.363%);
+          mask: linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+          mask-composite: exclude;
+          z-index: 0;
+        }
+
+        span {
+          width: 152px;
+          background: transparent;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 25px;
+          padding: 10px 20px;
+          font-size: 14px;
+          background: linear-gradient(95.63deg, #2C73F3 -33.22%, #30CDE7 106.45%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+          border: none;
+          cursor: pointer;
+          transition: 0.3s;
+          z-index: 1;
+
+          &.active {
+            background: linear-gradient(95.63deg, #2C73F3 -33.22%, #30CDE7 106.45%);
+            color: #fff;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: unset;
+          }
+        }
+      }
+
+      .seeMore {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 576.99px) {
+  .Presentation {
+    margin: 24px 0;
+
+    .hide {
+      display: block !important;
+    }
+
+    h1 {
+      font-size: 16px;
+    }
+
+    .seeMore {
+      span {
+        font-size: 14px;
+      }
+    }
+
+    .PresentationWrapper {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 10px 0;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      scrollbar-width: none;
+    }
+
+    .presentationButtons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .downloadAll {
+      display: none;
+    }
+
+    .downloadAll.show {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      padding: 15px;
+      background-color: white;
+      border-radius: 30px;
+      border: solid 2px transparent;
+      position: relative;
+      width: fit-content;
+      z-index: 1;
+
+      &:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 25px;
+        padding: 2px;
+        background: linear-gradient(158.2deg, rgb(44, 115, 243) -103.971%, rgb(48, 205, 231) 151.363%);
+        mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        z-index: 0;
+      }
+
+      span {
+        width: 152px;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 14px;
+        background: linear-gradient(95.63deg, #2C73F3 -33.22%, #30CDE7 106.45%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+        z-index: 1;
+
+        &.active {
+          background: linear-gradient(95.63deg, #2C73F3 -33.22%, #30CDE7 106.45%);
+          color: #fff;
+          -webkit-background-clip: unset;
+          -webkit-text-fill-color: unset;
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,3 @@
-// In Products.tsx
 import React, { useRef } from "react";
 import styles from "./Products.module.scss";
 import Product from "../Product/Product";
@@ -9,12 +8,14 @@ import type { Swiper as SwiperType } from "swiper";
 import { Project } from "@/types/types";
 
 interface ProductsProps {
-    products: Project[];
     info: string;
+    products: Project[];
     type?: "LIST" | "SLIDER";
     hiddenHeader?: boolean;
     setHiddenHeader?: (value: string) => void;
     onSelectProduct?: (id: string) => void;
+    handleImageError?: (event: React.SyntheticEvent<HTMLImageElement, Event>) => void;
+    sliderView?: boolean;
 }
 
 const Products: React.FC<ProductsProps> = ({
@@ -24,13 +25,13 @@ const Products: React.FC<ProductsProps> = ({
    hiddenHeader = false,
    setHiddenHeader = () => {},
    onSelectProduct = () => {},
+   handleImageError = (event) => {
+       event.currentTarget.onerror = null;
+       event.currentTarget.src = "https://flagsapi.com/RU/flat/64.png";
+   },
+   sliderView = false,
 }) => {
     const swiperRef = useRef<SwiperType | null>(null);
-
-    const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-        event.currentTarget.onerror = null;
-        event.currentTarget.src = "https://flagsapi.com/RU/flat/64.png";
-    };
 
     const handleSelectProduct = (id: string) => {
         console.log("Products - Selected product:", id);
@@ -61,6 +62,7 @@ const Products: React.FC<ProductsProps> = ({
                                 }}
                                 handleImageError={handleImageError}
                                 setHiddenHeader={setHiddenHeader}
+                                sliderView={sliderView}
                             />
                         ))
                     ) : (
@@ -87,7 +89,7 @@ const Products: React.FC<ProductsProps> = ({
                                             prod={prod}
                                             info={info}
                                             projectId={prod.projectId || prod.id}
-                                            setProdId={handleSelectProduct} // Pass our new handler
+                                            setProdId={handleSelectProduct}
                                             handleImageError={handleImageError}
                                             setHiddenHeader={setHiddenHeader}
                                         />

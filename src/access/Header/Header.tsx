@@ -9,6 +9,7 @@ import wallet from "src/images/svg/wallet.svg";
 import market from "src/images/svg/market.svg";
 import career from "src/images/svg/career.svg";
 import bag from "src/images/svg/bag.svg";
+import logo from "src/images/svg/logoHeader.svg";
 
 import SelectHeader from "./SelectHeader/SelectHeader";
 
@@ -94,7 +95,7 @@ const Header = () => {
             )}
             <div className={styles.headerLeft}>
                 <div className={styles.headerLeftLogo}>
-                    <img src="./images/Logo.png" alt="Logo"/>
+                    <img src={logo} alt="Logo"/>
                 </div>
                 <nav>
                     <ul>
