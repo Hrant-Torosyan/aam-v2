@@ -249,3 +249,33 @@ export interface ProjectListParams {
     title?: string | null;
     tags?: string[] | null;
 }
+
+export interface ProjectWithInvestmentData extends Project {
+    conditionDocuments?: Array<{
+        name?: string;
+        url?: {
+            url?: string;
+            name?: string;
+        };
+    }>;
+    minPrice: number;
+    maxPrice: number;
+    purchaseCommission: number;
+    profitCommission: number;
+    withdrawalCommission: number;
+    managementCommission: number;
+    investmentAmount: number;
+    paymentPeriods?: string[];
+    term?: number;
+    projectId: string;
+}
+
+export interface InvestRequestData {
+    amount: number;
+    purchaseCommission: number;
+    profitCommission: number;
+    withdrawalCommission: number;
+    managementCommission: number;
+    period?: string | null;
+    term?: number;
+}

@@ -18,17 +18,15 @@ interface SimilarSliderProps {
     info?: {
         tags: string[];
     };
-    sliderView?: boolean; // Make it optional with default value
 }
 
 const SimilarSlider: React.FC<SimilarSliderProps> = ({
-                                                         products = [],
-                                                         prodId,
-                                                         setProdId,
-                                                         handleImageError,
-                                                         setHiddenHeader,
-                                                         sliderView = true // Default to true since this IS a slider
-                                                     }) => {
+     products = [],
+     prodId,
+     setProdId,
+     handleImageError,
+     setHiddenHeader,
+ }) => {
     const swiperRef = useRef<SwiperType | null>(null);
 
     const filteredProducts = products.filter(
@@ -78,7 +76,7 @@ const SimilarSlider: React.FC<SimilarSliderProps> = ({
                                     setHiddenHeader={setHiddenHeader}
                                     onSelectProduct={handleProductClick}
                                     handleImageError={handleImageErrorSafe}
-                                    sliderView={true} // Add a new prop to indicate this is being rendered in slider
+                                    sliderView={true}
                                 />
                             </SwiperSlide>
                         ))}

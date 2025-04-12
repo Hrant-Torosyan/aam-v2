@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { formatNumber } from "src/utils/formatNumber";
-import { useGetProductInfoQuery } from "src/store/product/product";
+import { useGetProductInfoQuery } from "src/store/product/productApi";
 import { Project } from "@/types/types";
 import styles from "../Products/Products.module.scss";
 

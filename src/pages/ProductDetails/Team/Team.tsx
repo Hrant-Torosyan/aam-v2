@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useGetProductTeamQuery } from "src/store/product/product";
+import { useGetProductTeamQuery } from "src/store/product/productApi";
 import styles from "./Team.module.scss";
 import arrowDown from "src/images/svg/arrowDown.svg";
 import BorderCard from "src/ui/BorderCard/BorderCard";

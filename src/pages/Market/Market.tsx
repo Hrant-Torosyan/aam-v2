@@ -1,5 +1,4 @@
 import React, { Suspense, useEffect, useState } from "react";
-import styles from "./Market.module.scss";
 import Search from "./Search";
 import CategoriesButtons from "src/ui/CategoriesButtons/CategoriesButtons";
 import { useGetProjectsMutation, useGetCategoriesQuery } from "src/store/market/marketAPI";
@@ -7,6 +6,7 @@ import { Project } from "@/types/types";
 import Products from "src/components/Products/Products";
 import ProductDetails from "src/pages/ProductDetails/ProductDetails";
 import Loader from "src/ui/Loader/Loader";
+import styles from "./Market.module.scss";
 
 interface Category {
     id: string;
@@ -18,7 +18,6 @@ interface DataResponse {
     data: Project[];
 }
 
-// Define type filter constants
 const TYPE_FILTERS = {
     ALL: "ALL",
     STOCKS: "STOCKS",
@@ -26,7 +25,6 @@ const TYPE_FILTERS = {
     FUND: "FUND"
 };
 
-// Map for displaying type names in Russian
 const TYPE_DISPLAY_NAMES = {
     [TYPE_FILTERS.ALL]: "Все",
     [TYPE_FILTERS.STOCKS]: "Акции",
@@ -34,8 +32,7 @@ const TYPE_DISPLAY_NAMES = {
     [TYPE_FILTERS.FUND]: "Фонд"
 };
 
-// Default type to use when no type is selected
-const DEFAULT_TYPE = TYPE_FILTERS.ASSET; // Changed back to ASSET as default to match original behavior
+const DEFAULT_TYPE = TYPE_FILTERS.ALL;
 
 const Market: React.FC = () => {
     const [products, setProducts] = useState<Project[] | null>(null);
@@ -48,8 +45,6 @@ const Market: React.FC = () => {
 
     const [getProjects, { isLoading: isProjectsLoading }] = useGetProjectsMutation();
 
-    // Get categories based on selected type (ALL type should get all categories)
-    // For ALL we send empty string which the API should interpret as "no filter"
     const effectiveTypeForCategories = selectedType === TYPE_FILTERS.ALL ? "" : selectedType;
     const { data: categoriesData, isLoading: isCategoriesLoading } = useGetCategoriesQuery(effectiveTypeForCategories);
 
@@ -89,8 +84,6 @@ const Market: React.FC = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                // Special handling for ALL case - we're not sending the type parameter at all
-                // This lets the API return all products regardless of type
                 const params = selectedType === TYPE_FILTERS.ALL ?
                     {
                         category: filter !== "all" ? filter : undefined,
@@ -146,10 +139,9 @@ const Market: React.FC = () => {
         fetchProducts();
     }, [filter, selectedType, getProjects, categories]);
 
-    // Improved type change handler
     const handleTypeChange = (type: string) => {
         setSelectedType(type);
-        setFilter("all"); // Reset category filter when changing types
+        setFilter("all");
         setHasInteracted(true);
     };
 
@@ -198,16 +190,11 @@ const Market: React.FC = () => {
                                     <h1>Маркет</h1>
                                 </div>
                                 <div className={styles.switcher}>
-                                    {/* Type filter buttons */}
                                     {Object.entries(TYPE_FILTERS).map(([key, value]) => (
                                         <button
                                             key={value}
                                             onClick={() => handleTypeChange(value)}
-                                            className={
-                                                (!hasInteracted && value === DEFAULT_TYPE) ||
-                                                selectedType === value ?
-                                                    styles.active : ""
-                                            }
+                                            className={selectedType === value ? styles.active : ""}
                                         >
                                             {TYPE_DISPLAY_NAMES[value]}
                                         </button>

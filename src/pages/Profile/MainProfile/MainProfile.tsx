@@ -291,9 +291,7 @@ const MainProfileNew: React.FC<MainProfileNewProps> = ({ setProfilePage, product
                 </div>
             </div>
 
-            {displayProducts.length > 0 && (
-                <ProfileSlider products={displayProducts} info={"Info"} />
-            )}
+            <ProfileSlider products={displayProducts} info={"Info"} />
         </Suspense>
     );
 };

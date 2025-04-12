@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Investors.module.scss";
 import arrowDown from "src/images/svg/arrowDown.svg";
-import { useGetProductInvestorsQuery } from "src/store/product/product";
+import { useGetProductInvestorsQuery } from "src/store/product/productApi";
 import { Project, Investor } from "src/types/types";
 import BorderCard from "src/ui/BorderCard/BorderCard";
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CopyOnClick from "src/utils/copyOnClick";
 import UserLvl from "src/components/UserLvl/UserLvl";
 import user from 'src/images/svg/career/user.svg';
-import { useGetProfileCareerQuery, useGetProfitQuery } from "src/store/career/career";
+import { useGetProfileCareerQuery, useGetProfitQuery } from "src/store/career/careerApi";
 import styles from "./Career.module.scss";
 
 const Career: React.FC = () => {

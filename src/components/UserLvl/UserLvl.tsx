@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./UserLvl.module.scss";
 import Diagram from "../Diagram/Diagram";
-import { useGetProfileCareerQuery } from "src/store/career/career";
+import { useGetProfileCareerQuery } from "src/store/career/careerApi";
 
 import linked from 'src/images/svg/career/linked.svg';
 import user from 'src/images/svg/career/user.svg';
