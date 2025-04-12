@@ -1,21 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { PaginatedResponse, Project } from 'src/types/types';
+import {CategoriesResponse, PaginatedResponse, Project, ProjectListParams} from 'src/types/types';
 
-interface CategoriesResponse {
-    success: boolean;
-    data: { id: string; name: string }[];
-}
-
-interface ProjectListParams {
-    category?: string | null;
-    type?: string | null;
-    title?: string | null;
-    tags?: string[] | null;
-}
 
 type ProjectsResponse = PaginatedResponse<Project>;
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://aams.live/api/rest/';
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const marketApi = createApi({
     reducerPath: 'marketApi',
@@ -45,21 +34,24 @@ export const marketApi = createApi({
     endpoints: (builder) => ({
         getProjects: builder.mutation<ProjectsResponse, ProjectListParams>({
             query: (params) => {
-                const { category, type, title, tags } = params;
+                // Create body with only defined values to keep payload small
+                const bodyData: Record<string, any> = {};
 
-                let bodyData;
-                if (title) {
-                    bodyData = {
-                        title,
-                        category: category === "all" ? null : category,
-                        type: type === "all" ? null : type,
-                        tags: tags && tags.length > 0 ? tags : null,
-                    };
-                } else {
-                    bodyData = {
-                        category: category === "all" ? null : category,
-                        type: type === "all" ? null : type,
-                    };
+                // Only add properties that actually have values
+                if (params.title && params.title.trim() !== "") {
+                    bodyData.title = params.title.trim();
+                }
+
+                if (params.category !== null && params.category !== undefined) {
+                    bodyData.category = params.category;
+                }
+
+                if (params.type !== null && params.type !== undefined) {
+                    bodyData.type = params.type;
+                }
+
+                if (params.tags && params.tags.length > 0) {
+                    bodyData.tags = params.tags;
                 }
 
                 return {
@@ -79,7 +71,13 @@ export const marketApi = createApi({
         }),
 
         getCategories: builder.query<CategoriesResponse, string>({
-            query: (selectedType) => `projects/categories?projectType=${selectedType}`,
+            query: (selectedType) => {
+                // Handle empty string case properly
+                if (selectedType === "") {
+                    return 'projects/categories';
+                }
+                return `projects/categories?projectType=${selectedType}`;
+            },
         }),
     }),
 });
