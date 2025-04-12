@@ -237,3 +237,15 @@ export interface GetSimilarProductsArgs {
     tags: string[];
     excludeId?: string;
 }
+
+export interface CategoriesResponse {
+    success: boolean;
+    data: { id: string; name: string }[];
+}
+
+export interface ProjectListParams {
+    category?: string | null;
+    type?: string | null;
+    title?: string | null;
+    tags?: string[] | null;
+}

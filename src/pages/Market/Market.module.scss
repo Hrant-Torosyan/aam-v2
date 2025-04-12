@@ -10,7 +10,6 @@
       line-height: 20px;
       letter-spacing: -0.1%;
       text-align: left;
-
     }
   }
 
@@ -73,7 +72,7 @@
   }
 
   .search {
-    max-width: 562px;
+    max-width: 342px;
     width: 100%;
     position: relative;
 
@@ -112,10 +111,42 @@
       display: flex;
       align-items: center;
       padding: 11px 27px;
+
+      button {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        img {
+          width: 20px;
+          height: 20px;
+          object-fit: contain;
+        }
+      }
+
       svg {
         path {
           fill: rgba(46, 147, 239, 0.3);
         }
+      }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(46, 147, 239, 0.3);
+        border-top: 2px solid rgb(52, 142, 241);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
     }
   }
