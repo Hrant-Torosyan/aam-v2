@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {PopUpState} from "@/types/types";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -108,12 +109,23 @@ export const authApi = createApi({
 				return { data: undefined };
 			},
 		}),
+		setPopUpState: builder.mutation<void, string>({
+			queryFn: (popupState) => {
+				localStorage.setItem("popupState", popupState);
+				return { data: undefined };
+			},
+		}),
+		getPopUpState: builder.query<PopUpState | null, void>({
+			queryFn: () => {
+				const popupState = localStorage.getItem("popupState");
+				return { data: popupState ? (popupState as unknown as PopUpState) : null };
+			},
+		}),
 	}),
 });
 
 export const {
 	useLoginMutation,
-	useSignupMutation,
 	useCheckEmailMutation,
 	useValidateCodeMutation,
 	useResetPasswordMutation,
@@ -121,4 +133,7 @@ export const {
 	useReadNotificationMutation,
 	useAddLinkedUserMutation,
 	useLogoutMutation,
+	useSignupMutation,
+	useSetPopUpStateMutation,
+	useGetPopUpStateQuery,
 } = authApi;

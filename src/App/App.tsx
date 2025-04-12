@@ -81,7 +81,6 @@ const App: React.FC = () => {
                             }
                         />
 
-                        {/* Main routes with Layout (navbar) */}
                         <Route
                             path="/"
                             element={

@@ -54,11 +54,7 @@ const LoginPage: React.FC<LoginPageProps> = ({
 			const isNewUser = true;
 			onLoginComplete(isNewUser);
 
-			if (isNewUser) {
-				setPage("verify");
-			} else {
-				navigate("/");
-			}
+			navigate("/");
 		} catch {
 			setErrorMessage("Ошибка входа");
 		}
