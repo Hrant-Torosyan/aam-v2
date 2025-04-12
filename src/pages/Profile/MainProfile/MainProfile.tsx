@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect, useState } from "react";
 import ProfileSlider from "src/components/ProfileSlider/ProfileSlider";
+
 import { ProfileProduct } from "src/types/types";
 
 import {

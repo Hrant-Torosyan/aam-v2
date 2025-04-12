@@ -1,0 +1,98 @@
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popupContainer {
+  width: 80%;
+  max-width: 800px;
+  z-index: 1001;
+}
+
+.verificationPopup {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  background-color: white;
+  position: relative;
+}
+
+.stepsIndicator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  margin-bottom: 20px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.stepNumber {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.step.active .stepNumber {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.stepLabel {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.step.active .stepLabel {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.stepConnector {
+  flex-grow: 1;
+  height: 2px;
+  background-color: #ddd;
+  margin: 0 10px;
+  position: relative;
+  top: -15px;
+  z-index: 1;
+}
+
+.popupContent {
+  margin-bottom: 30px;
+}
+
+.closeButton {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
