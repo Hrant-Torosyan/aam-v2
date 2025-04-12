@@ -7,7 +7,7 @@ import { careerApi } from './career/career';
 import { profileApi } from './profile/profileAPI';
 import userReducer from './profile/profileSlice';
 import { marketApi } from './market/marketAPI';
-import { projectsApi } from 'src/store/product/product';
+import { productApi } from 'src/store/product/product';
 
 export const store = configureStore({
     reducer: {
@@ -19,7 +19,7 @@ export const store = configureStore({
         [careerApi.reducerPath]: careerApi.reducer,
         [profileApi.reducerPath]: profileApi.reducer,
         [marketApi.reducerPath]: marketApi.reducer,
-        [projectsApi.reducerPath]: projectsApi.reducer,
+        [productApi.reducerPath]: productApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
@@ -28,8 +28,5 @@ export const store = configureStore({
             .concat(careerApi.middleware)
             .concat(profileApi.middleware)
             .concat(marketApi.middleware)
-            .concat(projectsApi.middleware),
+            .concat(productApi.middleware),
 });
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;

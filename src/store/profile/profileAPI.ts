@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { UserInfo, ProfileProducts, ProfitData } from "src/types/types";
+import {UserInfo, ProfileProducts, ProfitData} from "src/types/types";
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;

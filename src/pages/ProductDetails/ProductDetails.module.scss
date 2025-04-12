@@ -65,6 +65,7 @@
       background: rgb(255, 255, 255);
       padding: 35px;
       margin-top: 25px;
+      text-align: left;
       > h1 {
         color: rgb(52, 142, 241);
         font-size: 18px;
@@ -121,6 +122,9 @@
     padding: 15px;
     .productInfoTitle {
       margin-bottom: 25px;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
       button {
         align-items: center;
         display: flex;
@@ -131,7 +135,8 @@
       }
       h1 {
         font-size: 16px;
-        margin: 0 0 0 30px !important;
+        margin: 30px 0 24px;
+        text-align: left;
       }
       .percent {
         display: none;
@@ -188,6 +193,9 @@
     top: 65px;
     .productInfoTitle {
       margin-bottom: 25px;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
       button {
         span {
           margin-left: 15px;
@@ -195,7 +203,8 @@
       }
       h1 {
         font-size: 20px;
-        margin: 0 40px;
+        margin: 30px 0 24px;
+        text-align: left;
       }
       .percent {
         padding: 8px 23px;
@@ -250,6 +259,9 @@
     padding: 20px 25px;
     .productInfoTitle {
       margin-bottom: 25px;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
       button {
         span {
           margin-left: 15px;
@@ -257,7 +269,7 @@
       }
       h1 {
         font-size: 20px;
-        margin: 0 40px;
+        margin: 30px 0 24px;
       }
       .percent {
         padding: 8px 23px;

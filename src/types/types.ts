@@ -2,6 +2,7 @@ export interface DailyBalance {
     date: string;
     amount: number;
 }
+
 export interface PopUpState {
     isOpen: boolean;
     info: string | null;
@@ -9,6 +10,7 @@ export interface PopUpState {
     balance: number;
     percent: number;
 }
+
 export interface MonthlyBalance {
     date: string;
     amount: number;
@@ -27,6 +29,7 @@ export interface BalanceChartResponse {
     masterAccount?: number;
     investmentAccount?: number;
     agentAccount?: number;
+    period?: PeriodType;
 }
 
 export interface OperationItem {
@@ -64,7 +67,6 @@ export interface BalanceChartRequest {
     refresh?: number;
 }
 
-
 export interface UserImage {
     name: string;
     url: string;
@@ -76,6 +78,7 @@ export interface ProfileProduct {
     description?: string;
     imageUrl?: string;
     price?: number;
+    name?: string;
 }
 
 export interface ProfileProducts {
@@ -88,11 +91,6 @@ export interface ProfitData {
     profit: number;
     transactions: Array<any>;
     amount?: number;
-}
-
-export interface UserImage {
-    name: string;
-    url: string;
 }
 
 export interface UserInfo {
@@ -115,20 +113,16 @@ export interface UserInfo {
     status?: boolean;
 }
 
-export interface ProfileProduct {
-    id: string;
-    name: string;
-}
-
-
 export interface UserAuth {
     token: string;
+    refreshToken?: string;
+    expiresIn?: number;
 }
 
 export interface Project {
     id: string;
     title: string;
-    description?: string;
+    companyDescription?: string;
     category?: string;
     type?: string;
     tags: string[];
@@ -143,12 +137,37 @@ export interface Project {
     companyLogo?: {
         url: string;
     };
-    profit?: number
+    profit?: number;
+    mediaImages?: Array<{
+        url?: {
+            url?: string;
+        };
+        name?: string;
+    }>;
+    financialIndicatorContent?: string;
+    ceoPosition?: string;
+    ceoLastname?: string;
+    ceoFirstname?: string;
+    ceoImage?: {
+        url?: string;
+    };
+    employeesContent?: string;
+    fundDetails?: Record<string, string>;
+    presentations?: Array<{
+        url?: {
+            url?: string;
+            name?: string;
+        };
+        name?: string;
+        [key: string]: any;
+    }>;
 }
 
 export interface Employee {
     id: string;
-    name: string;
+    name?: string;
+    firstName?: string;
+    lastName?: string;
     position: string;
     image?: {
         url: string;
@@ -157,16 +176,22 @@ export interface Employee {
 
 export interface Investor {
     id: string;
-    name: string;
-    investmentAmount: number;
-    date: string;
+    name?: string;
+    firstName?: string;
+    lastName?: string;
+    investmentAmount?: number;
+    amount?: number;
+    date?: string;
 }
 
 export interface HistoryItem {
     id: string;
-    date: string;
-    title: string;
-    description: string;
+    date?: string;
+    createdAt?: string;
+    title?: string;
+    type?: string;
+    description?: string;
+    amount?: number;
 }
 
 export interface ApiResponse<T> {
@@ -179,31 +204,36 @@ export interface QueryData {
     [key: string]: string | number | boolean;
 }
 
-export type PeriodType = 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+export type PeriodType = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'YEARLY';
 
 export interface PaginatedResponse<T> {
     content: T[];
-    empty: boolean;
-    first: boolean;
-    last: boolean;
-    number: number;
-    numberOfElements: number;
-    pageable: {
+    empty?: boolean;
+    first?: boolean;
+    last?: boolean;
+    number?: number;
+    numberOfElements?: number;
+    pageable?: {
         pageNumber: number;
         pageSize: number;
-        sort: {
+        sort?: {
             sorted: boolean;
             empty: boolean;
             unsorted: boolean;
         };
-        offset: number;
+        offset?: number;
     };
-    size: number;
-    sort: {
+    size?: number;
+    sort?: {
         sorted: boolean;
         empty: boolean;
         unsorted: boolean;
     };
     totalElements: number;
     totalPages: number;
+}
+
+export interface GetSimilarProductsArgs {
+    tags: string[];
+    excludeId?: string;
 }

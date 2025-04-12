@@ -1,11 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import {ApiResponse, PaginatedResponse, Project, UserAuth} from "@/types/types";
+import { PaginatedResponse, Project } from 'src/types/types';
 
-
-
-type ProjectsResponse = PaginatedResponse<Project>;
-
-interface CategoriesResponse extends ApiResponse<{ id: string; name: string }[]> {}
+interface CategoriesResponse {
+    success: boolean;
+    data: { id: string; name: string }[];
+}
 
 interface ProjectListParams {
     category?: string | null;
@@ -14,6 +13,8 @@ interface ProjectListParams {
     tags?: string[] | null;
 }
 
+type ProjectsResponse = PaginatedResponse<Project>;
+
 const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://aams.live/api/rest/';
 
 export const marketApi = createApi({
@@ -21,12 +22,20 @@ export const marketApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: BASE_URL,
         prepareHeaders: (headers) => {
-            const token = JSON.parse(localStorage.getItem("userAuth") || '{}').token;
+            let token = '';
+            try {
+                const userAuth = localStorage.getItem('userAuth');
+                if (userAuth) {
+                    const parsedAuth = JSON.parse(userAuth);
+                    token = parsedAuth.token || '';
+                }
+            } catch (error) {
+                console.error("Error parsing auth token:", error);
+            }
 
             if (token) {
                 headers.set('Authorization', `Bearer ${token}`);
             }
-
             headers.set('Accept', 'application/json');
             headers.set('Content-Type', 'application/json');
 

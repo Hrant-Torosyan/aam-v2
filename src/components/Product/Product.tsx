@@ -13,6 +13,7 @@ interface ProductProps {
     setHiddenHeader: (value: string) => void;
     fullWidth?: boolean;
     projectId?: string;
+    sliderView?: boolean;
 }
 
 const Product: React.FC<ProductProps> = ({
@@ -22,6 +23,8 @@ const Product: React.FC<ProductProps> = ({
      handleImageError,
      setHiddenHeader,
      fullWidth = false,
+     projectId,
+     sliderView = false,
  }) => {
     const navigate = useNavigate();
 
@@ -33,55 +36,74 @@ const Product: React.FC<ProductProps> = ({
         const id = info === "Briefcase" ? prod.id : (prod.projectId || "");
 
         if (id) {
-            navigate(`/market/product/${id}`);
-
             setProdId(id);
             setHiddenHeader("hidden");
+            navigate(`/market/product/${id}`);
         }
     };
 
+    // Determine CSS classes with appropriate fallbacks
+    const productClass = styles.product || "";
+    const productFullClass = styles.productFull || "";
+    const isAvailableClass = styles.isAvailable || "";
+    const doteClass = styles.dote || "";
+    const productImageClass = styles.productImage || "";
+    const productImageUserClass = styles.productImageUser || "";
+    const productContentClass = styles.productContent || "";
+    const directionClass = styles.direction || "";
+    const hashtagsClass = styles.hashtags || "";
+    const hashtagClass = styles.hashtag || "";
+    const priceListClass = styles.priceList || "";
+    const priceClass = styles.price || "";
+    const sliderProductClass = styles.sliderProduct || "";
+
+    // Set CSS classes based on whether in slider view or not
+    const containerClass = `${productClass} ${
+        sliderView ? sliderProductClass : fullWidth ? productFullClass : ""
+    }`;
+
     return (
-        <div onClick={handleClick} className={`${styles.product} ${fullWidth ? styles.productFull : ""}`}>
+        <div onClick={handleClick} className={containerClass}>
             {prod.active !== undefined && (
                 prod.active ? (
-                    <div className={styles.isAvailable}>
-                        <div className={styles.dote}></div>
+                    <div className={isAvailableClass}>
+                        <div className={doteClass}></div>
                         {mainData?.type === "ASSET" ? "Актив" : "Фонд"}
                     </div>
                 ) : (
-                    <div className={styles.isAvailable}>Не доступно</div>
+                    <div className={isAvailableClass}>Не доступно</div>
                 )
             )}
-            <div className={styles.productImage}>
+            <div className={productImageClass}>
                 <img
                     src={prod.image?.url}
                     alt=""
                     onError={handleImageError}
                 />
-                <div className={styles.productImageUser}>
+                <div className={productImageUserClass}>
                     <img
                         src={mainData?.companyLogo?.url || ""}
                         alt="logo"
                     />
                 </div>
             </div>
-            <div className={styles.productContent}>
+            <div className={productContentClass}>
                 <h3>{prod.title}</h3>
-                <div className={styles.direction}>
+                <div className={directionClass}>
                     <h2>{mainData?.productType || ""}</h2>
                     <h2>
                         Страна: <span>{prod.country || ""}</span>
                     </h2>
                 </div>
-                <div className={styles.hashtags}>
+                <div className={hashtagsClass}>
                     {prod.tags && prod.tags.map((item, key) => (
-                        <div key={key} className={styles.hashtag}>
+                        <div key={key} className={hashtagClass}>
                             #{item}
                         </div>
                     ))}
                 </div>
-                <div className={styles.priceList}>
-                    <div className={styles.price}>
+                <div className={priceListClass}>
+                    <div className={priceClass}>
                         <p>Цена</p>
                         <span>$ {formatNumber(prod.minPrice || 0)}</span>
                     </div>

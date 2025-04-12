@@ -1,0 +1,95 @@
+.similarSliderWrapper {
+  width: 100%;
+  min-height: 509px;
+  background-color: #f4f7fe;
+  border-radius: 25px;
+  margin-top: 53px;
+  overflow: hidden;
+  padding: 0 50px 47px;
+  text-align: left;
+
+  .profileSlider {
+    position: relative;
+
+    .sliderTitle {
+      font-size: 24px;
+      font-weight: 700;
+      color: #000;
+      padding: 41px 20px;
+    }
+
+    .sliderWithArrows {
+      position: relative;
+      padding: 0 10px;
+    }
+
+    .swiper {
+      width: 100% !important;
+      height: 100% !important;
+      overflow: hidden;
+    }
+
+    .swiperSlide {
+      width: 280px !important;
+      height: auto !important;
+      display: flex;
+      justify-content: center;
+    }
+
+    .swiper-wrapper {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .customArrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+      outline: none;
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+
+      &.prevArrow {
+        left: -30px;
+      }
+
+      &.nextArrow {
+        right: -30px;
+      }
+    }
+  }
+
+  /* Media queries */
+  @media (max-width: 1199.98px) {
+    padding: 12px;
+
+    .profileSlider {
+      .sliderTitle {
+        padding: 0;
+        margin-bottom: 24px;
+      }
+      .customArrow {
+        display: none;
+      }
+    }
+  }
+
+  @media (max-width: 576.99px) {
+    border-radius: 0;
+    padding: 0;
+
+    .profileSlider {
+      .sliderTitle {
+        padding: 12px;
+        font-size: 18px;
+      }
+    }
+  }
+}

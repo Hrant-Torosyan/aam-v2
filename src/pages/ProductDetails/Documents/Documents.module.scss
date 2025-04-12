@@ -1,0 +1,184 @@
+.documents {
+  text-align: left;
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 24px;
+  }
+
+  .documentsDownload {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .documentsCardDownload {
+    width: 159px;
+    min-height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 15px;
+
+    .download {
+      display: flex;
+
+      svg {
+        width: 40px;
+        height: 40px;
+      }
+
+      p {
+        width: 111px;
+        margin-left: 8px;
+        font-size: 14.34px;
+        font-weight: 400;
+        color: #212529;
+        overflow: hidden;
+      }
+    }
+
+    .buttonStyleToo {
+      span {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.001em;
+        text-align: center;
+        color: #96C5F9;
+        margin-top: 8px;
+      };
+    }
+  }
+
+  .documentsButtons {
+    min-height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+
+    .PresentationWrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .downloadAll {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        box-sizing: border-box;
+        padding: 15px;
+        background-color: white;
+        border-radius: 30px;
+        border: solid 2px transparent;
+        order: 3;
+        position: relative;
+        width: fit-content;
+
+        &:before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 25px;
+          padding: 2px;
+          background: linear-gradient(158.2deg, rgb(44, 115, 243) -103.971%, rgb(48, 205, 231) 151.363%);
+          mask:
+                  linear-gradient(#000 0 0) content-box,
+                  linear-gradient(#000 0 0);
+          mask-composite: exclude;
+          z-index: 0;
+        }
+        span {
+          width: 152px;
+          background: transparent;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 25px;
+          padding: 10px 20px;
+          font-size: 14px;
+          background: linear-gradient(95.63deg, #2C73F3 -33.22%, #30CDE7 106.45%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+          border: none;
+          cursor: pointer;
+          transition: 0.3s;
+          z-index: 1;
+
+          &.active {
+            background: linear-gradient(95.63deg, #2C73F3 -33.22%, #30CDE7 106.45%);
+            color: #fff;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: unset;
+          }
+        }
+      }
+    }
+
+    .seeMore, .hideAll {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      span {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 20px;
+        letter-spacing: -0.001em;
+        color: #96C5F9;
+        margin-right: 10px;
+      }
+    }
+
+  }
+}
+@media (max-width: 1199.98px) {
+  .documents {
+    h2 {
+      font-size: 18px;
+    }
+  }
+}
+
+@media (max-width: 795.99px) {
+  .documents {
+    h2 {
+      font-size: 16px;
+    }
+    .documentsCardDownload {
+      width: 159px;
+      margin-right: 16px;
+    }
+    .documentsDownload {
+      width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 10px 0;
+      max-height: 250px;
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .documentsButtons {
+      justify-content: center;
+      margin-top: 0;
+      .seeMore {
+        display: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,238 @@
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  h2 {
+    font-size: 24px;
+    font-weight: 400;
+    color: #212529;
+  }
+
+  .teamItems {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-start;
+    .teamItem {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: 45px;
+      width: 110px;
+      text-align: center;
+      margin-right: 16px;
+      img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 8px;
+      }
+      .teamItemInfo {
+        p {
+          color: #747b87;
+          font-weight: 600;
+          font-size: 14px;
+          margin-bottom: 4px;
+        }
+        h3 {
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 19.5px;
+          color: #0e1a32;
+        }
+      }
+    }
+  }
+
+  .seeMore {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 36px;
+    cursor: pointer;
+
+    span {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: -0.001em;
+      color: #96c5f9;
+      margin-right: 10px;
+    }
+    img {
+      width: 17px;
+      height: 12px;
+    }
+  }
+}
+
+@media (max-width: 575.98px) {
+  .team {
+    .teamItems {
+      width: 95%;
+      .teamItem {
+        margin-top: 20px !important;
+
+        img {
+          margin-right: 10px;
+          width: 80px;
+          height: 80px;
+        }
+        .teamItemInfo {
+          h3 {
+            font-size: 10px;
+          }
+          p {
+            font-size: 8px;
+            line-height: 0;
+            margin: 8px 0;
+          }
+          span {
+            font-size: 8px;
+            line-height: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .team {
+    .teamItems {
+      width: 95%;
+      .teamItem {
+        margin-top: 45px;
+        margin-top: 25px !important;
+
+        .teamItemInfo {
+          h3 {
+            font-size: 16px;
+          }
+          p {
+            font-size: 13px;
+          }
+          span {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .team {
+    .teamItems {
+      width: 95%;
+      .teamItem {
+        margin-top: 35px;
+        img {
+          width: 100px;
+          height: 100px;
+        }
+        .teamItemInfo {
+          h3 {
+            font-size: 14px;
+          }
+          p {
+            font-size: 11px;
+            margin: 5px 0;
+            line-height: 11px;
+          }
+          span {
+            font-size: 11px;
+            line-height: 11px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .team {
+    .teamItems {
+      width: 95%;
+      .teamItem {
+        margin-top: 45px;
+
+        img {
+          margin-right: 25px;
+        }
+        .teamItemInfo {
+          h3 {
+            font-size: 16px;
+          }
+          p {
+            font-size: 13px;
+          }
+          span {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+  .team {
+    .teamItems {
+      width: 95%;
+      .teamItem {
+        margin-top: 45px;
+        .teamItemInfo {
+          h3 {
+            font-size: 16px;
+          }
+          p {
+            font-size: 13px;
+          }
+          span {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 1199.98px) {
+  .team {
+    h2 {
+      font-size: 18px;
+    }
+  }
+}
+
+@media (max-width: 576.99px) {
+  .team {
+    h2 {
+      font-size: 16px;
+    }
+  }
+
+  .teamItems {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 10px 0;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    scrollbar-width: none;
+  }
+
+  .teamItem {
+    margin-right: 15px;
+  }
+
+  .seeMore {
+    display: none;
+  }
+}
+

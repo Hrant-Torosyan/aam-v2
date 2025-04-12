@@ -135,6 +135,7 @@ const Market: React.FC = () => {
 
     const handleProductSelect = (id: string) => {
         setSelectedProductId(id);
+        setHiddenHeader(true);
     };
 
     const handleCloseDetails = () => {
@@ -142,8 +143,15 @@ const Market: React.FC = () => {
         setHiddenHeader(false);
     };
 
+    // This is the function you'll pass to components that need to modify the header visibility
     const handleSetHiddenHeader = (value: string) => {
         setHiddenHeader(value === "hidden");
+    };
+
+    // For image error handling in child components
+    const handleImageError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+        event.currentTarget.onerror = null;
+        event.currentTarget.src = "https://flagsapi.com/RU/flat/64.png";
     };
 
     const isLoading = isProjectsLoading || isCategoriesLoading;
@@ -194,6 +202,8 @@ const Market: React.FC = () => {
                         <ProductDetails
                             prodId={selectedProductId}
                             onClose={handleCloseDetails}
+                            handleImageError={handleImageError}
+                            setHiddenHeader={handleSetHiddenHeader}
                         />
                     ) : (
                         products && products.length > 0 ? (
@@ -203,6 +213,7 @@ const Market: React.FC = () => {
                                 hiddenHeader={hiddenHeader}
                                 setHiddenHeader={handleSetHiddenHeader}
                                 onSelectProduct={handleProductSelect}
+                                handleImageError={handleImageError}
                             />
                         ) : (
                             !isLoading && (
