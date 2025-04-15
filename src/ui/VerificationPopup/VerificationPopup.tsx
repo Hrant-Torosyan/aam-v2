@@ -1,5 +1,4 @@
-import React from "react";
-import Popup from "src/ui/Popup/Popup";
+import React, { useEffect, useRef } from "react";
 import VerificationPage from "src/pages/auth/Verification/Verification";
 import DocumentsPage from "src/pages/auth/Verification/Documents/Documents";
 import WaitingPage from "src/pages/auth/Verification/Waiting/Waiting";
@@ -7,6 +6,19 @@ import ApprovedPage from "src/pages/auth/Verification/Approved/Approved";
 import SignPage from "src/pages/auth/Verification/Sign/Sign";
 import CanceledPage from "src/pages/auth/Verification/Canceled/CanceledPage";
 import styles from "./VerificationPopup.module.scss";
+
+interface CustomPopupHeaderProps {
+    title: string;
+}
+
+// Custom wrapper component that adds the blue header styling
+const CustomPopupHeader: React.FC<CustomPopupHeaderProps> = ({ title }) => {
+    return (
+        <div className={styles.customHeader}>
+            <h1>{title}</h1>
+        </div>
+    );
+};
 
 interface VerificationPopupProps {
     isOpen: boolean;
@@ -25,13 +37,39 @@ const VerificationPopup: React.FC<VerificationPopupProps> = ({
                                                                  step,
                                                                  setStep
                                                              }) => {
+    // Reference for the popup container
+    const popupRef = useRef<HTMLDivElement>(null);
+
+    // Outside click handler
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                isOpen &&
+                popupRef.current &&
+                !popupRef.current.contains(event.target as Node)
+            ) {
+                onClose();
+            }
+        };
+
+        // Add event listener when popup is open
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        // Cleanup the event listener
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen, onClose]);
+
     // Get the popup title based on the current page
     const getPopupTitle = () => {
         switch (page) {
             case "verify":
                 return "Verification";
             case "documents":
-                return "Upload Documents";
+                return "Верификация документов";
             case "waiting":
                 return "Application Under Review";
             case "approved":
@@ -42,32 +80,6 @@ const VerificationPopup: React.FC<VerificationPopupProps> = ({
                 return "Application Canceled";
             default:
                 return "Verification Process";
-        }
-    };
-
-    // Handle back button functionality
-    const handleBack = () => {
-        // Logic to go to previous step based on current page
-        switch (page) {
-            case "documents":
-                setPage("verify");
-                setStep(1);
-                break;
-            case "waiting":
-                setPage("documents");
-                setStep(2);
-                break;
-            case "approved":
-                setPage("waiting");
-                setStep(3);
-                break;
-            case "canceled":
-                setPage("verify");
-                setStep(1);
-                break;
-            default:
-                onClose(); // If can't go back, close the popup
-                break;
         }
     };
 
@@ -95,47 +107,19 @@ const VerificationPopup: React.FC<VerificationPopupProps> = ({
 
     return (
         <div className={styles.popupOverlay}>
-            <div className={styles.popupContainer}>
-                <Popup
-                    title={getPopupTitle()}
-                    onBack={page !== "verify" ? handleBack : undefined}
-                    className={styles.verificationPopup}
-                >
-                    {/* Progress indicator */}
-                    <div className={styles.stepsIndicator}>
-                        <div className={`${styles.step} ${step >= 1 ? styles.active : ''}`}>
-                            <div className={styles.stepNumber}>1</div>
-                            <div className={styles.stepLabel}>Verify</div>
-                        </div>
-                        <div className={styles.stepConnector}></div>
-                        <div className={`${styles.step} ${step >= 2 ? styles.active : ''}`}>
-                            <div className={styles.stepNumber}>2</div>
-                            <div className={styles.stepLabel}>Documents</div>
-                        </div>
-                        <div className={styles.stepConnector}></div>
-                        <div className={`${styles.step} ${step >= 3 ? styles.active : ''}`}>
-                            <div className={styles.stepNumber}>3</div>
-                            <div className={styles.stepLabel}>Review</div>
-                        </div>
-                        <div className={styles.stepConnector}></div>
-                        <div className={`${styles.step} ${step >= 4 ? styles.active : ''}`}>
-                            <div className={styles.stepNumber}>4</div>
-                            <div className={styles.stepLabel}>Complete</div>
-                        </div>
-                    </div>
+            <div
+                ref={popupRef}
+                className={styles.popupContainer}
+            >
+                <div className={styles.verificationPopup}>
+                    {/* Custom header with blue background and gradient text */}
+                    <CustomPopupHeader title={getPopupTitle()} />
 
+                    {/* Popup content */}
                     <div className={styles.popupContent}>
                         {renderVerificationFlow()}
                     </div>
-
-                    <button
-                        type="button"
-                        className={styles.closeButton}
-                        onClick={onClose}
-                    >
-                        Close
-                    </button>
-                </Popup>
+                </div>
             </div>
         </div>
     );

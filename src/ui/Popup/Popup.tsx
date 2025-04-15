@@ -4,7 +4,7 @@ import Back from "src/images/svg/smallLeft.svg";
 import styles from "./Popup.module.scss";
 
 interface PopupProps {
-    title: string;
+    title?: string;
     children: ReactNode;
     onBack?: () => void;
     onSubmit?: (e: React.FormEvent) => void;
