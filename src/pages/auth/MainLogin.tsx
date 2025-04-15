@@ -5,6 +5,7 @@ import { useAddLinkedUserMutation } from "src/store/auth/authAPI";
 import LoginPage from "src/pages/auth/Login/LoginPage";
 import ResetPassword from "src/pages/auth/ResetPassword/ResetPassword";
 import RegisterPage from "src/pages/auth/Register/RegisterPage";
+import DocumentsPage from "src/pages/auth/Verification/Documents/Documents";
 
 import styles from "./MainLogin.module.scss";
 
@@ -46,7 +47,19 @@ const MainLogin: React.FC = () => {
                 return <ResetPassword setPage={setPage} />;
             case "register":
                 return <RegisterPage setPage={setPage} />;
-            default:
+            // case "verify":
+            //     return <VerificationPage setPage={setPage} setStep={setStep} />;
+            case "documents":
+                return <DocumentsPage setPage={setPage} setStep={setStep} />;
+            case "waiting":
+                // return <WaitingPage setPage={setPage} setStep={setStep} />;
+            // case "approved":
+            //     return <ApprovedPage setPage={setPage} setStep={setStep} />;
+            // case "sign":
+            //     return <SignPage />;
+            // case "canceled":
+            //     return <CanceledPage setPage={setPage} />;
+            // default:
                 return <h2 className={styles.pageNotFound}>404 - Page Not Found</h2>;
         }
     };
